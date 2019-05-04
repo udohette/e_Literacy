@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".quiz.StartingScreenActivity"
+    android:background="#6200ee"
+    android:padding="16sp">
+    <TextView
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="e_Literacy CBT TEST"
+        android:layout_marginTop="30dp"
+        android:textSize="30dp"
+        android:layout_margin="20dp"
+        android:fontFamily="sans-serif-black"/>
+    <TextView
+        android:id="@+id/text_view_high_score"
+        android:layout_above="@id/button_start_quiz"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="High Score: 0"
+        android:layout_marginBottom="35dp"
+        android:textSize="35dp" />
+    <Button
+        android:text="start"
+        android:id="@+id/button_start_quiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/login_btn"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

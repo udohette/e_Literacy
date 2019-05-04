@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent">
+
+        <!--  this list contains products -->
+        <ListView
+            android:id="@+id/program_list"
+            android:cacheColorHint="#00000000"
+            android:scrollbars="none"
+            android:fadingEdge="vertical"
+            android:soundEffectsEnabled="true"
+            android:dividerHeight="3dp"
+            android:smoothScrollbar="true"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:drawSelectorOnTop="true"
+            android:layout_marginTop="5dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginBottom="5dip"
+            android:layout_weight="1"
+            android:divider="@color/lightPurple"
+            android:focusable="true"
+            android:entries="@array/Program_list"
+            android:elevation="3dp"
+            android:descendantFocusability="blocksDescendants"/>
+</LinearLayout>

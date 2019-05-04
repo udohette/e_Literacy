@@ -1,0 +1,156 @@
+<resources>
+    <string name="app_name">Techflex-e_Literacy</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_quit">Quit App</string>
+    <string name="action_logout">Logout</string>
+    <string name="_2019_techflex_e_Literacy">©2019 Techflex e_Literacy | ALL RIGHT RESERVED</string>
+    <string name="enter_password"> please enter password</string>
+    <string name="enter_email">please enter email address</string>
+    <string name="progressbar_info">creating account.....</string>
+    <string name="password">password</string>
+    <string name="phone_number">enter phone number</string>
+    <string name="username">Name</string>
+    <string name="title_activity_signup">Signup to e_Literacy</string>
+    <string name="input_error_name">name required</string>
+    <string name="input_error_email">email required</string>
+    <string name="input_error_password">password required</string>
+    <string name="input_error_phone">phone required</string>
+    <string name="input_error_password_length">password should be atleast 8 characters long</string>
+    <string name="input_error_phone_invalid">enter a valid phone number</string>
+    <string name="registration_success">Registered Successfully</string>
+    <string name="registration_failed">Registered Failed</string>
+    <string name="already_register">you  are already  registered</string>
+    <string name="input_error_email_invalid">enter a valid email</string>
+    <string name="please_kindly_choose_your_activity">Please Kindly Choose your Activity</string>
+
+    <string-array name="Program_list">Program List
+        <item>School of Arts and Social Sciences</item>
+        <item>Centre for Life-Long Learning and Workplace Training</item>
+        <item>School of Management Sciences</item>
+        <item>Arts &amp; Humanities Education</item>
+        <item>School of Education</item>
+        <item>School of Law</item>
+        <item>School of Health Sciences</item>
+        <item>School of Science and Technology</item>
+    </string-array>
+
+    <!-- Undergraduate Program for School of Science and Technology-->
+    <string-array name="School_of_Science_and_Technology">School of Science and Technology
+        <item>BSc. Mathematics</item>
+        <item>BSc. Computer and Mathematics (Combined Hons)</item>
+        <item>BSc. Computer Science</item>
+        <item>BSc. Data Management</item>
+        <item>BSc. Communications Technology</item>
+        <item>BSc. Agricultural Extension and Management</item>
+        <item>BSc. Nursing Science</item>
+        <item>BSc. Community Health</item>
+        <item>BSc. Financial Mathematics</item>
+        <item>BSc. Financial Mathematics</item>
+        <item>BSc. Physics</item>
+        <item>BSc. Chemistry</item>
+        <item>BSc. Chemistry</item>
+    </string-array>
+    7
+    <!-- Student Program  Level-->
+    <string-array name="Program_level">Program Level
+        <item>100L</item>
+        <item>200L</item>
+        <item>300L</item>
+        <item>400L</item>
+        <item>500L</item>
+        <item>600L</item>
+        <item>700L</item>
+    </string-array>
+
+    <!-- Undergraduate Program for School of Health Sciences-->
+    <string-array name="School_of_health_Sciences">School of Health Sciences
+        <item>B.Sc. Community Health</item>
+        <item>B.Sc. Dental Technology</item>
+        <item>B.Sc. Environmental Health</item>
+    </string-array>
+
+    <!-- Undergraduate Program for School of Agricultural Sciences-->
+    <string-array name="School_of_Agricultural_Sciences">School of Agricultural Sciences
+        <item>B. Agric. Agricultural Economics and Agro Business</item>
+        <item>B. Agric. Agricultural Extension and Rural Development</item>
+        <item>B. Agric. Animal Science</item>
+        <item>B. Agric. Aquaculture and Fisheries Management</item>
+        <item>B. Agric. Soil and Land Resources Management</item>
+        <item>B. Agric. Crop Production and protection Sciences</item>
+    </string-array>
+
+    <!-- Undergraduate Program for School of Agricultural Sciences-->
+    <string-array name="School_of_Law">School of Law
+        <item>LLB (Law)</item>
+    </string-array>
+
+    <!-- Undergraduate Program for School of Education-->
+    <string-array name="School_of_Education">School of Education
+        <item>B.Sc. (Ed.) Agricultural Science</item>
+        <item>B.Sc. (Ed.) Biology</item>
+        <item>B.Sc. (Ed.) Chemistry</item>
+        <item>B.Sc. (Ed.) Integrated Science</item>
+        <item>B.Sc. (Ed.) Computer Science</item>
+        <item>B.Sc. (Ed.) Mathematics</item>
+        <item>B.Sc. (Ed.) Physics</item>
+        <item>B.Sc. (Ed.) Business Education</item>
+    </string-array>
+
+    <!-- Undergraduate Program for Arts & Humanities Education-->
+    <string-array name="Arts_and_Humanities_Education">Arts &amp; Humanities Education
+        <item>B.A (Ed.) Early Childhood Education</item>
+        <item>B.A (Ed.) English</item>
+        <item>B.A (Ed.) French</item>
+        <item>B.A (Ed.) Primary Education</item>
+    </string-array>
+
+    <!-- Undergraduate Program for School of Management Sciences-->
+    <string-array name="School_of_Management_Sciences">School of Management Sciences
+        <item>B.Sc. Cooperatives Management</item>
+        <item>B.Sc. Entrepreneurship</item>
+        <item>B.Sc. Accounting (in Collaboration with ICAN)</item>
+        <item>B.Sc. Hospitality Management</item>
+    </string-array>
+
+    <!-- Undergraduate Program for SSchool of Arts and Social Sciences-->
+    <string-array name="School_of_Arts_and_Social_Sciences">School of Arts and Social Sciences
+        <item>B.Sc. Criminology and Security Studies</item>
+        <item>B.Sc. Peace Studies and Conflict Resolution</item>
+        <item>B.Sc. Mass Communication</item>
+        <item>B.A. English</item>
+        <item>B.A French and International Relations</item>
+        <item>B.A Christian Theology</item>
+        <item>B.Sc. (Ed.) PhysicsB.A Islamic Studies</item>
+        <item>B.Sc. Political Science</item>
+    </string-array>
+
+    <!-- Undergraduate Program for Centre for Life-Long Learning and Workplace Training-->
+    <string-array name="Centre_for_LifeLong_Learning_and_Workplace_Training">Centre for Life-Long
+        Learning and Workplace Training
+        <item>Proficiency Certificate in Call Centre Skills, Mobile Phone Repair</item>
+        <item>Computer Literacy</item>
+        <item>Business Administration</item>
+        <item>Hotel and Catering Management.</item>
+    </string-array>
+
+    <string name="title_activity_program_choice">ProgramChoiceActivity</string>
+    <string name="tab_text_1">Program</string>
+    <string name="tab_text_2">Program Choice</string>
+    <string name="tab_text_3">Level</string>
+    <string name="top_background">top background</string>
+    <string name="profile_photo">profile photo</string>
+    <string name="add_friends">add friends</string>
+    <string name="viral_android">Viral Android</string>
+    <string name="read_past_questions">Read Past Questions</string>
+    <string name="take_cbt_practice">Take CBT Practice</string>
+    <string name="e_courseware">e_CourseWare</string>
+    <string name="get_project_topics">Get Project Topics</string>
+    <string name="get_logbook_report">Get LogBook / Report</string>
+    <string name="pop_pq_300l_above">POP PQ(300L Above)</string>
+    <string name="downloads_past_questions">Downloads Past Questions</string>
+    <string name="get_seminar_topics">Get Seminar Topics</string>
+    <string name="exam_course">Exam / Course Summary</string>
+    <string name="agent_reg">Agent Registration</string>
+    <string name="need_help_contact_us_now">Need Help? | Contact us Now!</string>
+    <string name="options_logout_user_activity">options_logout_user_activity</string>
+</resources>
