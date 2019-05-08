@@ -153,4 +153,40 @@
     <string name="agent_reg">Agent Registration</string>
     <string name="need_help_contact_us_now">Need Help? | Contact us Now!</string>
     <string name="options_logout_user_activity">options_logout_user_activity</string>
+    <string name="check_your_cgpa">Check Your CGPA</string>
+
+    <!-- computer science 100L-->
+    <string-array name="com_sci_course_100l">100L Computer Science
+        <item>Gst101</item>
+        <item>Bio101</item>
+        <item>Bio102</item>
+        <item>Bio192</item>
+        <item>Bio191</item>
+        <item>Chm101</item>
+        <item>Chm102</item>
+        <item>Phy192</item>
+        <item>Phy191</item>
+        <item>Mth101</item>
+        <item>Mth102</item>
+        <item>Mth103</item>
+        <item>Stt102</item>
+        <item>Gst107</item>
+    </string-array>
+    <!-- computer science 100L-->
+    <string-array name="com_sci_course_100l_desc">Computer Science 100L Desc
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+    </string-array>
 </resources>

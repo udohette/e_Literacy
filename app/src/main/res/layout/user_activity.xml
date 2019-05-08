@@ -124,6 +124,7 @@
                     android:text="@string/take_cbt_practice" />
 
                 <TextView
+                    android:id="@+id/e_course_button"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -134,6 +135,7 @@
                     android:padding="20dp"
                     android:text="@string/e_courseware" />
                 <TextView
+                    android:id="@+id/project_topic_button"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -144,6 +146,7 @@
                     android:padding="20dp"
                     android:text="@string/get_project_topics" />
                 <TextView
+                    android:id="@+id/logbook_button"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -174,6 +177,7 @@
                     android:padding="20dp"
                     android:text="@string/downloads_past_questions" />
                 <TextView
+                    android:id="@+id/seminar_topic_button"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -183,6 +187,17 @@
                     android:elevation="4dp"
                     android:padding="20dp"
                     android:text="@string/get_seminar_topics" />
+                <TextView
+                    android:id="@+id/gp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="4dp"
+                    android:padding="20dp"
+                    android:text="@string/check_your_cgpa" />
 
                 <TextView
                     android:layout_width="fill_parent"

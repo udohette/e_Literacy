@@ -1,6 +1,7 @@
 package com.example.techflex_e_literacy;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOOSE_IMAGE = 11;
 
-    TextView user_profile_name, take_practice_button;
+    TextView user_profile_name, take_practice_button, gp,project_topic_button,seminar_button,logbook_button,e_course;
     ImageView dropdown_option_menu;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
@@ -34,6 +35,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         dropdown_option_menu = findViewById(R.id.drop_down_option_menu);
         user_profile_button = findViewById(R.id.user_profile_photo);
         take_practice_button = findViewById(R.id.take_practice_button);
+        gp = findViewById(R.id.gp);
+        project_topic_button = findViewById(R.id.project_topic_button);
+        seminar_button = findViewById(R.id.seminar_topic_button);
+        logbook_button = findViewById(R.id.logbook_button);
+        e_course = findViewById(R.id.e_course_button);
 
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,6 +47,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         dropdown_option_menu.setOnClickListener(this);
         user_profile_button.setOnClickListener(this);
         take_practice_button.setOnClickListener(this);
+        gp.setOnClickListener(this);
+        project_topic_button.setOnClickListener(this);
+        e_course.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
@@ -52,19 +61,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         if (user != null) {
             user_profile_name.setText("Welcome " + user.getDisplayName());
-            if (user.getPhotoUrl() != null){
+            if (user.getPhotoUrl() != null) {
                 GlideApp.with(this).load(user.getPhotoUrl().toString())
                         .centerCrop()
                         .transform(new CircleCrop())
                         .into(user_profile_button);
-            }else {
-                if (user_profile_name.getDisplay() == null){
+            } else {
+                if (user_profile_name.getDisplay() == null) {
                     user_profile_name.setText("please update profile");
                 }
             }
 
         }
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -127,6 +138,27 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(UserActivity.this, CBTTestPage.class);
             startActivity(intent);
 
+        }
+        if (view == gp){
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("http://www.techflexco.com/scale5.php"));
+            startActivity(intent);
+        }
+        //String number = "+2348025774336";
+        if (view == project_topic_button){
+            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        if (view == e_course){
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("http://www.nou.edu.ng/courseware"));
+            startActivity(intent);
         }
 
     }
