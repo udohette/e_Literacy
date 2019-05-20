@@ -29,7 +29,7 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BFN101"
+            android:text="BFN104"
             android:textSize="20sp"
             android:layout_alignParentLeft="true"
             android:id="@+id/course_code"/>
@@ -43,9 +43,8 @@
             android:layout_alignParentEnd="true"
             android:textSize="30sp"/>
         <TextView
-
             android:layout_marginTop="40dp"
-            android:id="@+id/textview_question_count"
+            android:id="@+id/question_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Questions: 1/x"
@@ -62,7 +61,6 @@
             android:text="Which thing is alive?"
             android:textSize="20sp"
             android:padding="2dp"
-
             android:id="@+id/question"/>
 
     </RelativeLayout>
@@ -121,15 +119,8 @@
                 android:textColor="#fff"
                 android:padding="8dp"
                 android:layout_marginBottom="15dp"
-                android:id="@+id/quit"
-                />
+                android:id="@+id/quit" />
 
         </LinearLayout>
-
-
     </android.support.v4.widget.NestedScrollView>
-
-
-
-
 </LinearLayout>

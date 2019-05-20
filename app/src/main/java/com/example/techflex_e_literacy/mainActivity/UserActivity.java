@@ -1,9 +1,9 @@
-package com.example.techflex_e_literacy;
+package com.example.techflex_e_literacy.mainActivity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +13,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.techflex_e_literacy.GlideApp;
+import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

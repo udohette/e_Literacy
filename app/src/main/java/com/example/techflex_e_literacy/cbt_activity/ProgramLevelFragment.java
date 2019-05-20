@@ -19,14 +19,13 @@ public class ProgramLevelFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_three, container, false);
-        button = view.findViewById(R.id.quiz_button);
+        button = view.findViewById(R.id.take_quiz);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ProgramLevelFragment.this.getActivity(), QuizActivity.class));
+                startActivity(new Intent(getActivity(), QuizActivity.class));
             }
         });
-
         return view;
     }
 

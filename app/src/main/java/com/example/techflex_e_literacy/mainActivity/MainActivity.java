@@ -1,4 +1,4 @@
-package com.example.techflex_e_literacy;
+package com.example.techflex_e_literacy.mainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +9,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.techflex_e_literacy.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -154,11 +155,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view == signup_now_button){
             finish();
-            startActivity(new Intent(this,SignupActivity.class));
+            startActivity(new Intent(this, SignupActivity.class));
         }
         if (view == reset_password_button){
             finish();
-            startActivity(new Intent(this,ForgotPassword.class));
+            startActivity(new Intent(this, ForgotPassword.class));
         }
     }
 }

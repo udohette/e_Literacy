@@ -1,13 +1,13 @@
-package com.example.techflex_e_literacy;
+package com.example.techflex_e_literacy.mainActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +20,8 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.techflex_e_literacy.GlideApp;
+import com.example.techflex_e_literacy.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,7 +89,7 @@ public class UpdateProfile extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(getApplicationContext(),UserActivity.class);
+        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
         startActivityForResult(intent,0);
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

@@ -1,4 +1,4 @@
-package com.example.techflex_e_literacy;
+package com.example.techflex_e_literacy.mainActivity;
 
 public class User {
     public String name, email, phone;

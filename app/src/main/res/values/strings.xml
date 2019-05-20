@@ -5,6 +5,7 @@
     <string name="action_logout">Logout</string>
     <string name="_2019_techflex_e_Literacy">©2019 Techflex e_Literacy | ALL RIGHT RESERVED</string>
     <string name="enter_password"> please enter password</string>
+    <string name="enter_course_code"> please enter Course Code</string>
     <string name="enter_email">please enter email address</string>
     <string name="progressbar_info">creating account.....</string>
     <string name="password">password</string>
@@ -22,6 +23,8 @@
     <string name="already_register">you  are already  registered</string>
     <string name="input_error_email_invalid">enter a valid email</string>
     <string name="please_kindly_choose_your_activity">Please Kindly Choose your Activity</string>
+    <string name="about_us">ABSTRACT
+This is with the basic aim of providing practical solution towards the re-engineering and sustenance of the secretarial profession. The re-training of secretaries, carrying out of visitation in form of excursion to those firms that assemble or reproduce these modern machines proper funding of institutions and requirements of modern machines and equipment. Information and Communication Technology (ICT) freming and development strategies to secret in the office technology and management. Development of Social and Physical Infrastructure of the within the government and organizations towards enhancing effective and efficient performance of the staff. However, the final recommendations are good proposals for any organization to adopt in order to make its secretaries more effective and efficient.</string>
 
     <string-array name="Program_list">Program List
         <item>School of Arts and Social Sciences</item>
@@ -154,6 +157,7 @@
     <string name="need_help_contact_us_now">Need Help? | Contact us Now!</string>
     <string name="options_logout_user_activity">options_logout_user_activity</string>
     <string name="check_your_cgpa">Check Your CGPA</string>
+    <string name="enter_course_code_e_g_bus205"> e.g bus205</string>
 
     <!-- computer science 100L-->
     <string-array name="com_sci_course_100l">100L Computer Science

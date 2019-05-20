@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "338935593731",
+    "firebase_url": "https://techflexeliteracy.firebaseio.com",
+    "project_id": "techflexeliteracy",
+    "storage_bucket": "techflexeliteracy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338935593731:android:b85bff7c534ea7e7",
+        "android_client_info": {
+          "package_name": "com.example.techflex_e_literacy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338935593731-ubplqvm6b644arftr7ebbivmus3lk541.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.techflex_e_literacy",
+            "certificate_hash": "3ec8909757f6656ffcebf0c0d3514811fd7bdc93"
+          }
+        },
+        {
+          "client_id": "338935593731-gtk7etn1io3345696d25f1fhkfs3luvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU6SA4_5Z4FnRsJgj2ZtSJd80iSX5xqrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338935593731-gtk7etn1io3345696d25f1fhkfs3luvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
