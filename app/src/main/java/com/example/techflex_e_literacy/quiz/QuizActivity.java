@@ -1,5 +1,7 @@
 package com.example.techflex_e_literacy.quiz;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class QuizActivity extends AppCompatActivity {
-    private TextView mScoreView;
+    private TextView mScoreView, course_code;
+    ;
     int questionCount = 0;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
@@ -55,10 +59,31 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice4 = findViewById(R.id.choice4);
         count_down = findViewById(R.id.textview_count_down);
         question_count = findViewById(R.id.question_count);
+        course_code = findViewById(R.id.course_code);
 
         handleIntent(getIntent());
-        updateQuestions();
-        reverseTimer(30, count_down);
+        // updateQuestions();
+
+    }
+
+    public void showDialog(Activity activity, String msg) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog);
+
+        TextView text = dialog.findViewById(R.id.text_dialog);
+        text.setText(msg);
+
+        Button dialogButton = dialog.findViewById(R.id.btn_dialog);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     @Override
@@ -69,13 +94,14 @@ public class QuizActivity extends AppCompatActivity {
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            updateQuestions(query);
             //Log.v("TESTING",query);
             //use the query to search your data somehow
 
         }
     }
 
-    public void updateQuestions() {
+    public void updateQuestions(final String query1) {
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
@@ -87,7 +113,6 @@ public class QuizActivity extends AppCompatActivity {
             i.putExtra("Total", String.valueOf(total));
             i.putExtra("Correct", String.valueOf(correct));
             i.putExtra("Incorrect", String.valueOf(wrong));
-            finish();
             mButtonChoice1.setEnabled(false);
             mButtonChoice2.setEnabled(false);
             mButtonChoice3.setEnabled(false);
@@ -95,19 +120,23 @@ public class QuizActivity extends AppCompatActivity {
             startActivity(i);
 
         } else {
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("quiz/bfn104".trim()).child(String.valueOf(total));
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("quiz/" + query1.trim()).child(String.valueOf(total));
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     final QuestionLibrary questionLibrary = dataSnapshot.getValue(QuestionLibrary.class);
                     if (questionLibrary == null) {
+                        showDialog(QuizActivity.this, "Available Soon\ntry another course");
                         return;
                     }
+                    //.reverseTimer(30, count_down);
+                    course_code.setText(query1.toUpperCase());
                     mQuestionView.setText(questionLibrary.getQuestion());
                     mButtonChoice1.setText(questionLibrary.getOption1());
                     mButtonChoice2.setText(questionLibrary.getOption2());
                     mButtonChoice3.setText(questionLibrary.getOption3());
                     mButtonChoice4.setText(questionLibrary.getOption4());
+
 
                     mButtonChoice1.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -127,7 +156,7 @@ public class QuizActivity extends AppCompatActivity {
                                     public void run() {
                                         correct++;
                                         mButtonChoice1.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
                                     }
                                 }, 1500);
                             } else {
@@ -149,7 +178,7 @@ public class QuizActivity extends AppCompatActivity {
                                         mButtonChoice2.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
 
                                     }
                                 }, 1500);
@@ -174,7 +203,7 @@ public class QuizActivity extends AppCompatActivity {
                                     public void run() {
                                         correct++;
                                         mButtonChoice2.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
                                     }
                                 }, 1500);
                             } else {
@@ -196,7 +225,7 @@ public class QuizActivity extends AppCompatActivity {
                                         mButtonChoice2.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
 
 
                                     }
@@ -222,7 +251,7 @@ public class QuizActivity extends AppCompatActivity {
                                     public void run() {
                                         correct++;
                                         mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
 
                                     }
                                 }, 1500);
@@ -245,7 +274,7 @@ public class QuizActivity extends AppCompatActivity {
                                         mButtonChoice2.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
 
 
                                     }
@@ -271,7 +300,7 @@ public class QuizActivity extends AppCompatActivity {
                                     public void run() {
                                         correct++;
                                         mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        //updateQuestions(query1);
                                     }
                                 }, 1500);
                             } else {
@@ -293,7 +322,8 @@ public class QuizActivity extends AppCompatActivity {
                                         mButtonChoice2.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        updateQuestions();
+                                        updateQuestions(query1);
+
 
 
                                     }
