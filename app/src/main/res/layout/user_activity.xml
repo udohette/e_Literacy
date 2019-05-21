@@ -98,6 +98,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/get_past_questions"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -145,7 +146,7 @@
                     android:padding="20dp"
                     android:text="@string/get_project_topics" />
                 <TextView
-                    android:id="@+id/logbook_button"
+                    android:id="@+id/it_placement_button"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -154,27 +155,7 @@
                     android:focusable="true"
                     android:elevation="4dp"
                     android:padding="20dp"
-                    android:text="@string/get_logbook_report" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:padding="20dp"
-                    android:text="@string/pop_pq_300l_above" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:padding="20dp"
-                    android:text="@string/downloads_past_questions" />
+                    android:text="@string/it_placement_report" />
                 <TextView
                     android:id="@+id/seminar_topic_button"
                     android:layout_width="fill_parent"
@@ -199,6 +180,7 @@
                     android:text="@string/check_your_cgpa" />
 
                 <TextView
+                    android:id="@+id/advert"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -209,8 +191,9 @@
                     android:focusable="true"
                     android:elevation="4dp"
                     android:padding="20dp"
-                    android:text="@string/agent_reg" />
+                    android:text="@string/advert" />
                 <TextView
+                    android:id="@+id/summary"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -223,17 +206,17 @@
                     android:padding="20dp"
                     android:text="@string/exam_course" />
 
-
                 <TextView
+                    android:id="@+id/about_us"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="#fff"
                     android:clickable="true"
-                    android:focusable="true"
                     android:elevation="4dp"
+                    android:focusable="true"
                     android:padding="20dp"
-                    android:text="@string/need_help_contact_us_now" />
+                    android:text="@string/about_us_text" />
 
             </LinearLayout>
 

@@ -22,7 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOOSE_IMAGE = 11;
 
-    TextView user_profile_name, take_practice_button, gp,project_topic_button,seminar_button,logbook_button,e_course;
+    TextView user_profile_name, take_practice_button, gp, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
+            past_questions, summary;
     ImageView dropdown_option_menu;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
@@ -40,8 +41,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         gp = findViewById(R.id.gp);
         project_topic_button = findViewById(R.id.project_topic_button);
         seminar_button = findViewById(R.id.seminar_topic_button);
-        logbook_button = findViewById(R.id.logbook_button);
+        it_placement_button = findViewById(R.id.it_placement_button);
         e_course = findViewById(R.id.e_course_button);
+        about_us = findViewById(R.id.about_us);
+        past_questions = findViewById(R.id.get_past_questions);
+        summary = findViewById(R.id.summary);
+
 
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,6 +57,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         gp.setOnClickListener(this);
         project_topic_button.setOnClickListener(this);
         e_course.setOnClickListener(this);
+        about_us.setOnClickListener(this);
+        past_questions.setOnClickListener(this);
+        it_placement_button.setOnClickListener(this);
+        seminar_button.setOnClickListener(this);
+        summary.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
@@ -161,6 +171,34 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setData(Uri.parse("http://www.nou.edu.ng/courseware"));
             startActivity(intent);
+        }
+        if (view == about_us) {
+            Intent intent = new Intent(UserActivity.this, ABout.class);
+            startActivity(intent);
+        }
+        if (view == past_questions) {
+            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20past%20questions%20for";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        if (view == it_placement_button) {
+            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on%20IT%20Placement,%20Log Book Filling,%20IT Report";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        if (view == seminar_button) {
+            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on%20Seminar Topic";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        if (view == summary) {
+            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on%20Course Summary";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
         }
 
     }

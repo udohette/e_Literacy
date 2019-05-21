@@ -10,8 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".mainActivity.ABout"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".quiz.QuizActivity"
-
             android:label="enter course code"
             android:launchMode="singleTask">
             <meta-data

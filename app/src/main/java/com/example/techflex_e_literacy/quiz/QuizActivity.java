@@ -61,6 +61,7 @@ public class QuizActivity extends AppCompatActivity {
         question_count = findViewById(R.id.question_count);
         course_code = findViewById(R.id.course_code);
 
+
         handleIntent(getIntent());
         // updateQuestions();
 
@@ -107,7 +108,7 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice3.setEnabled(true);
         mButtonChoice4.setEnabled(true);
         total++;
-        if (total > 4) {
+        if (total == query1.length()) {
             // open result activity
             Intent i = new Intent(QuizActivity.this, Result_Activity.class);
             i.putExtra("Total", String.valueOf(total));
@@ -388,5 +389,12 @@ public class QuizActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
 }

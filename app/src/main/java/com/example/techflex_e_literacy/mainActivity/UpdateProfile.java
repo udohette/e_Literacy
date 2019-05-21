@@ -57,6 +57,7 @@ public class UpdateProfile extends AppCompatActivity {
         verified_user = findViewById(R.id.verified_email);
         editText = findViewById(R.id.edit_text_displayName);
         progressBar = findViewById(R.id.progressbar1);
+
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
