@@ -288,4 +288,6 @@ Dennis S.A | IT Support Executive
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="about_us_text">About Us</string>
+    <string name="update_profile">update profile</string>
+    <string name="logout">logout</string>
 </resources>

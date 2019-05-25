@@ -49,7 +49,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
 
         toolbar = findViewById(R.id.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dropdown_option_menu.setOnClickListener(this);
         user_profile_button.setOnClickListener(this);

@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -30,8 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class QuizActivity extends AppCompatActivity {
     private TextView mScoreView, course_code;
-    ;
-    int questionCount = 0;
+    CountDownTimer mCountDownTimer = null;
+    private int questionCount;
+
     private Button mButtonChoice1;
     private Button mButtonChoice2;
     private TextView mQuestionView, count_down, question_count;
@@ -42,6 +44,7 @@ public class QuizActivity extends AppCompatActivity {
     int wrong = 0;
     private Button mButtonChoice3, mButtonChoice4;
     DatabaseReference databaseReference;
+    private int questionCounterTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,7 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice3.setEnabled(true);
         mButtonChoice4.setEnabled(true);
         total++;
-        if (total == query1.length()) {
+        if (total >) {
             // open result activity
             Intent i = new Intent(QuizActivity.this, Result_Activity.class);
             i.putExtra("Total", String.valueOf(total));
@@ -119,18 +122,24 @@ public class QuizActivity extends AppCompatActivity {
             mButtonChoice3.setEnabled(false);
             mButtonChoice4.setEnabled(false);
             startActivity(i);
+            stopTimer();
 
         } else {
             databaseReference = FirebaseDatabase.getInstance().getReference().child("quiz/" + query1.trim()).child(String.valueOf(total));
+
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.e("Count", "" + dataSnapshot.getChildrenCount());
+
                     final QuestionLibrary questionLibrary = dataSnapshot.getValue(QuestionLibrary.class);
+                    question_count.setText("Total Question:" + dataSnapshot.getChildrenCount());
+                    //Log.d("Questions: ",questionLibrary.getQuestion());
                     if (questionLibrary == null) {
                         showDialog(QuizActivity.this, "Available Soon\ntry another course");
                         return;
                     }
-                    //.reverseTimer(30, count_down);
+                    startTimer(73, count_down);
                     course_code.setText(query1.toUpperCase());
                     mQuestionView.setText(questionLibrary.getQuestion());
                     mButtonChoice1.setText(questionLibrary.getOption1());
@@ -158,6 +167,7 @@ public class QuizActivity extends AppCompatActivity {
                                         correct++;
                                         mButtonChoice1.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         updateQuestions(query1);
+
                                     }
                                 }, 1500);
                             } else {
@@ -301,7 +311,7 @@ public class QuizActivity extends AppCompatActivity {
                                     public void run() {
                                         correct++;
                                         mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                        //updateQuestions(query1);
+                                        updateQuestions(query1);
                                     }
                                 }, 1500);
                             } else {
@@ -337,6 +347,7 @@ public class QuizActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.v("Failed to  Read Value", databaseError.toException().getMessage());
 
                 }
             });
@@ -345,14 +356,13 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void reverseTimer(int seconds, final TextView tv) {
-        new CountDownTimer(seconds * 1000 + 1000, 1000) {
+        mCountDownTimer = new CountDownTimer(seconds * 1000 + 1000, 1000) {
             @Override
             public void onTick(long millsUntilFinised) {
                 int seconds = (int) (millsUntilFinised / 1000);
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
                 tv.setText(String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-
 
             }
 
@@ -363,15 +373,23 @@ public class QuizActivity extends AppCompatActivity {
                 intent.putExtra("Total", String.valueOf(total));
                 intent.putExtra("Correct", String.valueOf(correct));
                 intent.putExtra("Incorrect", String.valueOf(wrong));
-                mButtonChoice1.setEnabled(false);
-                mButtonChoice2.setEnabled(false);
-                mButtonChoice3.setEnabled(false);
-                mButtonChoice4.setEnabled(false);
                 startActivity(intent);
-
             }
 
         }.start();
+    }
+
+    public void startTimer(int seconds, final TextView tv) {
+        if (mCountDownTimer == null) {
+            reverseTimer(seconds, tv);
+        }
+    }
+
+    public void stopTimer() {
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+
+        }
     }
 
 

@@ -53,4 +53,10 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(Result_Activity.this, QuizActivity.class));
         }
     }
+
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }
