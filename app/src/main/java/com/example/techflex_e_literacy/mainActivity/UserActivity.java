@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.techflex_e_literacy.GlideApp;
@@ -23,11 +24,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private static final int CHOOSE_IMAGE = 11;
 
     TextView user_profile_name, take_practice_button, gp, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            past_questions, summary;
+            past_questions, summary, contact_us,advert;
     ImageView dropdown_option_menu;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
+
     Toolbar toolbar;
+    private long longPressTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         about_us = findViewById(R.id.about_us);
         past_questions = findViewById(R.id.get_past_questions);
         summary = findViewById(R.id.summary);
+        contact_us = findViewById(R.id.contact_us);
+        advert = findViewById(R.id.advert);
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -61,6 +66,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         it_placement_button.setOnClickListener(this);
         seminar_button.setOnClickListener(this);
         summary.setOnClickListener(this);
+        contact_us.setOnClickListener(this);
+        advert.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
@@ -116,6 +123,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        if (longPressTime + 2000 > System.currentTimeMillis()) {
+            System.exit(0);
+        } else {
+            Toast.makeText(UserActivity.this, "Press again to  exit", Toast.LENGTH_SHORT).show();
+        }
+        longPressTime = System.currentTimeMillis();
     }
 
 
@@ -198,6 +214,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
+        }
+        if (view == contact_us){
+            Intent intent = new Intent(UserActivity.this, Contact.class);
+            startActivity(intent);
+        }
+        if (view == advert){
+            Intent intent = new Intent(UserActivity.this, Contact.class);
+            startActivity(intent);
         }
 
     }

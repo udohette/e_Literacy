@@ -1,100 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".quiz.QuizActivity"
-    android:background="@color/yellow"
-    android:padding="16sp">
-    <TextView
-        android:textColor="@color/white"
-        android:id="@+id/textView"
-        android:layout_marginStart="37dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="79dp"
-        android:text="Total Questions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:textColor="@color/white"
-        android:layout_below="@id/textView"
-        android:id="@+id/textView2"
-        android:layout_alignStart="@id/textView"
-        android:layout_marginTop="105dp"
-        android:text="Correct Answers:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    tools:context=".quiz.Result_Activity">
 
-    <TextView
-        android:textColor="@color/white"
-        android:layout_below="@id/textView2"
-        android:id="@+id/textView3"
-        android:layout_alignStart="@id/textView"
-        android:layout_marginTop="105dp"
-        android:text="Wrong Answers:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:textColor="@color/white"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="82dp"
-        android:layout_marginTop="79dp"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@id/textView"
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:textColor="@color/white"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="82dp"
-        android:layout_marginTop="202dp"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@id/textView2"
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:textColor="@color/white"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="82dp"
-        android:layout_marginTop="330dp"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@id/textView3"
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/linearlayout1"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:background="@color/deeppurple">
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="20dp"
+                    android:padding="12dp"
+                    android:background="@drawable/circle_stroke_white"
+                    android:src="@drawable/ic_score"
+                    android:tint="#fff"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SCORE"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="#fff"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="22sp"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="-10dp"
+                android:layout_below="@+id/linearlayout1"
+                android:rotation="45"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/square"/>
 
-    <!-- Signup Button -->
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/retake_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView6"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/login_btn"
-        android:padding="12dp"
-        android:text="Retake Quiz"
-        android:textColor="@color/white" />
-    <!-- Signup Button -->
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/end_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView6"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/login_btn"
-        android:padding="12dp"
-        android:text="  End Quiz    "
-        android:textColor="@color/white" />
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_below="@id/imageView1">
 
+                <TextView
+                    android:id="@+id/txtCorrectAns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Correct Answers"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimaryDark1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Wrong Answers"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark1"
+                    android:id="@+id/txtWrongAns"
+                    android:layout_below="@id/txtCorrectAns"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Wrong Answers"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark1"
+                    android:id="@+id/total_question_answered"
+                    android:layout_below="@id/txtWrongAns"
+                    />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/relativeLayout2">
+
+                <ImageButton
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_circle" />
+
+                <TextView
+                    android:text="%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imageView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="70dp"
+                    android:textColor="@color/colorPrimaryDark1"
+                    android:id="@+id/tvPerc"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+                <Button
+                    android:text="Show Answers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnWrongQstns"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/deeppurple"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:padding="4dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true" />
+                <Button
+                    android:text="Play Again"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/retake_quiz"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="2dp"
+                    android:background="@color/deeppurple"
+                    android:textColor="#fff"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <!--<TextView
+            android:id="@+id/textResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/txtCorrectAns"
+            android:layout_below="@+id/textResult"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <ImageButton
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnWrongQstns"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="24dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_circle" />
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="121dp"
+            android:id="@+id/tvPerc"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <Button
+            android:text="Show Answers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnWrongQstns"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:background="@color/deeppurple"
+            android:textColor="#fff"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />!-->
+
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

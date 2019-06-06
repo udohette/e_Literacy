@@ -12,16 +12,20 @@
     tools:context="com.example.techflex_e_literacy.quiz.QuizActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="10dp"
+        android:layout_gravity="top|left"
+        android:background="@drawable/rect_backroung_pink"
         android:layout_marginBottom="30dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Score: 0"
+            android:textColor="@color/white"
             android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_alignParentLeft="true"
             android:id="@+id/score"/>
         <TextView
@@ -30,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BFN104"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_alignParentLeft="true"
             android:id="@+id/course_code"/>
@@ -40,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:30"
+            android:textColor="@color/white"
             android:layout_alignParentEnd="true"
             android:textSize="30sp"/>
         <TextView
@@ -48,7 +54,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Questions: 1/x"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -61,7 +69,8 @@
             android:text="Which thing is alive?"
             android:textSize="20sp"
             android:padding="2dp"
-            android:id="@+id/question"/>
+            android:id="@+id/question"
+            android:textColor="@color/colorPrimaryDark1" />
 
     </RelativeLayout>
 
@@ -114,7 +123,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="quit"
+                android:text="Stop Quiz"
                 android:background="#B71C1C"
                 android:textColor="#fff"
                 android:padding="8dp"
@@ -124,3 +133,4 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
+

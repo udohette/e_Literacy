@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".mainActivity.Contact"
+            android:label="@string/contact"></activity>
+        <activity
             android:name=".mainActivity.ABout"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar"></activity>
