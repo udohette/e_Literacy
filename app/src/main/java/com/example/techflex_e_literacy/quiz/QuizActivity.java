@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -29,8 +28,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Locale;
 
 public class QuizActivity extends AppCompatActivity {
     private TextView mScoreView;
@@ -70,7 +67,8 @@ public class QuizActivity extends AppCompatActivity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(QuizActivity.this, "Quit?\nYour current quiz Record will not be save!");
+                CustomDialog customDialog = new CustomDialog(QuizActivity.this);
+                customDialog.show();
             }
         });
 
@@ -98,15 +96,21 @@ public class QuizActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+                if(!dataSnapshot.exists()){
+                    showDialog(QuizActivity.this, "Available Soon\ntry another course");
+                    return;
+                }
+
+                //if (dataSnapshot.exists()) {
+                    findViewById(R.id.activity_quiz).setVisibility(View.VISIBLE);
                     total_question_number = (dataSnapshot.getChildrenCount());
                     total_question.setText("Question: "+currentQuestion+"/"+ total_question_number+"");
                     course_code.setText(query1.trim().toUpperCase());
                     startTimer(30, count_down);
-                }
+                //}
 
                 total++;
-                if (total >= total_question_number) {
+                if (total > total_question_number) {
                     total--;
                     // open result activity
                     Intent i = new Intent(QuizActivity.this, Result_Activity.class);
