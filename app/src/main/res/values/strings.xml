@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Techflex-e_Literacy</string>
     <string name="action_settings">Settings</string>
-    <string name="action_quit">Quit App</string>
+    <string name="action_quit">Quit App </string>
     <string name="action_logout">Logout</string>
     <string name="_2019_techflex_e_Literacy">©2019 Techflex e_Literacy | ALL RIGHT RESERVED</string>
     <string name="enter_password"> please enter password</string>

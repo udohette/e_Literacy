@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -31,10 +32,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class QuizActivity extends AppCompatActivity {
     private TextView mScoreView;
-    private TextView mQuestionView, count_down, total_question, course_code;
+    private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
     private Button mButtonChoice3, mButtonChoice4,quit;
+    ProgressBar searchCourseProBar;
     Toolbar toolbar;
     private int mScore = 0;
     int total = 0;
@@ -61,7 +63,9 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice3 = findViewById(R.id.choice3);
         mButtonChoice4 = findViewById(R.id.choice4);
         count_down = findViewById(R.id.textview_count_down);
+        searchCourseProBar= findViewById(R.id.courseSearch);
         total_question = findViewById(R.id.question_count);
+        loadingCousreText=findViewById(R.id.loadingCourse);
         course_code = findViewById(R.id.course_code);
         quit = findViewById(R.id.quit);
         quit.setOnClickListener(new View.OnClickListener() {
@@ -91,18 +95,22 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
         mButtonChoice4.setEnabled(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/"+query1.trim());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/"+query1.trim().toLowerCase());
+        searchCourseProBar.setVisibility(View.VISIBLE);
+        loadingCousreText.setVisibility(View.VISIBLE);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                searchCourseProBar.setVisibility(View.GONE);
+                loadingCousreText.setVisibility(View.GONE);
                 if(!dataSnapshot.exists()){
                     showDialog(QuizActivity.this, "Available Soon\ntry another course");
                     return;
                 }
 
                 //if (dataSnapshot.exists()) {
-                    findViewById(R.id.activity_quiz).setVisibility(View.VISIBLE);
+                    findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
                     total_question_number = (dataSnapshot.getChildrenCount());
                     total_question.setText("Question: "+currentQuestion+"/"+ total_question_number+"");
                     course_code.setText(query1.trim().toUpperCase());
@@ -126,11 +134,13 @@ public class QuizActivity extends AppCompatActivity {
                     mButtonChoice3.setEnabled(false);
                     mButtonChoice4.setEnabled(false);
                 } else {
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/"+query1.trim()).child(String.valueOf(total));
+                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/"+query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
+                                searchCourseProBar.setVisibility(View.GONE);
+                                loadingCousreText.setVisibility(View.GONE);
                                 final QuestionLibrary questionLibrary = dataSnapshot.getValue(QuestionLibrary.class);
                                 mQuestionView.setText(questionLibrary.getQuestion());
                                 mButtonChoice1.setText(questionLibrary.getOption1());
@@ -138,6 +148,15 @@ public class QuizActivity extends AppCompatActivity {
                                 mButtonChoice3.setText(questionLibrary.getOption3());
                                 mButtonChoice4.setText(questionLibrary.getOption4());
                                 currentQuestion++;
+
+                                if (currentQuestion > 5 && mCountDownTimer != null){
+                                    SubDialog subDialog = new SubDialog(QuizActivity.this);
+                                    subDialog.show();
+                                    mButtonChoice1.setEnabled(false);
+                                    mButtonChoice2.setEnabled(false);
+                                    mButtonChoice3.setEnabled(false);
+                                    mButtonChoice4.setEnabled(false);
+                                }
 
                                 mButtonChoice1.setOnClickListener(new View.OnClickListener() {
                                     @Override

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    tools:context=".quiz.CustomDialog"
+    android:orientation="vertical"
+    android:background="@drawable/curve_shape">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:text="Maximum Attended Reach for Demo\nPlease Subscribe for more Questions? "
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#3E80B4"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="cancel"
+            android:textColor="#5dbcd2"
+            android:background="@android:color/white"
+            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/btn_subscribe"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="subscribe"
+            android:textColor="#5dbcd2"
+            android:background="@android:color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

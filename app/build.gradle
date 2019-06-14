@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:17.0.0'
     implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     testImplementation 'junit:junit:4.12'

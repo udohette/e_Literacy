@@ -54,7 +54,7 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(Result_Activity.this, UserActivity.class));
         }
         if (view == retake) {
-            startActivity(new Intent(Result_Activity.this, QuizActivity.class));
+            startActivity(new Intent(Result_Activity.this, ProgramLevelFragment.class));
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.techflex_e_literacy.quiz;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -9,42 +10,39 @@ import android.widget.Button;
 
 import com.example.techflex_e_literacy.R;
 
-public class CustomDialog extends Dialog implements View.OnClickListener {
+public class SubDialog extends Dialog implements View.OnClickListener {
     public Activity c;
     public Dialog d;
-    public Button yes, no;
+    public Button cancel, subcribe;
 
 
-    public CustomDialog(Activity a) {
+    public SubDialog(Activity a) {
         super(a);
         this.c = a;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.custom_dialog);
-        yes = findViewById(R.id.btn_yes);
-        no = findViewById(R.id.btn_no);
+        setContentView(R.layout.sub_dialog);
 
-        yes.setOnClickListener(this);
-        no.setOnClickListener(this);
+        cancel = findViewById(R.id.btn_cancel);
+        subcribe =findViewById(R.id.btn_subscribe);
+
+        cancel.setOnClickListener(this);
+        subcribe.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btn_yes:
-                c.finish();
-                break;
-            case R.id.btn_no:
+            case R.id.btn_cancel:
                 dismiss();
-                break;
-                default:
-                    break;
-        }
-        dismiss();
+                return;
+            case R.id.btn_subscribe:
 
+        }
     }
 }
