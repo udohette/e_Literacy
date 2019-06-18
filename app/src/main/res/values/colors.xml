@@ -2,13 +2,16 @@
 <resources>
     <color name="colorPrimary">#3700b3</color>
     <color name="colorPrimaryDark">#6200ee</color>
-    <color name="colorAccent">#ffffff</color>
+    <color name="colorAccent">#4527a0</color>
 
 
     <color name="grastart">#19aa8b</color>
     <color name="greaend">#23a7d8</color>
     <color name="darkPurple">#3700b3</color>
     <color name="lightPurple">#6200ee</color>
+
+    <color name="main_color">#FFCA28</color>
+    <color name="color_card_8">#4CAF50</color>
 
 
     <color name="colorPrimary1">#7C4DFF</color>

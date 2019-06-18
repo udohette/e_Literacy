@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/techflex3" />
+            android:src="@drawable/noun1" />
 
         <RelativeLayout
             android:id="@+id/login_relative_layout"

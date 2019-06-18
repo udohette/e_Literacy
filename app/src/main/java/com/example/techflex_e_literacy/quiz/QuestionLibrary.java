@@ -1,30 +1,34 @@
 package com.example.techflex_e_literacy.quiz;
 
-public class QuestionLibrary {
-    public String question,option1, option2,option3,option4,answer,total_question;
+import java.io.Serializable;
+
+public class QuestionLibrary implements Serializable {
+    private int id;
+    public String question,option1, option2,option3,option4,answer;
 
 
-    public QuestionLibrary(String question, String option1, String option2, String option3, String option4, String answer, String total_question) {
+    public QuestionLibrary(int id,String question, String option1, String option2, String option3, String option4, String answer) {
+        this.id = id;
         this.question = question;
         this.option1 = option1;
         this.option2 = option2;
         this.option3 = option3;
         this.option4 = option4;
         this.answer = answer;
-        this.total_question = total_question;
 
-    }
 
-    public String getTotal_question() {
-        return total_question;
-    }
-
-    public void setTotal_question(String total_question) {
-        this.total_question = total_question;
     }
 
     public QuestionLibrary(){
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getQuestion() {

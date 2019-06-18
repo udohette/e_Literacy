@@ -1,7 +1,12 @@
 package com.example.techflex_e_literacy.mainActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -84,8 +89,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+    public Boolean isConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info!= null && info.isConnected()){
+            android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if ((mobile!= null && mobile.isConnected()) || (wifi != null && wifi.isConnected())) return true;
+            else return false;
+        }else
+            return false;
 
-    @Override
+    }
+    public AlertDialog.Builder buildDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setIcon(R.drawable.noun1);
+        builder.setTitle("No Internet Connect");
+        builder.setMessage("Check Login details\nYou  need a mobile internet or Wifi to  access this.");
+        builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                dialogInterface.dismiss();
+
+            }
+        });
+        return builder;
+    }
+
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -143,7 +174,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //start  the contentActivity
                     startActivity(new Intent(getApplicationContext(), UserActivity.class));
                 } else {
-                    Toast.makeText(MainActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
+                    if (!isConnected(MainActivity.this))buildDialog().show();
+                    else {
+
+                    }
                 }
 
             }

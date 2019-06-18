@@ -2,11 +2,15 @@ package com.example.techflex_e_literacy.quiz;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,6 +28,8 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.mainActivity.MainActivity;
+import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,8 +77,8 @@ public class QuizActivity extends AppCompatActivity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomDialog customDialog = new CustomDialog(QuizActivity.this);
-                customDialog.show();
+                showPopUp3();
+
             }
         });
 
@@ -87,6 +93,63 @@ public class QuizActivity extends AppCompatActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             updateQuestions(query);
         }
+    }
+    void showPopUp3() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
+        builder.setIcon(R.drawable.noun1);
+        builder.setTitle("Attention!");
+        builder.setMessage("If you  exit quiz your score won't be saved");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+
+            }
+
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+    void showPopUp2() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
+        builder.setIcon(R.drawable.noun1);
+        builder.setTitle("Attention!");
+        builder.setMessage("Maximum Attended Reached for Demo Version\nPlease Kindly Subscribe for more course");
+        builder.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    void showPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
+        builder.setIcon(R.drawable.noun1);
+        builder.setTitle("Attention");
+        builder.setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+
+        });
+        builder.show();
+
     }
 
 
@@ -105,7 +168,7 @@ public class QuizActivity extends AppCompatActivity {
                 searchCourseProBar.setVisibility(View.GONE);
                 loadingCousreText.setVisibility(View.GONE);
                 if(!dataSnapshot.exists()){
-                    showDialog(QuizActivity.this, "Available Soon\ntry another course");
+                    showPopUp();
                     return;
                 }
 
@@ -139,8 +202,6 @@ public class QuizActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                searchCourseProBar.setVisibility(View.GONE);
-                                loadingCousreText.setVisibility(View.GONE);
                                 final QuestionLibrary questionLibrary = dataSnapshot.getValue(QuestionLibrary.class);
                                 mQuestionView.setText(questionLibrary.getQuestion());
                                 mButtonChoice1.setText(questionLibrary.getOption1());
@@ -150,8 +211,7 @@ public class QuizActivity extends AppCompatActivity {
                                 currentQuestion++;
 
                                 if (currentQuestion > 5 && mCountDownTimer != null){
-                                    SubDialog subDialog = new SubDialog(QuizActivity.this);
-                                    subDialog.show();
+                                   showPopUp2();
                                     mButtonChoice1.setEnabled(false);
                                     mButtonChoice2.setEnabled(false);
                                     mButtonChoice3.setEnabled(false);
@@ -178,6 +238,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     points = points + 15;
                                                     mButtonChoice1.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
                                                 }
                                             }, 1500);
                                         } else {
@@ -201,6 +263,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
 
                                                 }
                                             }, 1500);
@@ -227,6 +291,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     points = points + 15;
                                                     mButtonChoice2.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
                                                 }
                                             }, 1500);
                                         } else {
@@ -250,6 +316,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
 
                                                 }
                                             }, 1500);
@@ -276,6 +344,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     points = points + 15;
                                                     mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
                                                 }
                                             }, 1500);
                                         } else {
@@ -299,6 +369,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
 
                                                 }
                                             }, 1500);
@@ -325,6 +397,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     points = points + 15;
                                                     mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
                                                 }
                                             }, 1500);
                                         } else {
@@ -348,6 +422,8 @@ public class QuizActivity extends AppCompatActivity {
                                                     mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+                                                    searchCourseProBar.setVisibility(View.GONE);
+                                                    loadingCousreText.setVisibility(View.GONE);
 
                                                 }
                                             }, 1500);
@@ -438,24 +514,6 @@ public class QuizActivity extends AppCompatActivity {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
-    }
-    public void showDialog(Activity activity, String msg) {
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog);
-
-        TextView text = dialog.findViewById(R.id.text_dialog);
-        text.setText(msg);
-
-        Button dialogButton = dialog.findViewById(R.id.btn_dialog);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
     }
 
     @Override

@@ -3,8 +3,11 @@
     package="com.example.techflex_e_literacy">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name=".quiz.FireBaseOfflineStorage"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,6 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".quiz.FBQAcitvity"
+            android:label="enter course code">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".mainActivity.HowTo" />
+        <activity android:name=".quiz.CourseRegActivity" />
         <activity
             android:name=".mainActivity.Contact"
             android:label="@string/contact" />

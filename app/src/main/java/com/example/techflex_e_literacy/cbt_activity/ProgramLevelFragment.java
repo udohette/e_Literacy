@@ -11,21 +11,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.quiz.FBQAcitvity;
 import com.example.techflex_e_literacy.quiz.QuizActivity;
 
 public class ProgramLevelFragment extends Fragment {
-    Button button;
+    Button mcq,fbq;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_three, container, false);
-        button = view.findViewById(R.id.take_quiz);
-        button.setOnClickListener(new View.OnClickListener() {
+        mcq = view.findViewById(R.id.mcq);
+        mcq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), QuizActivity.class));
             }
         });
+        fbq = view.findViewById(R.id.fbq);
+        fbq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), FBQAcitvity.class);
+                view.getContext().startActivity(intent);
+
+            }
+        });
+
         return view;
     }
 
