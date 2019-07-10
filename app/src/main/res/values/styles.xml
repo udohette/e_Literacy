@@ -23,7 +23,7 @@
         <item name="android:maxHeight">20dip</item>
     </style>
     <style name="RadioButton">
-        <item name="android:background">?selectableItemBackground</item>
+        <item name="background">?selectableItemBackground</item>
         <item name="android:button">@null</item>
         <item name="android:drawableLeft">?android:attr/listChoiceIndicatorSingle</item>
         <item name="android:drawablePadding">5sp</item>

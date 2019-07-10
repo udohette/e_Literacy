@@ -209,6 +209,12 @@ Dennis S.A | IT Support Executive
         <item>Computer Science</item>
         <item>Computer Science</item>
     </string-array>
+
+    <array name="semester">
+        <item>1 Semester</item>
+        <item>2 Semester</item>
+    </array>
+
     <string name="title_activity_about">ABout</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

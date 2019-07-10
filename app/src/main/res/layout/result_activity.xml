@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".quiz.Result_Activity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_centerInParent="true"
         android:layout_marginBottom="20dp"
@@ -36,7 +36,7 @@
                     android:layout_marginTop="20dp"
                     android:padding="12dp"
                     android:background="@drawable/circle_stroke_white"
-                    android:src="@drawable/ic_score"
+                    app:srcCompat="@drawable/ic_score"
                     android:tint="#fff"
                     />
                 <TextView
@@ -57,7 +57,7 @@
                 android:layout_below="@+id/linearlayout1"
                 android:rotation="45"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/square"/>
+                app:srcCompat="@drawable/square"/>
 
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
@@ -115,7 +115,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_circle" />
+                    app:srcCompat="@drawable/ic_circle" />
 
                 <TextView
                     android:text="%"
@@ -203,6 +203,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />!-->
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

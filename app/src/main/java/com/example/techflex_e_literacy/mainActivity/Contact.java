@@ -1,18 +1,17 @@
 package com.example.techflex_e_literacy.mainActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.techflex_e_literacy.R;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +19,7 @@ public class Contact extends AppCompatActivity {
     Toolbar toolbar;
     EditText name, email,subject, message;
     Button send;
-    private Activity activity;
+    private AppCompatActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

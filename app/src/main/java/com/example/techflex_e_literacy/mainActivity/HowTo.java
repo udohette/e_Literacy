@@ -1,6 +1,6 @@
 package com.example.techflex_e_literacy.mainActivity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.techflex_e_literacy.R;

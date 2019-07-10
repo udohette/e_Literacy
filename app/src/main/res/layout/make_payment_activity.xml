@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#000000"
+            android:id="@+id/content_layout">
+            <TextView
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:text="Subscription Valid for 60days"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="1"/>
+            <TextView
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Customer Support: 08025774336"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/choose01"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:text="Choose Your Payment Mode"
+                android:textSize="22sp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/content_layout"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/paytm"
+                android:layout_width="200dp"
+                android:layout_height="79dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/paytm" />
+
+            <Button
+                android:id="@+id/bank_trans"
+                android:layout_width="108dp"
+                android:layout_height="91dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bank_trans"
+                android:layout_below="@id/crypto"/>
+
+            <Button
+                android:id="@+id/paypal"
+                android:layout_width="200dp"
+                android:layout_height="76dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/paypal"
+                android:layout_below="@id/crypto"
+                android:layout_marginTop="50dp"/>
+
+            <Button
+                android:id="@+id/crypto"
+                android:layout_width="108dp"
+                android:layout_height="91dp"
+                android:layout_below="@id/paytm"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="155dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/crypto" />
+
+            <Button
+                android:id="@+id/gpay"
+                android:layout_width="108dp"
+                android:layout_height="91dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/gpay"/>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</ScrollView>

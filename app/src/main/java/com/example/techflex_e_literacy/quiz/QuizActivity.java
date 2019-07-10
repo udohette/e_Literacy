@@ -1,35 +1,31 @@
 package com.example.techflex_e_literacy.quiz;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
-import com.example.techflex_e_literacy.mainActivity.MainActivity;
-import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,18 +33,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class QuizActivity extends AppCompatActivity {
+    private static final String QUESTION_KEY = "question";
+    private static final String QUESTION_OPTION1 = "option1";
+    private static final String QUESTION_OPTION2= "option2";
+    private static final String QUESTION_OPTION3 = "option3";
+    private static final String QUESTION_OPTION4 = "option4";
+
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
-    private Button mButtonChoice3, mButtonChoice4,quit;
+    private Button mButtonChoice3, mButtonChoice4, quit;
     ProgressBar searchCourseProBar;
     Toolbar toolbar;
     private int mScore = 0;
     int total = 0;
     int points = 0;
-   long total_question_number = 0;
-   int currentQuestion = 0;
+    long total_question_number = 0;
+    int currentQuestion = 0;
     int correct = 0;
     int wrong = 0;
     DatabaseReference databaseReference;
@@ -69,9 +71,9 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice3 = findViewById(R.id.choice3);
         mButtonChoice4 = findViewById(R.id.choice4);
         count_down = findViewById(R.id.textview_count_down);
-        searchCourseProBar= findViewById(R.id.courseSearch);
+        searchCourseProBar = findViewById(R.id.courseSearch);
         total_question = findViewById(R.id.question_count);
-        loadingCousreText=findViewById(R.id.loadingCourse);
+        loadingCousreText = findViewById(R.id.loadingCourse);
         course_code = findViewById(R.id.course_code);
         quit = findViewById(R.id.quit);
         quit.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +85,45 @@ public class QuizActivity extends AppCompatActivity {
         });
 
         handleIntent(getIntent());
+        if (savedInstanceState != null){
+            String question = savedInstanceState.getString(QUESTION_KEY);
+            mQuestionView.setText(question);
+            String option1 = savedInstanceState.getString(QUESTION_OPTION1);
+            mQuestionView.setText(option1);
+            String option2 = savedInstanceState.getString(QUESTION_OPTION2);
+            mQuestionView.setText(option2);
+            String option3 = savedInstanceState.getString(QUESTION_OPTION3);
+            mQuestionView.setText(option3);
+            String option4 = savedInstanceState.getString(QUESTION_OPTION4);
+            mQuestionView.setText(option4);
+        }
+
+        //implementing the PayStack class
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putInt("score",mScore);
+        outState.putString(QUESTION_KEY,mQuestionView.getText().toString());
+        outState.putString(QUESTION_OPTION1,mButtonChoice1.getText().toString());
+        outState.putString(QUESTION_OPTION2,mButtonChoice2.getText().toString());
+        outState.putString(QUESTION_OPTION3,mButtonChoice3.getText().toString());
+        outState.putString(QUESTION_OPTION4,mButtonChoice4.getText().toString());
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        savedInstanceState.get("score");
+        savedInstanceState.get(QUESTION_KEY);
+        savedInstanceState.get(QUESTION_OPTION1);
+        savedInstanceState.get(QUESTION_OPTION2);
+        savedInstanceState.get(QUESTION_OPTION3);
+        savedInstanceState.get(QUESTION_OPTION4);
+    }
+
     @Override
     public void onNewIntent(Intent intent) {
         handleIntent(intent);
@@ -123,7 +163,8 @@ public class QuizActivity extends AppCompatActivity {
         builder.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                    Intent intent = new Intent(QuizActivity.this,Bill.class);
+                    startActivity(intent);
             }
 
         });
@@ -177,7 +218,7 @@ public class QuizActivity extends AppCompatActivity {
                     total_question_number = (dataSnapshot.getChildrenCount());
                     total_question.setText("Question: "+currentQuestion+"/"+ total_question_number+"");
                     course_code.setText(query1.trim().toUpperCase());
-                    startTimer(30, count_down);
+                    startTimer(60, count_down);
                 //}
 
                 total++;
@@ -212,6 +253,7 @@ public class QuizActivity extends AppCompatActivity {
 
                                 if (currentQuestion > 5 && mCountDownTimer != null){
                                    showPopUp2();
+                                   stopTimer();
                                     mButtonChoice1.setEnabled(false);
                                     mButtonChoice2.setEnabled(false);
                                     mButtonChoice3.setEnabled(false);
@@ -521,7 +563,7 @@ public class QuizActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_search, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }

@@ -1,14 +1,13 @@
 package com.example.techflex_e_literacy.cbt_activity;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.techflex_e_literacy.R;
@@ -18,8 +17,6 @@ import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
 import static android.graphics.Typeface.MONOSPACE;
-import static android.graphics.Typeface.SANS_SERIF;
-import static android.graphics.Typeface.SERIF;
 
 public class TabAdapter extends FragmentStatePagerAdapter {
 

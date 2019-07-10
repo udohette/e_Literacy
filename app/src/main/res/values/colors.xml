@@ -12,6 +12,7 @@
 
     <color name="main_color">#FFCA28</color>
     <color name="color_card_8">#4CAF50</color>
+    <color name="color_black">#FF000000</color>
 
 
     <color name="colorPrimary1">#7C4DFF</color>

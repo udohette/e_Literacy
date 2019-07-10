@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.techflex_e_literacy">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true" />
 
     <application
         android:name=".quiz.FireBaseOfflineStorage"
@@ -13,9 +23,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".quiz.FBQAcitvity"
+        <activity android:name=".quiz.QRcode">
+
+        </activity>
+        <activity android:name=".quiz.MakePayment" />
+        <activity android:name=".quiz.Bill"
+            android:label="Course Subscription"/>
+        <activity android:name=".quiz.CardPayment" />
+        <activity
+            android:name=".quiz.FBQAcitvity"
             android:label="enter course code">
             <meta-data
                 android:name="android.app.searchable"
@@ -26,7 +45,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".mainActivity.HowTo" />
-        <activity android:name=".quiz.CourseRegActivity" />
         <activity
             android:name=".mainActivity.Contact"
             android:label="@string/contact" />
@@ -36,8 +54,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".quiz.QuizActivity"
-            android:label="enter course code"
-            android:launchMode="singleTask">
+            android:label="enter course code">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -78,7 +95,6 @@
         <activity android:name=".cbt_activity.CBTTestPage" />
         <activity
             android:name=".mainActivity.MainActivity"
-            android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -89,10 +105,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="co.paystack.android.PublicKey"
-            android:value="pk_test_64d31ba7459686b9e175b24b5e1d331afb69dca2" />
         <!--
  Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more.
@@ -108,5 +120,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
     </application>
+
 
 </manifest>
