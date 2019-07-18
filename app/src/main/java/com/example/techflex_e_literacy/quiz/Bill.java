@@ -26,8 +26,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Bill extends AppCompatActivity {
     private static final String LIST_VIEW_STATE = "list_view";
@@ -166,6 +173,13 @@ public class Bill extends AppCompatActivity {
     }
     public void addCourse(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Calendar calendar1 = Calendar.getInstance();
+        String startDate = calendar1.getTime().toString();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 60);
+        String expDate = calendar.getTime().toString();
+
         String semester_count = semester_select.getSelectedItem().toString().trim();
         String[] list = new String[dataListView.getAdapter().getCount()];
         String email = null;
@@ -177,9 +191,17 @@ public class Bill extends AppCompatActivity {
            //String[] course_picked = dataListView.getAdapter().getItem(i).toString();
         }
         String id = databaseCourseReg.push().getKey();
-        CoureseReg coureseReg = new CoureseReg(id,Arrays.toString(list),semester_count,email);
+        CoureseReg coureseReg = new CoureseReg(id,Arrays.toString(list),semester_count,email,startDate,expDate);
         databaseCourseReg.child(id).setValue(coureseReg);
         Toast.makeText(this,"CourseAdded Successfully",Toast.LENGTH_SHORT).show();
+
+    }
+    public void subsceriptionCount(String startDate, String endDate){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String email = null;
+        if (user != null) {
+            email = user.getEmail();
+        }
 
     }
     public Boolean isConnected(Context context) {
@@ -194,4 +216,5 @@ public class Bill extends AppCompatActivity {
         } else
             return false;
     }
+
 }

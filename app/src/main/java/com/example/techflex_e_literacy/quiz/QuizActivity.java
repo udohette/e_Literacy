@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -26,16 +29,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.mainActivity.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+
 public class QuizActivity extends AppCompatActivity {
     private static final String QUESTION_KEY = "question";
     private static final String QUESTION_OPTION1 = "option1";
-    private static final String QUESTION_OPTION2= "option2";
+    private static final String QUESTION_OPTION2 = "option2";
     private static final String QUESTION_OPTION3 = "option3";
     private static final String QUESTION_OPTION4 = "option4";
 
@@ -54,6 +60,7 @@ public class QuizActivity extends AppCompatActivity {
     int correct = 0;
     int wrong = 0;
     DatabaseReference databaseReference;
+    DatabaseReference num;
     private CountDownTimer mCountDownTimer;
 
     @Override
@@ -76,6 +83,7 @@ public class QuizActivity extends AppCompatActivity {
         loadingCousreText = findViewById(R.id.loadingCourse);
         course_code = findViewById(R.id.course_code);
         quit = findViewById(R.id.quit);
+        //num = FirebaseDatabase.getInstance().getReference("NumberOfQuestion");
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,8 +92,9 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+
         handleIntent(getIntent());
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             String question = savedInstanceState.getString(QUESTION_KEY);
             mQuestionView.setText(question);
             String option1 = savedInstanceState.getString(QUESTION_OPTION1);
@@ -104,12 +113,12 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt("score",mScore);
-        outState.putString(QUESTION_KEY,mQuestionView.getText().toString());
-        outState.putString(QUESTION_OPTION1,mButtonChoice1.getText().toString());
-        outState.putString(QUESTION_OPTION2,mButtonChoice2.getText().toString());
-        outState.putString(QUESTION_OPTION3,mButtonChoice3.getText().toString());
-        outState.putString(QUESTION_OPTION4,mButtonChoice4.getText().toString());
+        outState.putInt("score", mScore);
+        outState.putString(QUESTION_KEY, mQuestionView.getText().toString());
+        outState.putString(QUESTION_OPTION1, mButtonChoice1.getText().toString());
+        outState.putString(QUESTION_OPTION2, mButtonChoice2.getText().toString());
+        outState.putString(QUESTION_OPTION3, mButtonChoice3.getText().toString());
+        outState.putString(QUESTION_OPTION4, mButtonChoice4.getText().toString());
 
     }
 
@@ -128,12 +137,14 @@ public class QuizActivity extends AppCompatActivity {
     public void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
+
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            updateQuestions(query);
+                updateQuestions(query);
         }
     }
+
     void showPopUp3() {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
         builder.setIcon(R.drawable.noun1);
@@ -155,6 +166,7 @@ public class QuizActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
     void showPopUp2() {
         AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
         builder.setIcon(R.drawable.noun1);
@@ -163,8 +175,8 @@ public class QuizActivity extends AppCompatActivity {
         builder.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(QuizActivity.this,Bill.class);
-                    startActivity(intent);
+                Intent intent = new Intent(QuizActivity.this, Bill.class);
+                startActivity(intent);
             }
 
         });
@@ -193,13 +205,23 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
+   /* public void totalQuestionNumber() {
+        int number_of_question = total;
+        String id = num.push().getKey();
+        NumberOfQuestion numberOfQuestion = new NumberOfQuestion(number_of_question, id);
+        num.child(id).setValue(numberOfQuestion);
+        //Toast.makeText(this,"CourseAdded Successfully",Toast.LENGTH_SHORT).show();
+        Log.d("TAG", number_of_question + "");
+
+    }*/
+
 
     private void updateQuestions(final String query1) {
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
         mButtonChoice4.setEnabled(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/"+query1.trim().toLowerCase());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase());
         searchCourseProBar.setVisibility(View.VISIBLE);
         loadingCousreText.setVisibility(View.VISIBLE);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -208,17 +230,17 @@ public class QuizActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 searchCourseProBar.setVisibility(View.GONE);
                 loadingCousreText.setVisibility(View.GONE);
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     showPopUp();
                     return;
                 }
 
                 //if (dataSnapshot.exists()) {
-                    findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
-                    total_question_number = (dataSnapshot.getChildrenCount());
-                    total_question.setText("Question: "+currentQuestion+"/"+ total_question_number+"");
-                    course_code.setText(query1.trim().toUpperCase());
-                    startTimer(60, count_down);
+                findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
+                total_question_number = (dataSnapshot.getChildrenCount());
+                total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
+                course_code.setText(query1.trim().toUpperCase());
+                startTimer(60, count_down);
                 //}
 
                 total++;
@@ -230,7 +252,7 @@ public class QuizActivity extends AppCompatActivity {
                     i.putExtra("Correct", String.valueOf(correct));
                     i.putExtra("Incorrect", String.valueOf(wrong));
                     i.putExtra("points", String.valueOf(points));
-                    i.putExtra("total_question",String.valueOf(total_question_number));
+                    i.putExtra("total_question", String.valueOf(total_question_number));
                     startActivity(i);
                     stopTimer();
                     mButtonChoice1.setEnabled(false);
@@ -238,7 +260,7 @@ public class QuizActivity extends AppCompatActivity {
                     mButtonChoice3.setEnabled(false);
                     mButtonChoice4.setEnabled(false);
                 } else {
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/"+query1.trim().toLowerCase()).child(String.valueOf(total));
+                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -251,13 +273,16 @@ public class QuizActivity extends AppCompatActivity {
                                 mButtonChoice4.setText(questionLibrary.getOption4());
                                 currentQuestion++;
 
-                                if (currentQuestion > 5 && mCountDownTimer != null){
-                                   showPopUp2();
-                                   stopTimer();
+                                if (currentQuestion > 5 && mCountDownTimer != null) {
+                                    showPopUp2();
+                                    stopTimer();
+                                   //totalQuestionNumber();
                                     mButtonChoice1.setEnabled(false);
                                     mButtonChoice2.setEnabled(false);
                                     mButtonChoice3.setEnabled(false);
                                     mButtonChoice4.setEnabled(false);
+
+
                                 }
 
                                 mButtonChoice1.setOnClickListener(new View.OnClickListener() {
@@ -287,7 +312,7 @@ public class QuizActivity extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(QuizActivity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             wrong = wrong + 1;
-                                            points = points -5;
+                                            points = points - 5;
                                             mButtonChoice1.setBackgroundColor(Color.RED);
                                             if (mButtonChoice2.getText().toString().equals(questionLibrary.getAnswer())) {
                                                 mButtonChoice2.setBackgroundColor(Color.GREEN);
@@ -446,7 +471,7 @@ public class QuizActivity extends AppCompatActivity {
                                         } else {
                                             Toast.makeText(QuizActivity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             wrong = wrong + 1;
-                                            points = points -5;
+                                            points = points - 5;
                                             mButtonChoice4.setBackgroundColor(Color.RED);
                                             if (mButtonChoice1.getText().toString().equals(questionLibrary.getAnswer())) {
                                                 mButtonChoice1.setBackgroundColor(Color.GREEN);
@@ -478,16 +503,17 @@ public class QuizActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(QuizActivity.this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuizActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     });
                 }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(QuizActivity.this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuizActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -520,7 +546,7 @@ public class QuizActivity extends AppCompatActivity {
                 intent.putExtra("Correct", String.valueOf(correct));
                 intent.putExtra("Incorrect", String.valueOf(wrong));
                 intent.putExtra("points", String.valueOf(points));
-                intent.putExtra("total_question",String.valueOf(total_question_number));
+                intent.putExtra("total_question", String.valueOf(total_question_number));
                 startActivity(intent);
             }
 
@@ -533,6 +559,7 @@ public class QuizActivity extends AppCompatActivity {
 
         }
     }
+
     public void startTimer(int seconds, final TextView tv) {
         if (mCountDownTimer == null) {
             reverseTimer(seconds, tv);
@@ -566,5 +593,17 @@ public class QuizActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+    public Boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info != null && info.isConnected()) {
+            android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if ((mobile != null && mobile.isConnected()) || (wifi != null && wifi.isConnected()))
+                return true;
+            else return false;
+        } else
+            return false;
     }
 }
