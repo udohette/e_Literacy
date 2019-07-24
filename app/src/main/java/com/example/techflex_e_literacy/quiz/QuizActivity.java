@@ -1,6 +1,7 @@
 package com.example.techflex_e_literacy.quiz;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,17 +12,20 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.PersistableBundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -29,21 +33,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
-import com.example.techflex_e_literacy.mainActivity.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
-    private static final String QUESTION_KEY = "question";
-    private static final String QUESTION_OPTION1 = "option1";
-    private static final String QUESTION_OPTION2 = "option2";
-    private static final String QUESTION_OPTION3 = "option3";
-    private static final String QUESTION_OPTION4 = "option4";
 
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
@@ -60,8 +59,11 @@ public class QuizActivity extends AppCompatActivity {
     int correct = 0;
     int wrong = 0;
     DatabaseReference databaseReference;
+    DatabaseReference mDatabaseReference;
     DatabaseReference num;
     private CountDownTimer mCountDownTimer;
+    List<SubscriptionValidation> mValidationList;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,11 @@ public class QuizActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        listView = findViewById(R.id.listview_sub);
+        mValidationList = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("courseRegDb");
+
 
         mScoreView = findViewById(R.id.score);
         mQuestionView = findViewById(R.id.question);
@@ -94,43 +101,29 @@ public class QuizActivity extends AppCompatActivity {
 
 
         handleIntent(getIntent());
-        if (savedInstanceState != null) {
-            String question = savedInstanceState.getString(QUESTION_KEY);
-            mQuestionView.setText(question);
-            String option1 = savedInstanceState.getString(QUESTION_OPTION1);
-            mQuestionView.setText(option1);
-            String option2 = savedInstanceState.getString(QUESTION_OPTION2);
-            mQuestionView.setText(option2);
-            String option3 = savedInstanceState.getString(QUESTION_OPTION3);
-            mQuestionView.setText(option3);
-            String option4 = savedInstanceState.getString(QUESTION_OPTION4);
-            mQuestionView.setText(option4);
-        }
-
-        //implementing the PayStack class
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt("score", mScore);
-        outState.putString(QUESTION_KEY, mQuestionView.getText().toString());
-        outState.putString(QUESTION_OPTION1, mButtonChoice1.getText().toString());
-        outState.putString(QUESTION_OPTION2, mButtonChoice2.getText().toString());
-        outState.putString(QUESTION_OPTION3, mButtonChoice3.getText().toString());
-        outState.putString(QUESTION_OPTION4, mButtonChoice4.getText().toString());
+    protected void onStart() {
+        super.onStart();
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mValidationList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    SubscriptionValidation subscriptionValidation = ds.getValue(SubscriptionValidation.class);
+                    mValidationList.add(subscriptionValidation);
+                }
+                SubscriptionAdapter adapter = new SubscriptionAdapter(QuizActivity.this,mValidationList);
+                listView.setAdapter(adapter);
 
-    }
+            }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        savedInstanceState.get("score");
-        savedInstanceState.get(QUESTION_KEY);
-        savedInstanceState.get(QUESTION_OPTION1);
-        savedInstanceState.get(QUESTION_OPTION2);
-        savedInstanceState.get(QUESTION_OPTION3);
-        savedInstanceState.get(QUESTION_OPTION4);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -606,4 +599,32 @@ public class QuizActivity extends AppCompatActivity {
         } else
             return false;
     }
+    //Getting Users Subscription Start Date and Users Subscription End Date
+    public class SubscriptionAdapter extends ArrayAdapter<SubscriptionValidation> {
+        private Activity context;
+        private List<SubscriptionValidation> mValidations;
+
+
+        public SubscriptionAdapter(Activity context, List<SubscriptionValidation> mvalidation) {
+            super(context, R.layout.list_layout, mvalidation);
+            this.context = context;
+            this.mValidations = mvalidation;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = context.getLayoutInflater();
+            View listViewItem = inflater.inflate(R.layout.list_layout, null, true);
+
+            TextView startDate = listViewItem.findViewById(R.id.textView1);
+            TextView endDate = listViewItem.findViewById(R.id.textView2);
+            SubscriptionValidation subscriptionValidation = mValidations.get(position);
+            startDate.setText(subscriptionValidation.getStartDate());
+            endDate.setText(subscriptionValidation.getEndDate());
+            return listViewItem;
+        }
+    }
+
 }
+
