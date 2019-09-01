@@ -1,8 +1,8 @@
 package com.example.techflex_e_literacy.quiz;
 
 public class SubscriptionValidation {
-    String startDate;
-    private String endDate;
+    public String startDate;
+    public String endDate;
 
     public SubscriptionValidation(){
 
