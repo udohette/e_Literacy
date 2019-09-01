@@ -32,7 +32,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     RelativeLayout login_relative_layout;
     EditText username_edittext, password_edittext, userEmail_edittext;
     Button login_now_button, signup_now_button,reset_password_button;
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     public AlertDialog.Builder buildDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setIcon(R.drawable.noun1);
         builder.setTitle("No Internet Connect");
         builder.setMessage("Check Login details\nYou  need a mobile internet or Wifi to  access this.");
@@ -175,10 +175,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //start  the contentActivity
                     startActivity(new Intent(getApplicationContext(), UserActivity.class));
                 } else {
-                    //Toast.makeText(MainActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
-                    if (!isConnected(MainActivity.this))buildDialog().show();
+                    //Toast.makeText(LoginActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
+                    if (!isConnected(LoginActivity.this))buildDialog().show();
                     else {
-                        Toast.makeText(MainActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
                     }
                 }
 

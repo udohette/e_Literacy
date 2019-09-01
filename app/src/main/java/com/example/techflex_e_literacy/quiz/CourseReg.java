@@ -1,9 +1,8 @@
 package com.example.techflex_e_literacy.quiz;
 
 import java.util.Calendar;
-import java.util.Date;
 
-public class CoureseReg {
+public class CourseReg {
     private String studentId;
     private String courseReg;
     private String semester_count;
@@ -11,13 +10,13 @@ public class CoureseReg {
     private String startDate;
     private String endDate;
 
-    public CoureseReg(String studentId, String courseReg, String semester_count, String email, String startDate, String endDate) {
+    public CourseReg(String studentId, String courseReg, String semester_count, String email, String startDate, String endDate) {
         this.studentId = studentId;
         this.courseReg = courseReg;
         this.semester_count = semester_count;
         this.email = email;
-       this.startDate = startDate;
-       this.endDate = endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public String getStudentId() {

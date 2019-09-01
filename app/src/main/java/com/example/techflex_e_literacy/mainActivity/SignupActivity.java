@@ -166,7 +166,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (view == link_login) {
             finish();
-            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 

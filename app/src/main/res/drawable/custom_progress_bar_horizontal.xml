@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@android:id/background">
+         android:id="@+id/background">
         <shape>
             <padding
                 android:bottom="3dip"
@@ -19,7 +19,7 @@
         </shape>
     </item>
     <item
-        android:id="@android:id/progress">
+        android:id="@+id/progress">
         <clip>
             <shape>
                 <corners

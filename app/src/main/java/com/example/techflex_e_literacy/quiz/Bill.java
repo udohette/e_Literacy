@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +14,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,15 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class Bill extends AppCompatActivity {
     private static final String LIST_VIEW_STATE = "list_view";
@@ -143,7 +139,11 @@ public class Bill extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                addCourse();
+                try {
+                    addCourse();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(Bill.this, MakePayment.class);
                 startActivity(intent);
             }
@@ -156,6 +156,9 @@ public class Bill extends AppCompatActivity {
             }
         });
         builder.show();
+        AlertDialog alertDialog = builder.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
     }
     void showPopUp2() {
         AlertDialog.Builder builder = new AlertDialog.Builder(Bill.this);
@@ -170,15 +173,44 @@ public class Bill extends AppCompatActivity {
 
         });
         builder.show();
+        AlertDialog alertDialog = builder.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
     }
-    public void addCourse(){
+    public void addCourse() throws ParseException {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Calendar calendar1 = Calendar.getInstance();
-        String startDate = calendar1.getTime().toString();
+        //  users subscription start date using system date
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 60);
-        String expDate = calendar.getTime().toString();
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
+        String reg_date = df.format(c.getTime());
+        Log.d("TAG2", "Start Date: " + reg_date);
+
+        c.add(Calendar.DATE, 3);  // number of days to add
+        String end_date = df.format(c.getTime());
+        Log.d("TAG2", "Start Date: " + end_date);
+
+        /*Date date  = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+        String strDate = formatter.format(date);
+        Log.d("TAG2", "Start Date: " + strDate);
+
+        //getting users subscription end-date
+        Date enddate  = new Date();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+        String endDate = formatter.format(enddate);
+        Calendar calendar1 = Calendar.getInstance();
+
+        try {
+            calendar1.setTime(formatter1.parse(endDate));
+            calendar1.add(Calendar.DATE, 2); // number of days for subscription = 2days
+            endDate = formatter1.format(calendar1.getTime());
+            Log.d("TAG2", "End Date: " +endDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
+
 
         String semester_count = semester_select.getSelectedItem().toString().trim();
         String[] list = new String[dataListView.getAdapter().getCount()];
@@ -191,17 +223,9 @@ public class Bill extends AppCompatActivity {
            //String[] course_picked = dataListView.getAdapter().getItem(i).toString();
         }
         String id = databaseCourseReg.push().getKey();
-        CoureseReg coureseReg = new CoureseReg(id,Arrays.toString(list),semester_count,email,startDate,expDate);
+        CourseReg coureseReg = new CourseReg(id,Arrays.toString(list),semester_count,email,reg_date,end_date);
         databaseCourseReg.child(id).setValue(coureseReg);
         Toast.makeText(this,"CourseAdded Successfully",Toast.LENGTH_SHORT).show();
-
-    }
-    public void subsceriptionCount(String startDate, String endDate){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = null;
-        if (user != null) {
-            email = user.getEmail();
-        }
 
     }
     public Boolean isConnected(Context context) {

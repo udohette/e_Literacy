@@ -72,8 +72,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
             finish();
-            //start  the MainActivity
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            //start  the LoginActivity
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -112,7 +112,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         if (id2 == R.id.action_quit) {
             FirebaseAuth.getInstance().signOut();
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         }
 
@@ -150,7 +150,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                             firebaseAuth.signOut();
                             finish();
                             //start  the contentActivity
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             return true;
                         case R.id.update_profile_button:
                             startActivity(new Intent(getApplicationContext(), UpdateProfile.class));

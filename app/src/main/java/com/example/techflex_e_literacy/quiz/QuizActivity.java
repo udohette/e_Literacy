@@ -1,7 +1,6 @@
 package com.example.techflex_e_literacy.quiz;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,15 +8,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -33,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +40,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class QuizActivity extends AppCompatActivity {
+
+    private static final String TAG = "";
 
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
@@ -73,7 +75,7 @@ public class QuizActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        listView = findViewById(R.id.listview_sub);
+        //listView = findViewById(R.id.listview_sub);
         mValidationList = new ArrayList<>();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("courseRegDb");
 
@@ -107,16 +109,66 @@ public class QuizActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mValidationList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     SubscriptionValidation subscriptionValidation = ds.getValue(SubscriptionValidation.class);
+                    mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("courseRegDb");
+                    String id = mDatabaseReference.getKey();
+                    /*if (id != null){
+                        String startingDate = subscriptionValidation.getStartDate();
+                        String endingDate = subscriptionValidation.getEndDate();
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = new Date();
+                        String curDate = dateFormat.format(date).toString();
+                        //int startingDay = Integer.parseInt(startingDate);
+                        int endingDay = Integer.parseInt(endingDate);
+
+                        if (subscriptionValidation.getStartDate().length() > endingDay ){
+                            Log.d("TAG2", " Subscription Expired");
+                            expiredSubscriptionPopUp();
+                        }else {
+                            Log.d("TAG2", "Subscription Count ");
+                        }
+                    }else {
+                        Toast.makeText(QuizActivity.this,"User not Subscribe",Toast.LENGTH_SHORT).show();
+                    }*/
+
+                    /*mValidationList.add(subscriptionValidation);
+                    boolean subscription =  false;
+                    String startingDate = subscriptionValidation.getStartDate();
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String curDate = dateFormat.format(date).toString();
+                    final String[] months = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+                    int startingMonth = Arrays.asList(months).lastIndexOf(startingDate.substring(8,11));
+                    int startingDay = Integer.parseInt(startingDate.substring(5,7));
+                    int curMonth = Integer.parseInt(curDate.substring(8,10));
+                    int curDay = Integer.parseInt(curDate.substring(8,10));
+                    if (curMonth - startingMonth > 1){
+                        subscription = false;
+                        Log.d("TAG2", " Subscription Expired");
+                        expiredSubscriptionPopUp();
+                    }else if (curMonth - startingMonth == 1 && startingDay > curDay){
+                        subscription = false;
+                        Log.d("TAG2", "Subscription Count ");
+                    }*/
+
+                   if  (subscriptionValidation.getEndDate().length() > subscriptionValidation.getStartDate().length()){
+                        //Toast.makeText(QuizActivity.this,"Subscription Expired",Toast.LENGTH_SHORT).show();
+                        Log.d("TAG2", " Subscription Expired");
+                       //Log.d("TAG2", "UserID: "+checkUserId);
+                        expiredSubscriptionPopUp();
+                    } else {
+                        //Toast.makeText(QuizActivity.this,"Subscription Count",Toast.LENGTH_SHORT).show();
+                        Log.d("TAG2", "Subscription Count ");
+                       //Log.d("TAG2", "User:"+ checkUserId);
+
+                    }
                     mValidationList.add(subscriptionValidation);
                 }
-                SubscriptionAdapter adapter = new SubscriptionAdapter(QuizActivity.this,mValidationList);
-                listView.setAdapter(adapter);
-
             }
 
             @Override
@@ -134,7 +186,7 @@ public class QuizActivity extends AppCompatActivity {
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-                updateQuestions(query);
+            updateQuestions(query);
         }
     }
 
@@ -158,6 +210,9 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
         builder.show();
+        AlertDialog alertDialog = builder.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
     }
 
     void showPopUp2() {
@@ -176,10 +231,15 @@ public class QuizActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+                //dialogInterface.dismiss();
+                Intent intent = new Intent(QuizActivity.this, UserActivity.class);
+                startActivity(intent);
             }
         });
         builder.show();
+        AlertDialog alertDialog = builder.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
     }
 
     void showPopUp() {
@@ -196,6 +256,33 @@ public class QuizActivity extends AppCompatActivity {
         });
         builder.show();
 
+
+    }
+
+    void expiredSubscriptionPopUp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
+        builder.setIcon(R.drawable.noun1);
+        builder.setTitle("Attention!");
+        builder.setMessage("Your Subscription has Expired, Kindly renew");
+        builder.setPositiveButton("Renew", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(QuizActivity.this, Bill.class);
+                startActivity(intent);
+            }
+
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(QuizActivity.this, UserActivity.class);
+                startActivity(intent);
+            }
+        });
+        builder.show();
+        AlertDialog alertDialog = builder.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
     }
 
    /* public void totalQuestionNumber() {
@@ -210,6 +297,7 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void updateQuestions(final String query1) {
+        final Random random = new Random();
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
@@ -237,6 +325,7 @@ public class QuizActivity extends AppCompatActivity {
                 //}
 
                 total++;
+
                 if (total > total_question_number) {
                     total--;
                     // open result activity
@@ -266,10 +355,11 @@ public class QuizActivity extends AppCompatActivity {
                                 mButtonChoice4.setText(questionLibrary.getOption4());
                                 currentQuestion++;
 
+
                                 if (currentQuestion > 5 && mCountDownTimer != null) {
                                     showPopUp2();
                                     stopTimer();
-                                   //totalQuestionNumber();
+                                    //totalQuestionNumber();
                                     mButtonChoice1.setEnabled(false);
                                     mButtonChoice2.setEnabled(false);
                                     mButtonChoice3.setEnabled(false);
@@ -298,6 +388,7 @@ public class QuizActivity extends AppCompatActivity {
                                                     points = points + 15;
                                                     mButtonChoice1.setBackgroundColor(Color.parseColor("#03A9f4"));
                                                     updateQuestions(query1);
+
                                                     searchCourseProBar.setVisibility(View.GONE);
                                                     loadingCousreText.setVisibility(View.GONE);
                                                 }
@@ -578,15 +669,6 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_search, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        return true;
-    }
     public Boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
@@ -599,8 +681,21 @@ public class QuizActivity extends AppCompatActivity {
         } else
             return false;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_search, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
+    }
+}
+
+
     //Getting Users Subscription Start Date and Users Subscription End Date
-    public class SubscriptionAdapter extends ArrayAdapter<SubscriptionValidation> {
+   /* public class SubscriptionAdapter extends ArrayAdapter<SubscriptionValidation> {
         private Activity context;
         private List<SubscriptionValidation> mValidations;
 
@@ -622,9 +717,5 @@ public class QuizActivity extends AppCompatActivity {
             SubscriptionValidation subscriptionValidation = mValidations.get(position);
             startDate.setText(subscriptionValidation.getStartDate());
             endDate.setText(subscriptionValidation.getEndDate());
-            return listViewItem;
-        }
-    }
-
-}
-
+            //Log.d("TAG",subscriptionValidation.getStartDate());
+            //Log.d("TAG",subscri*/

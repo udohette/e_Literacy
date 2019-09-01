@@ -33,7 +33,7 @@ public class Contact extends AppCompatActivity {
         send = findViewById(R.id.post_message);
 
         toolbar = findViewById(R.id.toolbar);
-        (getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         send.setOnClickListener(new View.OnClickListener() {
@@ -87,10 +87,11 @@ public class Contact extends AppCompatActivity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
     @Override
     public void onResume() {
         super.onResume();

@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,13 +80,6 @@ public class FBQAcitvity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onNavigateUp() {
-        onBackPressed();
-        finish();
-        return true;
-
-    }
     @Override
     public void onNewIntent(Intent intent) {
         handleIntent(intent);
@@ -178,11 +172,21 @@ public class FBQAcitvity extends AppCompatActivity {
                                             searchCourseProBar.setVisibility(View.GONE);
                                             searchCourseView.setVisibility(View.GONE);
                                                     //next.setBackgroundColor(Color.parseColor("#03A9f4"));
-
                                         }
 
                                     }
                                 });
+                                prev.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (total_question_number > 0){
+                                            total_question_number --;
+                                            currentQuestion = fbq.getQuestion().length();
+
+                                        }
+                                    }
+                                });
+
                             }
 
                         }
@@ -235,10 +239,15 @@ public class FBQAcitvity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+                //dialogInterface.dismiss();
+                Intent intent = new Intent(FBQAcitvity.this, UserActivity.class);
+                startActivity(intent);
             }
         });
         builder.show();
+        AlertDialog alertDialog = builder.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
     }
     void showPopUp3() {
         AlertDialog.Builder builder = new AlertDialog.Builder(FBQAcitvity.this);
@@ -313,6 +322,13 @@ public class FBQAcitvity extends AppCompatActivity {
             reverseTimer(seconds, tv);
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     private void updateScore(int point) {
         mScoreView.setText("Score: " + mScore);
     }

@@ -102,7 +102,7 @@ public class UpdateProfile extends AppCompatActivity {
         if (id == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         }
 
@@ -113,7 +113,7 @@ public class UpdateProfile extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (firebaseAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
