@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,12 +17,17 @@ import com.example.techflex_e_literacy.mainActivity.UserActivity;
 public class Result_Activity extends AppCompatActivity implements View.OnClickListener {
     TextView textView4,textView5,textView6,textView7;
     Toolbar toolbar;
-    Button retake, end;
+    Button retake, end,btnWrongQstns;
+
+    String query;
+    String answered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result_activity);
+
+        btnWrongQstns = findViewById(R.id.btnWrongQstns);
 
         textView4 = findViewById(R.id.txtCorrectAns);
         textView5 = findViewById(R.id.txtWrongAns);
@@ -29,6 +36,7 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         textView7 = findViewById(R.id.total_question_answered);
 
         retake.setOnClickListener(this);
+        btnWrongQstns.setOnClickListener(this);
 
         toolbar = findViewById(R.id.toolbar);
         (getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -40,6 +48,10 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         String wrong = i.getStringExtra("Incorrect");
         String points = i.getStringExtra("points");
         String total_question = i.getStringExtra("total_question");
+        query = i.getStringExtra("query");
+        answered = i.getStringExtra("answered");
+        Log.i("yo_result",query+"  "+answered);
+
 
         textView7.setText("Total Questions Answered: "+questions+"/"+total_question+"");
         textView5.setText("Wrong Question Answered: "+wrong);
@@ -56,6 +68,11 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         if (view == retake) {
             finish();
             startActivity(new Intent(Result_Activity.this, QuizActivity.class));
+        }else if (view.getId() == R.id.btnWrongQstns){
+            Intent i = new Intent(Result_Activity.this, AnsweredActivity.class);
+            i.putExtra("query",query);
+            i.putExtra("answered",answered);
+            startActivity(i);
         }
     }
 
