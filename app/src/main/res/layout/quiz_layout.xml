@@ -175,7 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:background="#B71C1C"
+                    android:background="@color/red"
                     android:freezesText="true"
                     android:padding="8dp"
                     android:text="Stop Quiz"

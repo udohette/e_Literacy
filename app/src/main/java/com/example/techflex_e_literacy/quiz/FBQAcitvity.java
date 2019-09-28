@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class FBQAcitvity extends AppCompatActivity {
     private static final String TESTING_MESSAGE ="Test";
     private TextView mScoreView;
@@ -46,6 +49,9 @@ public class FBQAcitvity extends AppCompatActivity {
     int currentQuestion = 0;
     int correct = 0;
     int wrong = 0;
+    String query;
+    String q;
+    HashMap<Integer, Integer> answered = new HashMap<>();
     DatabaseReference databaseReference;
     private CountDownTimer mCountDownTimer;
 
@@ -86,11 +92,13 @@ public class FBQAcitvity extends AppCompatActivity {
     }
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
             updateQuestion(query);
         }
     }
     public  void updateQuestion(final String query1){
+        q = query1;
+        Log.i("testing",query1);
         prev.setEnabled(false);
         submit.setEnabled(true);
         next.setEnabled(true);
@@ -115,6 +123,7 @@ public class FBQAcitvity extends AppCompatActivity {
                 total++;
                 if (total > total_question_number) {
                     total--;
+                    Log.v("testing",answered.toString());
                     // open result activity
                     Intent i = new Intent(FBQAcitvity.this, Result_Activity.class);
                     i.putExtra("Total", String.valueOf(total));
@@ -122,6 +131,8 @@ public class FBQAcitvity extends AppCompatActivity {
                     i.putExtra("Incorrect", String.valueOf(wrong));
                     i.putExtra("points", String.valueOf(points));
                     i.putExtra("total_question",String.valueOf(total_question_number));
+                    i.putExtra("query",query1);
+                    i.putExtra("answered",answered.toString());
                     startActivity(i);
                     stopTimer();
                     prev.setEnabled(false);
@@ -300,12 +311,15 @@ public class FBQAcitvity extends AppCompatActivity {
             public void onFinish() {
                 tv.setText("Done!");
                 tv.setTextColor(Color.WHITE);
+                Log.i("testing",answered.toString());
                 Intent intent = new Intent(FBQAcitvity.this, Result_Activity.class);
                 intent.putExtra("Total", String.valueOf(total));
                 intent.putExtra("Correct", String.valueOf(correct));
                 intent.putExtra("Incorrect", String.valueOf(wrong));
                 intent.putExtra("points", String.valueOf(points));
                 intent.putExtra("total_question", String.valueOf(total_question_number));
+                intent.putExtra("query",q);
+                intent.putExtra("answered",answered.toString());
                 startActivity(intent);
             }
 
