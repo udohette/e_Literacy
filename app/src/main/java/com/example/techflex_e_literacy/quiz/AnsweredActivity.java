@@ -28,10 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 public class AnsweredActivity extends AppCompatActivity {
 
@@ -41,8 +44,9 @@ public class AnsweredActivity extends AppCompatActivity {
     private TextView mQuestionView;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
-    private Button mButtonChoice3, mButtonChoice4,next,back;
-    int total = 0;
+    private Button mButtonChoice3, mButtonChoice4,next,back,quit;
+    int total =0;
+    ArrayList questionno = new ArrayList();
     int points = 0;
     long total_question_number = 0;
     int currentQuestion = 0;
@@ -66,23 +70,29 @@ public class AnsweredActivity extends AppCompatActivity {
         mButtonChoice4 = findViewById(R.id.choice4);
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
+        quit = findViewById(R.id.quit);
         Intent i = getIntent();
         query = i.getStringExtra("query");
         answered = i.getStringExtra("answered");
         Log.i("yo_answerwd",query+"  "+answered);
         answered = answered.substring(1, answered.length()-1);           //remove curly brackets
-        String[] keyValuePairs = answered.split(",");              //split the string to creat key-value pairs
+        String[] keyValuePairs = answered.split(",");           //split the string to creat key-value pairs
         map= new HashMap<>();
-
-        for(String pair : keyValuePairs)                        //iterate over the pairs
-        {
-            String[] entry = pair.split("=");                   //split the pairs to get key and value
-            map.put(entry[0].trim(), entry[1].trim());          //add them to the hashmap and trim whitespaces
+        try {
+            for (String pair : keyValuePairs)                        //iterate over the pairs
+            {
+                String[] entry = pair.split("=");                   //split the pairs to get key and value
+                map.put(entry[0].trim(), entry[1].trim());          //add them to the hashmap and trim whitespaces
+                questionno.add(entry[0].trim());
+            }
+            Set k = map.keySet();
+            Log.i("yo_answerwd",k.toString()+" "+questionno.toString());
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        Log.i("yes",map.get("1"));
+//        Log.i("yo_answerwd",query+"  "+answered+"  "+map.keySet());
         total_question_number = map.size();
         updateQuestions(query,true);
-
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +112,14 @@ public class AnsweredActivity extends AppCompatActivity {
                 mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                 mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                 updateQuestions(query,false);
+            }
+        });
+
+        quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(new Intent(AnsweredActivity.this,QuizActivity.class));
             }
         });
 
@@ -146,6 +164,8 @@ public class AnsweredActivity extends AppCompatActivity {
                 findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
                 //}
 
+                Log.i("testing",total+"  "+total_question_number);
+
                 if (flag)
                     total++;
                 else
@@ -158,14 +178,16 @@ public class AnsweredActivity extends AppCompatActivity {
                 if (total > total_question_number) {
                     total--;
                     // open result activity
-                    Intent i = new Intent(AnsweredActivity.this, UserActivity.class);
+                    finish();
+                    Intent i = new Intent(AnsweredActivity.this, QuizActivity.class);
                     startActivity(i);
                     mButtonChoice1.setEnabled(false);
                     mButtonChoice2.setEnabled(false);
                     mButtonChoice3.setEnabled(false);
                     mButtonChoice4.setEnabled(false);
                 } else {
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
+                    Log.i("yo_answerwd",total-1+"");
+                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(questionno.get(total-1)));
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -178,7 +200,7 @@ public class AnsweredActivity extends AppCompatActivity {
                                 mButtonChoice4.setText(questionLibrary.getOption4());
                                 currentQuestion++;
 
-                                switch (map.get(total+"")){
+                                switch (Objects.requireNonNull(map.get(questionno.get(total-1)))){
                                     case "0":
                                         mButtonChoice1.setBackgroundColor(Color.YELLOW);
                                         break;

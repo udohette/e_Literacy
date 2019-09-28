@@ -335,6 +335,7 @@ public class QuizActivity extends AppCompatActivity {
                     total--;
                     Log.i("yo",answered.toString());
                     // open result activity
+                    finish();
                     Intent i = new Intent(QuizActivity.this, Result_Activity.class);
                     i.putExtra("Total", String.valueOf(total));
                     i.putExtra("Correct", String.valueOf(correct));
@@ -621,7 +622,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void reverseTimer(int seconds, final TextView tv) {
-        mCountDownTimer = new CountDownTimer(seconds * 100 + 1000, 1000) {
+        mCountDownTimer = new CountDownTimer(seconds * 1000 + 1000, 1000) {
             @Override
             public void onTick(long millsUntilFinised) {
                 int seconds = (int) (millsUntilFinised / 1000);
@@ -711,13 +712,6 @@ public class QuizActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        total--;
-        total--;
-        updateQuestions(query);
-    }
 }
 
 

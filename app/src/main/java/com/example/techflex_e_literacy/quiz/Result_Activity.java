@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.ProgramLevelFragment;
@@ -69,10 +70,14 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
             finish();
             startActivity(new Intent(Result_Activity.this, QuizActivity.class));
         }else if (view.getId() == R.id.btnWrongQstns){
-            Intent i = new Intent(Result_Activity.this, AnsweredActivity.class);
-            i.putExtra("query",query);
-            i.putExtra("answered",answered);
-            startActivity(i);
+            if (answered.length()>2) {
+                Intent i = new Intent(Result_Activity.this, AnsweredActivity.class);
+                i.putExtra("query", query);
+                i.putExtra("answered", answered);
+                startActivity(i);
+            }else {
+                Toast.makeText(this,"No questions answered",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
