@@ -66,10 +66,8 @@ public class QuizActivity extends AppCompatActivity {
     HashMap<Integer, Integer> answered = new HashMap<>();
     DatabaseReference databaseReference;
     DatabaseReference mDatabaseReference;
-    DatabaseReference num;
     private CountDownTimer mCountDownTimer;
     List<SubscriptionValidation> mValidationList;
-    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -301,8 +299,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void updateQuestions(final String query1) {
         q = query1;
-        Log.i("teating",query1);
-        final Random random = new Random();
+        Log.i("testing",query1);
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
@@ -326,7 +323,7 @@ public class QuizActivity extends AppCompatActivity {
                 total_question_number = (dataSnapshot.getChildrenCount());
                 total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
                 course_code.setText(query1.trim().toUpperCase());
-                startTimer(60, count_down);
+                startTimer(120, count_down);
                 //}
 
                 total++;
@@ -711,13 +708,13 @@ public class QuizActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         super.onBackPressed();
         total--;
         total--;
         updateQuestions(query);
-    }
+    }*/
 }
 
 

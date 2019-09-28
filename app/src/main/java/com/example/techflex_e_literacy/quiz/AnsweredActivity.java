@@ -158,7 +158,7 @@ public class AnsweredActivity extends AppCompatActivity {
                 if (total > total_question_number) {
                     total--;
                     // open result activity
-                    Intent i = new Intent(AnsweredActivity.this, UserActivity.class);
+                    Intent i = new Intent(AnsweredActivity.this, QuizActivity.class);
                     startActivity(i);
                     mButtonChoice1.setEnabled(false);
                     mButtonChoice2.setEnabled(false);
@@ -180,16 +180,16 @@ public class AnsweredActivity extends AppCompatActivity {
 
                                 switch (map.get(total+"")){
                                     case "0":
-                                        mButtonChoice1.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice1.setBackgroundColor(Color.RED);
                                         break;
                                     case "1":
-                                        mButtonChoice2.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice2.setBackgroundColor(Color.RED);
                                         break;
                                     case "2":
-                                        mButtonChoice3.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice3.setBackgroundColor(Color.RED);
                                         break;
                                     case "3":
-                                        mButtonChoice4.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice4.setBackgroundColor(Color.RED);
                                         break;
                                 }
 

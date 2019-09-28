@@ -170,17 +170,6 @@
                     android:text="option4"
                     android:textColor="#fff" />
 
-                <Button
-                    android:id="@+id/quit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:background="#B71C1C"
-                    android:freezesText="true"
-                    android:padding="8dp"
-                    android:text="Stop Quiz"
-                    android:textColor="#fff" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
