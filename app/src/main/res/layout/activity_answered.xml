@@ -176,22 +176,31 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center">
             <Button
                 android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Back"/>
+                android:text="Back"
+                android:background="@drawable/rect_bg2"
+                android:textColor="@color/white"/>
             <Button
+                android:layout_marginStart="10dp"
                 android:id="@+id/next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Next"/>
+                android:text="Next"
+                android:background="@drawable/rect_bg2"
+                android:textColor="@color/white"/>
             <Button
+                android:layout_marginStart="10dp"
                 android:id="@+id/quit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quit"/>
+                android:text="Quit"
+                android:background="@drawable/rect_bg2"
+                android:textColor="@color/white"/>
         </LinearLayout>
     </LinearLayout>
 

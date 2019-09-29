@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
+import com.example.techflex_e_literacy.cbt_activity.ProgramLevelFragment;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,19 +42,16 @@ public class AnsweredActivity extends AppCompatActivity {
 
     String query;
     String answered;
-
-    private TextView mQuestionView;
+    String current_question;
+    private TextView mQuestionView,currentq;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
     private Button mButtonChoice3, mButtonChoice4,next,back,quit;
     int total =0;
     ArrayList questionno = new ArrayList();
-    int points = 0;
     long total_question_number = 0;
     int currentQuestion = 0;
     Map<String,String> map;
-    int correct = 0;
-    int wrong = 0;
     String q;
 
     DatabaseReference databaseReference;
@@ -68,6 +67,8 @@ public class AnsweredActivity extends AppCompatActivity {
         mButtonChoice2 = findViewById(R.id.choice2);
         mButtonChoice3 = findViewById(R.id.choice3);
         mButtonChoice4 = findViewById(R.id.choice4);
+        currentq = findViewById(R.id.question_count);
+        //total_q = findViewById(R.id.question_count);
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
         quit = findViewById(R.id.quit);
@@ -101,6 +102,7 @@ public class AnsweredActivity extends AppCompatActivity {
                 mButtonChoice3.setBackgroundColor(Color.parseColor("#03A9f4"));
                 mButtonChoice4.setBackgroundColor(Color.parseColor("#03A9f4"));
                 updateQuestions(query,true);
+
             }
         });
 
@@ -119,7 +121,7 @@ public class AnsweredActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                startActivity(new Intent(AnsweredActivity.this,QuizActivity.class));
+                startActivity(new Intent(AnsweredActivity.this, UserActivity.class));
             }
         });
 
@@ -179,7 +181,7 @@ public class AnsweredActivity extends AppCompatActivity {
                     total--;
                     // open result activity
                     finish();
-                    Intent i = new Intent(AnsweredActivity.this, QuizActivity.class);
+                    Intent i = new Intent(AnsweredActivity.this, UserActivity.class);
                     startActivity(i);
                     mButtonChoice1.setEnabled(false);
                     mButtonChoice2.setEnabled(false);
@@ -202,27 +204,31 @@ public class AnsweredActivity extends AppCompatActivity {
 
                                 switch (Objects.requireNonNull(map.get(questionno.get(total-1)))){
                                     case "0":
-                                        mButtonChoice1.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice1.setBackgroundColor(Color.RED);
                                         break;
                                     case "1":
-                                        mButtonChoice2.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice2.setBackgroundColor(Color.RED);
                                         break;
                                     case "2":
-                                        mButtonChoice3.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice3.setBackgroundColor(Color.RED);
                                         break;
                                     case "3":
-                                        mButtonChoice4.setBackgroundColor(Color.YELLOW);
+                                        mButtonChoice4.setBackgroundColor(Color.RED);
                                         break;
                                 }
 
-                                 if (mButtonChoice1.getText().toString().equals(questionLibrary.getAnswer())){
-                                     mButtonChoice1.setBackgroundColor(Color.GREEN);
+                                if (mButtonChoice1.getText().toString().equals(questionLibrary.getAnswer())){
+                                    mButtonChoice1.setBackgroundColor(Color.GREEN);
+                                    Toast.makeText(AnsweredActivity.this,questionLibrary.getAnswer().toUpperCase()+" was the right answer",Toast.LENGTH_LONG).show();
                                 }else if (mButtonChoice2.getText().toString().equals(questionLibrary.getAnswer())){
-                                     mButtonChoice2.setBackgroundColor(Color.GREEN);
+                                    mButtonChoice2.setBackgroundColor(Color.GREEN);
+                                    Toast.makeText(AnsweredActivity.this,questionLibrary.getAnswer().toUpperCase()+" was the right answer",Toast.LENGTH_LONG).show();
                                 }else if (mButtonChoice3.getText().toString().equals(questionLibrary.getAnswer())){
-                                     mButtonChoice3.setBackgroundColor(Color.GREEN);
+                                    mButtonChoice3.setBackgroundColor(Color.GREEN);
+                                    Toast.makeText(AnsweredActivity.this,questionLibrary.getAnswer().toUpperCase()+" was the right answer",Toast.LENGTH_LONG).show();
                                 }else if (mButtonChoice4.getText().toString().equals(questionLibrary.getAnswer())){
-                                     mButtonChoice4.setBackgroundColor(Color.GREEN);
+                                    mButtonChoice4.setBackgroundColor(Color.GREEN);
+                                    Toast.makeText(AnsweredActivity.this,questionLibrary.getAnswer().toUpperCase()+" was the right answer",Toast.LENGTH_LONG).show();
                                 }
                             }
 

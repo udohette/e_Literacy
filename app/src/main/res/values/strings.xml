@@ -1,4 +1,8 @@
 <resources>
+    <array name="semester">
+        <item>1 Semester</item>
+        <item>2 Semester</item>
+    </array>
     <string name="app_name">Techflex-e_Literacy</string>
     <string name="action_settings">Settings</string>
     <string name="action_quit">Quit App </string>
@@ -28,6 +32,7 @@
     <string name="already_register">you  are already  registered</string>
     <string name="input_error_email_invalid">enter a valid email</string>
     <string name="please_kindly_choose_your_activity">Please Kindly Choose your Activity</string>
+
     <string name="about_us">Welcome to Techflex e_Literacy, your number one source for all educational Materials, Academic Insight, and CBT platform. We are dedicated to giving you the very best of e_Literacy, with a focus on dependability, customer service and uniqueness.
 Founded in 2018 by Techflex Exco Team, e_Literacy has come a long way from its beginnings in a home. When Techflex first started out, his passion for  helping other students be more eco-friendly, providing the best academic insight for his fellow students drove him to do intense research, quit his day job, and gave him the impetus to turn hard work and inspiration into to a booming online academic platform. We now serve students all over, and are thrilled to be a part of the quirky, eco-friendly, fair trade wing of the educational bodies
 We hope you enjoy our service as much as we enjoy offering them to you. If you have any questions or comments, please don\'t hesitate to contact us.
@@ -35,126 +40,36 @@ We hope you enjoy our service as much as we enjoy offering them to you. If you h
 Dennis S.A | IT Support Executive
 </string>
 
-    <string-array name="Program_list">Program List
-        <item>School of Arts and Social Sciences</item>
-        <item>Centre for Life-Long Learning and Workplace Training</item>
-        <item>School of Management Sciences</item>
-        <item>Arts &amp; Humanities Education</item>
-        <item>School of Education</item>
-        <item>School of Law</item>
-        <item>School of Health Sciences</item>
-        <item>School of Science and Technology</item>
-    </string-array>
-
     <!-- Undergraduate Program for School of Science and Technology-->
-    <string-array name="School_of_Science_and_Technology">School of Science and Technology
-        <item>BSc. Mathematics</item>
-        <item>BSc. Computer and Mathematics (Combined Hons)</item>
-        <item>BSc. Computer Science</item>
-        <item>BSc. Data Management</item>
-        <item>BSc. Communications Technology</item>
-        <item>BSc. Agricultural Extension and Management</item>
-        <item>BSc. Nursing Science</item>
-        <item>BSc. Community Health</item>
-        <item>BSc. Financial Mathematics</item>
-        <item>BSc. Financial Mathematics</item>
-        <item>BSc. Physics</item>
-        <item>BSc. Chemistry</item>
-        <item>BSc. Chemistry</item>
-    </string-array>
+    <string name="title_activity_program_choice">ProgramChoiceActivity</string>
     7
     <!-- Student Program  Level-->
-    <string-array name="Program_level">Program Level
-        <item>100L</item>
-        <item>200L</item>
-        <item>300L</item>
-        <item>400L</item>
-        <item>500L</item>
-        <item>600L</item>
-        <item>700L</item>
-    </string-array>
+    <string name="tab_text_1">Program</string>
 
     <!-- Undergraduate Program for School of Health Sciences-->
-    <string-array name="School_of_health_Sciences">School of Health Sciences
-        <item>B.Sc. Community Health</item>
-        <item>B.Sc. Dental Technology</item>
-        <item>B.Sc. Environmental Health</item>
-    </string-array>
+    <string name="tab_text_2">Program Choice</string>
 
     <!-- Undergraduate Program for School of Agricultural Sciences-->
-    <string-array name="School_of_Agricultural_Sciences">School of Agricultural Sciences
-        <item>B. Agric. Agricultural Economics and Agro Business</item>
-        <item>B. Agric. Agricultural Extension and Rural Development</item>
-        <item>B. Agric. Animal Science</item>
-        <item>B. Agric. Aquaculture and Fisheries Management</item>
-        <item>B. Agric. Soil and Land Resources Management</item>
-        <item>B. Agric. Crop Production and protection Sciences</item>
-    </string-array>
+    <string name="tab_text_3">Level</string>
 
     <!-- Undergraduate Program for School of Agricultural Sciences-->
-    <string-array name="School_of_Law">School of Law
-        <item>LLB (Law)</item>
-    </string-array>
+    <string name="top_background">top background</string>
 
     <!-- Undergraduate Program for School of Education-->
-    <string-array name="School_of_Education">School of Education
-        <item>B.Sc. (Ed.) Agricultural Science</item>
-        <item>B.Sc. (Ed.) Biology</item>
-        <item>B.Sc. (Ed.) Chemistry</item>
-        <item>B.Sc. (Ed.) Integrated Science</item>
-        <item>B.Sc. (Ed.) Computer Science</item>
-        <item>B.Sc. (Ed.) Mathematics</item>
-        <item>B.Sc. (Ed.) Physics</item>
-        <item>B.Sc. (Ed.) Business Education</item>
-    </string-array>
+    <string name="profile_photo">profile photo</string>
 
     <!-- Undergraduate Program for Arts & Humanities Education-->
-    <string-array name="Arts_and_Humanities_Education">Arts &amp; Humanities Education
-        <item>B.A (Ed.) Early Childhood Education</item>
-        <item>B.A (Ed.) English</item>
-        <item>B.A (Ed.) French</item>
-        <item>B.A (Ed.) Primary Education</item>
-    </string-array>
+    <string name="add_friends">add friends</string>
 
     <!-- Undergraduate Program for School of Management Sciences-->
-    <string-array name="School_of_Management_Sciences">School of Management Sciences
-        <item>B.Sc. Cooperatives Management</item>
-        <item>B.Sc. Entrepreneurship</item>
-        <item>B.Sc. Accounting (in Collaboration with ICAN)</item>
-        <item>B.Sc. Hospitality Management</item>
-    </string-array>
+    <string name="viral_android">Viral Android</string>
 
     <!-- Undergraduate Program for SSchool of Arts and Social Sciences-->
-    <string-array name="School_of_Arts_and_Social_Sciences">School of Arts and Social Sciences
-        <item>B.Sc. Criminology and Security Studies</item>
-        <item>B.Sc. Peace Studies and Conflict Resolution</item>
-        <item>B.Sc. Mass Communication</item>
-        <item>B.A. English</item>
-        <item>B.A French and International Relations</item>
-        <item>B.A Christian Theology</item>
-        <item>B.Sc. (Ed.) PhysicsB.A Islamic Studies</item>
-        <item>B.Sc. Political Science</item>
-    </string-array>
+    <string name="read_past_questions">Get Past Questions</string>
 
     <!-- Undergraduate Program for Centre for Life-Long Learning and Workplace Training-->
-    <string-array name="Centre_for_LifeLong_Learning_and_Workplace_Training">Centre for Life-Long
-        Learning and Workplace Training
-        <item>Proficiency Certificate in Call Centre Skills, Mobile Phone Repair</item>
-        <item>Computer Literacy</item>
-        <item>Business Administration</item>
-        <item>Hotel and Catering Management.</item>
-    </string-array>
-
-    <string name="title_activity_program_choice">ProgramChoiceActivity</string>
-    <string name="tab_text_1">Program</string>
-    <string name="tab_text_2">Program Choice</string>
-    <string name="tab_text_3">Level</string>
-    <string name="top_background">top background</string>
-    <string name="profile_photo">profile photo</string>
-    <string name="add_friends">add friends</string>
-    <string name="viral_android">Viral Android</string>
-    <string name="read_past_questions">Get Past Questions</string>
     <string name="take_cbt_practice">Take CBT Practice</string>
+
     <string name="e_courseware">e_CourseWare</string>
     <string name="get_project_topics">Get Project Topics</string>
     <string name="it_placement_report">IT Placement</string>
@@ -174,47 +89,6 @@ Dennis S.A | IT Support Executive
     <string name="options_logout_user_activity">options_logout_user_activity</string>
     <string name="check_your_cgpa">Check Your CGPA</string>
     <string name="enter_course_code_e_g_bus205"> e.g bus205</string>
-
-    <!-- computer science 100L-->
-    <string-array name="com_sci_course_100l">100L Computer Science
-        <item>Gst101</item>
-        <item>Bio101</item>
-        <item>Bio102</item>
-        <item>Bio192</item>
-        <item>Bio191</item>
-        <item>Chm101</item>
-        <item>Chm102</item>
-        <item>Phy192</item>
-        <item>Phy191</item>
-        <item>Mth101</item>
-        <item>Mth102</item>
-        <item>Mth103</item>
-        <item>Stt102</item>
-        <item>Gst107</item>
-    </string-array>
-    <!-- computer science 100L-->
-    <string-array name="com_sci_course_100l_desc">Computer Science 100L Desc
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-        <item>Computer Science</item>
-    </string-array>
-
-    <array name="semester">
-        <item>1 Semester</item>
-        <item>2 Semester</item>
-    </array>
-
     <string name="title_activity_about">ABout</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -310,4 +184,130 @@ Dennis S.A | IT Support Executive
     <string name="logout">logout</string>
     <string name="enter_course_code_n_e_g_bfn203">enter course code  e.g bfn203</string>
     <string name="subscribe">Subscribe</string>
+    <string-array name="Program_list">Program List
+        <item>School of Arts and Social Sciences</item>
+        <item>Centre for Life-Long Learning and Workplace Training</item>
+        <item>School of Management Sciences</item>
+        <item>Arts &amp; Humanities Education</item>
+        <item>School of Education</item>
+        <item>School of Law</item>
+        <item>School of Health Sciences</item>
+        <item>School of Science and Technology</item>
+    </string-array>
+    <string-array name="School_of_Science_and_Technology">School of Science and Technology
+        <item>BSc. Mathematics</item>
+        <item>BSc. Computer and Mathematics (Combined Hons)</item>
+        <item>BSc. Computer Science</item>
+        <item>BSc. Data Management</item>
+        <item>BSc. Communications Technology</item>
+        <item>BSc. Agricultural Extension and Management</item>
+        <item>BSc. Nursing Science</item>
+        <item>BSc. Community Health</item>
+        <item>BSc. Financial Mathematics</item>
+        <item>BSc. Financial Mathematics</item>
+        <item>BSc. Physics</item>
+        <item>BSc. Chemistry</item>
+        <item>BSc. Chemistry</item>
+    </string-array>
+    <string-array name="Program_level">Program Level
+        <item>100L</item>
+        <item>200L</item>
+        <item>300L</item>
+        <item>400L</item>
+        <item>500L</item>
+        <item>600L</item>
+        <item>700L</item>
+    </string-array>
+
+    <!-- computer science 100L-->
+    <string-array name="School_of_health_Sciences">School of Health Sciences
+        <item>B.Sc. Community Health</item>
+        <item>B.Sc. Dental Technology</item>
+        <item>B.Sc. Environmental Health</item>
+    </string-array>
+    <!-- computer science 100L-->
+    <string-array name="School_of_Agricultural_Sciences">School of Agricultural Sciences
+        <item>B. Agric. Agricultural Economics and Agro Business</item>
+        <item>B. Agric. Agricultural Extension and Rural Development</item>
+        <item>B. Agric. Animal Science</item>
+        <item>B. Agric. Aquaculture and Fisheries Management</item>
+        <item>B. Agric. Soil and Land Resources Management</item>
+        <item>B. Agric. Crop Production and protection Sciences</item>
+    </string-array>
+
+    <string-array name="School_of_Law">School of Law
+        <item>LLB (Law)</item>
+    </string-array>
+
+    <string-array name="School_of_Education">School of Education
+        <item>B.Sc. (Ed.) Agricultural Science</item>
+        <item>B.Sc. (Ed.) Biology</item>
+        <item>B.Sc. (Ed.) Chemistry</item>
+        <item>B.Sc. (Ed.) Integrated Science</item>
+        <item>B.Sc. (Ed.) Computer Science</item>
+        <item>B.Sc. (Ed.) Mathematics</item>
+        <item>B.Sc. (Ed.) Physics</item>
+        <item>B.Sc. (Ed.) Business Education</item>
+    </string-array>
+    <string-array name="Arts_and_Humanities_Education">Arts &amp; Humanities Education
+        <item>B.A (Ed.) Early Childhood Education</item>
+        <item>B.A (Ed.) English</item>
+        <item>B.A (Ed.) French</item>
+        <item>B.A (Ed.) Primary Education</item>
+    </string-array>
+    <string-array name="School_of_Management_Sciences">School of Management Sciences
+        <item>B.Sc. Cooperatives Management</item>
+        <item>B.Sc. Entrepreneurship</item>
+        <item>B.Sc. Accounting (in Collaboration with ICAN)</item>
+        <item>B.Sc. Hospitality Management</item>
+    </string-array>
+    <string-array name="School_of_Arts_and_Social_Sciences">School of Arts and Social Sciences
+        <item>B.Sc. Criminology and Security Studies</item>
+        <item>B.Sc. Peace Studies and Conflict Resolution</item>
+        <item>B.Sc. Mass Communication</item>
+        <item>B.A. English</item>
+        <item>B.A French and International Relations</item>
+        <item>B.A Christian Theology</item>
+        <item>B.Sc. (Ed.) PhysicsB.A Islamic Studies</item>
+        <item>B.Sc. Political Science</item>
+    </string-array>
+    <string-array name="Centre_for_LifeLong_Learning_and_Workplace_Training">Centre for Life-Long
+        Learning and Workplace Training
+        <item>Proficiency Certificate in Call Centre Skills, Mobile Phone Repair</item>
+        <item>Computer Literacy</item>
+        <item>Business Administration</item>
+        <item>Hotel and Catering Management.</item>
+    </string-array>
+    <string-array name="com_sci_course_100l">100L Computer Science
+        <item>Gst101</item>
+        <item>Bio101</item>
+        <item>Bio102</item>
+        <item>Bio192</item>
+        <item>Bio191</item>
+        <item>Chm101</item>
+        <item>Chm102</item>
+        <item>Phy192</item>
+        <item>Phy191</item>
+        <item>Mth101</item>
+        <item>Mth102</item>
+        <item>Mth103</item>
+        <item>Stt102</item>
+        <item>Gst107</item>
+    </string-array>
+    <string-array name="com_sci_course_100l_desc">Computer Science 100L Desc
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+        <item>Computer Science</item>
+    </string-array>
 </resources>

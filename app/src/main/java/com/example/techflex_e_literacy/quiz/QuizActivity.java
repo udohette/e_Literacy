@@ -45,8 +45,6 @@ import java.util.Random;
 
 public class QuizActivity extends AppCompatActivity {
 
-    private static final String TAG = "";
-
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
@@ -63,13 +61,11 @@ public class QuizActivity extends AppCompatActivity {
     int wrong = 0;
     String query;
     String q;
-    HashMap<Integer, Integer> answered = new HashMap<>();
+    HashMap<Integer, Integer>  answered = new HashMap<>();
     DatabaseReference databaseReference;
     DatabaseReference mDatabaseReference;
-    DatabaseReference num;
     private CountDownTimer mCountDownTimer;
     List<SubscriptionValidation> mValidationList;
-    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -302,7 +298,6 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestions(final String query1) {
         q = query1;
         Log.i("teating",query1);
-        final Random random = new Random();
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
@@ -326,7 +321,7 @@ public class QuizActivity extends AppCompatActivity {
                 total_question_number = (dataSnapshot.getChildrenCount());
                 total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
                 course_code.setText(query1.trim().toUpperCase());
-                startTimer(60, count_down);
+                startTimer(10, count_down);
                 //}
 
                 total++;
@@ -344,13 +339,16 @@ public class QuizActivity extends AppCompatActivity {
                     i.putExtra("total_question", String.valueOf(total_question_number));
                     i.putExtra("query",query1);
                     i.putExtra("answered",answered.toString());
+                    i.putExtra("score",mScore);
+                    i.putExtra("current_q",currentQuestion);
+
                     startActivity(i);
                     stopTimer();
                     mButtonChoice1.setEnabled(false);
                     mButtonChoice2.setEnabled(false);
                     mButtonChoice3.setEnabled(false);
                     mButtonChoice4.setEnabled(false);
-                } else {
+                }else {
                     databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -651,6 +649,7 @@ public class QuizActivity extends AppCompatActivity {
                 intent.putExtra("total_question", String.valueOf(total_question_number));
                 intent.putExtra("query",q);
                 intent.putExtra("answered",answered.toString());
+                intent.putExtra("score", String.valueOf(mScore));
                 startActivity(intent);
             }
 

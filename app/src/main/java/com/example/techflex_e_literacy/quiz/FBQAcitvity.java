@@ -147,14 +147,15 @@ public class FBQAcitvity extends AppCompatActivity {
                                 final QuestionLibraryFBQ fbq = dataSnapshot.getValue(QuestionLibraryFBQ.class);
                                 mQuestionView.setText(fbq.getQuestion());
                                 currentQuestion++;
-                                if (currentQuestion > 5 && mCountDownTimer != null){
+
+                                /*if (currentQuestion > 5 && mCountDownTimer != null){
                                     showPopUp2();
                                     stopTimer();
                                     prev.setEnabled(false);
                                     next.setEnabled(false);
                                     submit.setEnabled(true);
 
-                                }
+                                }*/
                                 next.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
