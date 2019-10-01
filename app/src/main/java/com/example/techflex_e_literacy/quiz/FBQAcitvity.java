@@ -118,21 +118,26 @@ public class FBQAcitvity extends AppCompatActivity {
                 total_question_number = (dataSnapshot.getChildrenCount());
                 total_question.setText("Question: "+currentQuestion+"/"+ total_question_number+"");
                 course_code.setText(query1.trim().toUpperCase());
-                startTimer(30, count_down);
+                startTimer(10, count_down);
 
                 total++;
                 if (total > total_question_number) {
                     total--;
-                    Log.v("testing",answered.toString());
+                    Log.v("yo",answered.toString());
+                    Log.v("yo",answer.getText().toString());
                     // open result activity
-                    Intent i = new Intent(FBQAcitvity.this, Result_Activity.class);
+                    Intent i = new Intent(FBQAcitvity.this, Result_Activity2.class);
                     i.putExtra("Total", String.valueOf(total));
+                    i.putExtra("count_down", String.valueOf(count_down));
                     i.putExtra("Correct", String.valueOf(correct));
                     i.putExtra("Incorrect", String.valueOf(wrong));
                     i.putExtra("points", String.valueOf(points));
                     i.putExtra("total_question",String.valueOf(total_question_number));
                     i.putExtra("query",query1);
+                    i.putExtra("score", String.valueOf(mScore));
                     i.putExtra("answered",answered.toString());
+                    i.putExtra("answer",answer.getText().toString());
+                    i.putExtra("answer",String.valueOf(answer));
                     startActivity(i);
                     stopTimer();
                     prev.setEnabled(false);
@@ -160,6 +165,7 @@ public class FBQAcitvity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View view) {
                                         if (answer.getText().toString().toLowerCase().trim().equals(fbq.getAnswer())){
+                                            answered.put(total,0);
                                             mScore = mScore+1;
                                             updateScore(mScore);
                                             Toast.makeText(FBQAcitvity.this, "correct Answer", Toast.LENGTH_SHORT).show();
@@ -175,6 +181,7 @@ public class FBQAcitvity extends AppCompatActivity {
                                             searchCourseView.setVisibility(View.GONE);
                                         }else {
                                             Toast.makeText(FBQAcitvity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
+                                            answered.put(total,0);
                                             wrong = wrong + 1;
                                             points = points -5;
                                             next.setBackgroundColor(Color.RED);
@@ -312,15 +319,19 @@ public class FBQAcitvity extends AppCompatActivity {
             public void onFinish() {
                 tv.setText("Done!");
                 tv.setTextColor(Color.WHITE);
-                Log.i("testing",answered.toString());
-                Intent intent = new Intent(FBQAcitvity.this, Result_Activity.class);
+                Log.i("yo",answered.toString());
+                Log.v("yo",answer.getText().toString());
+                Intent intent = new Intent(FBQAcitvity.this, Result_Activity2.class);
                 intent.putExtra("Total", String.valueOf(total));
                 intent.putExtra("Correct", String.valueOf(correct));
                 intent.putExtra("Incorrect", String.valueOf(wrong));
                 intent.putExtra("points", String.valueOf(points));
                 intent.putExtra("total_question", String.valueOf(total_question_number));
                 intent.putExtra("query",q);
+                intent.putExtra("count_down", String.valueOf(count_down));
+                intent.putExtra("score", String.valueOf(mScore));
                 intent.putExtra("answered",answered.toString());
+                intent.putExtra("answer",String.valueOf(answer));
                 startActivity(intent);
             }
 

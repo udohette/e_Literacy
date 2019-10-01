@@ -42,15 +42,16 @@ public class AnsweredActivity extends AppCompatActivity {
 
     String query;
     String answered;
-    String current_question;
-    private TextView mQuestionView,currentq;
+    String totalq;
+    String score;
+    private TextView mQuestionView,textView7,score_count;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
     private Button mButtonChoice3, mButtonChoice4,next,back,quit;
     int total =0;
-    ArrayList questionno = new ArrayList();
     long total_question_number = 0;
     int currentQuestion = 0;
+    ArrayList questionno = new ArrayList();
     Map<String,String> map;
     String q;
 
@@ -67,7 +68,8 @@ public class AnsweredActivity extends AppCompatActivity {
         mButtonChoice2 = findViewById(R.id.choice2);
         mButtonChoice3 = findViewById(R.id.choice3);
         mButtonChoice4 = findViewById(R.id.choice4);
-        currentq = findViewById(R.id.question_count);
+        textView7 = findViewById(R.id.question_count);
+        score_count = findViewById(R.id.score);
         //total_q = findViewById(R.id.question_count);
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
@@ -75,6 +77,14 @@ public class AnsweredActivity extends AppCompatActivity {
         Intent i = getIntent();
         query = i.getStringExtra("query");
         answered = i.getStringExtra("answered");
+        score = i.getStringExtra("score");
+        totalq = i.getStringExtra("total_question");
+        String questions = i.getStringExtra("Total");
+        String total_question = i.getStringExtra("total_question");
+
+        textView7.setText("Questions Answered: "+questions+"/"+total_question+"");
+        score_count.setText("correctly answered: "+score);
+
         Log.i("yo_answerwd",query+"  "+answered);
         answered = answered.substring(1, answered.length()-1);           //remove curly brackets
         String[] keyValuePairs = answered.split(",");           //split the string to creat key-value pairs
@@ -147,7 +157,6 @@ public class AnsweredActivity extends AppCompatActivity {
     private void updateQuestions(final String query1, final boolean flag) {
         q = query1;
         Log.i("teating",query1);
-        final Random random = new Random();
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);

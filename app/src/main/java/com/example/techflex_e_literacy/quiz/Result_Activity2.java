@@ -15,15 +15,14 @@ import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.ProgramLevelFragment;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 
-public class Result_Activity extends AppCompatActivity implements View.OnClickListener {
-    TextView textView4,textView5,textView6,textView7;
+public class Result_Activity2 extends AppCompatActivity implements View.OnClickListener {
+    TextView textView4,textView5,textView6,textView7,timer;
     Toolbar toolbar;
-    Button retake,btnWrongQstns;
+    Button retake, show;
 
     String query;
     String answered;
     String answer;
-
     String total_question;
     String questions;
     String score;
@@ -31,9 +30,8 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.result_activity);
-
-        btnWrongQstns = findViewById(R.id.btnWrongQstns);
+        setContentView(R.layout.activity_result_2);
+        show = findViewById(R.id.show);
 
         textView4 = findViewById(R.id.txtCorrectAns);
         textView5 = findViewById(R.id.txtWrongAns);
@@ -42,7 +40,7 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         textView7 = findViewById(R.id.total_question_answered);
 
         retake.setOnClickListener(this);
-        btnWrongQstns.setOnClickListener(this);
+        show.setOnClickListener(this);
 
         toolbar = findViewById(R.id.toolbar);
         (getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -55,7 +53,6 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         String points = i.getStringExtra("points");
         score = i.getStringExtra("score");
         total_question = i.getStringExtra("total_question");
-        String total_question = i.getStringExtra("total_question");
         query = i.getStringExtra("query");
         answer = i.getStringExtra("answer");
         answered = i.getStringExtra("answered");
@@ -67,25 +64,28 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         textView4.setText("Correct Question Answered: "+correct);
         textView6.setText(""+points+"%");
 
+
     }
 
     @Override
     public void onClick(View view) {
         if (view == retake) {
             finish();
-            startActivity(new Intent(Result_Activity.this, QuizActivity.class));
-        }else if (view.getId() == R.id.btnWrongQstns){
-            if (answered.length()>2) {
-                Intent i = new Intent(Result_Activity.this, AnsweredActivity.class);
+            startActivity(new Intent(Result_Activity2.this, QuizActivity.class));
+
+        }else if (view.getId() == R.id.show) {
+            if (answered.length() > 2) {
+                Intent i = new Intent(Result_Activity2.this, AnsweredActivity2.class);
                 i.putExtra("query", query);
                 i.putExtra("answered", answered);
+                i.putExtra("answer", answer);
                 i.putExtra("total_question",total_question);
                 i.putExtra("Total",questions);
                 i.putExtra("score",score);
 
                 startActivity(i);
-            }else {
-                Toast.makeText(this,"No questions answered",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "No questions answered", Toast.LENGTH_SHORT).show();
             }
         }
 
