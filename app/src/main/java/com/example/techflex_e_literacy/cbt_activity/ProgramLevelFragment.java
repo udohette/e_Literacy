@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.quiz.FBQAcitvity;
-import com.example.techflex_e_literacy.quiz.QuizActivity;
+import com.example.techflex_e_literacy.quiz.TrialActivity;
 
 public class ProgramLevelFragment extends Fragment {
     Button mcq,fbq;
@@ -24,7 +24,7 @@ public class ProgramLevelFragment extends Fragment {
         mcq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), QuizActivity.class));
+                startActivity(new Intent(getActivity(), TrialActivity.class));
             }
         });
         fbq = view.findViewById(R.id.fbq);

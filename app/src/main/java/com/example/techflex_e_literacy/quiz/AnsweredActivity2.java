@@ -44,7 +44,6 @@ public class AnsweredActivity2 extends AppCompatActivity {
     String query;
     String totalq;
     String score;
-    String count_down;
 
     private TextView mQuestionView, textView7,score_count;
     private Button prev,next,quit;
@@ -80,7 +79,6 @@ public class AnsweredActivity2 extends AppCompatActivity {
         answered = i.getStringExtra("answered");
         answer1 = i.getStringExtra("answer");
         score = i.getStringExtra("score");
-
         String questions = i.getStringExtra("Total");
         String total_question = i.getStringExtra("total_question");
         totalq = i.getStringExtra("total_question");
