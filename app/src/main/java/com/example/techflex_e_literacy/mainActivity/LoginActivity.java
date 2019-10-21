@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.quiz.Shared;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +54,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
             //start  the contentActivity
             startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            //Shared shared = new Shared(getApplicationContext());
+            //to  change the boolean value as true
+           // shared.secondTime();
         }
         username_edittext = findViewById(R.id.username_edit_text);
         password_edittext = findViewById(R.id.password_edit_text);
@@ -60,14 +64,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signup_now_button = findViewById(R.id.sign_up_btn);
         progressBar = findViewById(R.id.login_progressbar);
         reset_password_button = findViewById(R.id.password_reset_btn);
-        login_relative_layout = findViewById(R.id.login_relative_layout);
+        //login_relative_layout = findViewById(R.id.login_relative_layout);
         userEmail_edittext = findViewById(R.id.user_email_edit_text_edit);
 
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                login_relative_layout.setVisibility(View.VISIBLE);
+                //login_relative_layout.setVisibility(View.VISIBLE);
 
             }
         };

@@ -95,4 +95,11 @@ public class Result_Activity2 extends AppCompatActivity implements View.OnClickL
         onBackPressed();
         return true;
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Result_Activity2.this, UserActivity.class));
+        //no  back tracking after click  on  back  button
+        finish();
+    }
 }

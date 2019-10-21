@@ -39,6 +39,8 @@ dependencies {
     implementation "com.android.support:support-annotations:28.0.0"
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'com.google.zxing:core:3.3.2'
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
     annotationProcessor 'com.android.support:support-annotations:28.0.0'
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     testImplementation 'junit:junit:4.12'

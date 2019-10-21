@@ -232,4 +232,10 @@ public class AnsweredActivity2 extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AnsweredActivity2.this, UserActivity.class));
+        finish();
+    }
 }

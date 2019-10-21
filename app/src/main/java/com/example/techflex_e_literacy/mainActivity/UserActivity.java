@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.techflex_e_literacy.GlideApp;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
+import com.example.techflex_e_literacy.quiz.Shared;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -36,6 +37,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
+
+        startService(new Intent(this, TimerService.class));
 
         user_profile_name = findViewById(R.id.user_profile_name);
         dropdown_option_menu = findViewById(R.id.drop_down_option_menu);
@@ -91,7 +94,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }
-
     }
 
     @Override

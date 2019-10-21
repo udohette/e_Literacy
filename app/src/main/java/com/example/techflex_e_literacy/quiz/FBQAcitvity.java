@@ -358,4 +358,10 @@ public class FBQAcitvity extends AppCompatActivity {
     private void updateScore(int point) {
         mScoreView.setText("Score: " + mScore);
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(FBQAcitvity.this, UserActivity.class));
+        finish();
+    }
 }

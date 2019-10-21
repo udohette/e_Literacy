@@ -99,7 +99,7 @@ public class TrialActivity extends AppCompatActivity {
 
         handleIntent(getIntent());
     }
-
+    
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -633,6 +633,11 @@ public class TrialActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(TrialActivity.this, UserActivity.class));
     }
 
 }

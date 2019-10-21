@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
 import com.example.techflex_e_literacy.cbt_activity.ProgramLevelFragment;
+import com.example.techflex_e_literacy.mainActivity.ForgotPassword;
+import com.example.techflex_e_literacy.mainActivity.LoginActivity;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -260,6 +262,11 @@ public class AnsweredActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AnsweredActivity.this, UserActivity.class));
     }
 
 }

@@ -1,13 +1,11 @@
 package com.example.techflex_e_literacy.quiz;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,27 +15,66 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.PasswordPopUp;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.HtmlEmail;
+import org.w3c.dom.Text;
 
 import java.security.SecureRandom;
 
 public class SubscriptionCodeActivity extends AppCompatActivity {
     private String password;
+    String email = null;
+    String phoneNumber = null;
+    String displayName = null;
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_code);
+        showPopUp();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         password = generateRandomKey(6);
+        if (user != null){
+            email = user.getEmail();
+            phoneNumber = user.getPhoneNumber();
+            displayName = user.getDisplayName();
+        }
+        if (!TextUtils.isEmpty(password)) {
+            try {
+               /* GMailSender sender = new GMailSender("username@gmail.com", "password");
+                sender.sendMail("This is Subject",
+                        "This is Body",
+                        "user@gmail.com",
+                        "user@yahoo.com");*/
+                new EmailSenderAsync().execute("udohette@gmail.com",password);
+               new EmailSenderAsync().execute("udohette@gmail.com",email);
+                new EmailSenderAsync().execute("udohette@gmail.com",displayName);
+
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+            }
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         showPopUp();
+        Shared shared = new Shared(getApplicationContext());
+        //to  change the boolean  value as true
+        shared.secondTime();
     }
 
     void showPopUp3() {
@@ -93,6 +130,9 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(etSSN.getText().toString().trim())
                         && TextUtils.equals(etSSN.getText().toString(), password)) {
                     startActivity(new Intent(SubscriptionCodeActivity.this, QuizActivity.class));
+                    Shared shared = new Shared(getApplicationContext());
+                    //to  change the boolean  value as true
+                    shared.secondTime();
                 } else {
                     showPopUp3();
                     //Toast.makeText(SubscriptionCodeActivity.this, "Invalid Activation Code", Toast.LENGTH_SHORT).show();
@@ -104,5 +144,76 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
         Window window = ssnPopUp.getWindow();
         window.setLayout(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
 
+    }
+
+    public class EmailSenderAsync extends AsyncTask<String, Void, Boolean> {
+
+        private HtmlEmail email;
+
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String textMsg;
+            try {
+                String userEmail = params[0];
+                String message = params[1];
+
+                email = new HtmlEmail();
+
+                email.setAuthenticator(new DefaultAuthenticator("udohette@gmail.com", "Dennis1990"));
+
+                email.setSmtpPort(587);
+
+                email.setHostName("smtp.gmail.com");
+                email.setSSL(true);
+
+                email.setDebug(true);
+                email.setAuthentication("udohette@gmail.com", "Dennis1990");
+                email.addTo(userEmail, "Sent To: ");
+
+                email.setFrom("udohette@gmail.com", "Techflex e_Literacy");
+
+                email.setSubject("Activation Code");
+
+
+                email.getMailSession().getProperties().put("mail.smtps.auth", "true");
+
+                email.getMailSession().getProperties().put("mail.debug", "true");
+
+                email.getMailSession().getProperties().put("mail.smtps.port", "587");
+
+                email.getMailSession().getProperties().put("mail.smtps.socketFactory.port", "587");
+
+                email.getMailSession().getProperties().put("mail.smtps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+                email.getMailSession().getProperties().put("mail.smtps.socketFactory.fallback", "false");
+
+                email.getMailSession().getProperties().put("mail.smtp.starttls.enable", "true");
+
+                email.setTextMsg(message);
+                email.send();
+
+
+                return true;
+
+            } catch (Exception e) {
+                Toast.makeText(SubscriptionCodeActivity.this, "There was a problem sending the Code.\n Contact Admin", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
+        finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
+        finish();
+        return super.onSupportNavigateUp();
     }
 }

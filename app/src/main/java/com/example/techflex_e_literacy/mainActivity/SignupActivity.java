@@ -174,4 +174,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onSupportNavigateUp();
+        startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+    }
 }

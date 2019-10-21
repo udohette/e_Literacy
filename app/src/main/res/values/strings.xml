@@ -185,6 +185,7 @@ Dennis S.A | IT Support Executive
     <string name="enter_course_code_n_e_g_bfn203">enter course code  e.g bfn203</string>
     <string name="subscribe">Subscribe</string>
     <string name="activation_code">ACTIVATION CODE</string>
+    <string name="expired_sub_msg">Attention!</string>
     <string-array name="Program_list">Program List
         <item>School of Arts and Social Sciences</item>
         <item>Centre for Life-Long Learning and Workplace Training</item>

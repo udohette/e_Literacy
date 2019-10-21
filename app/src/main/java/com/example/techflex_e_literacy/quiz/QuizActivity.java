@@ -638,7 +638,19 @@ public class QuizActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(QuizActivity.this, UserActivity.class));
+        finish();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Shared shared = new Shared(getApplicationContext());
+        //to  check  b  is true or false
+        shared.firstTime();
+    }
 }
 
 

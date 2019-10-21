@@ -1,5 +1,6 @@
 package com.example.techflex_e_literacy.mainActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,10 +46,19 @@ public class ForgotPassword extends AppCompatActivity {
                             Toast.makeText(ForgotPassword.this,"Password send to your email",Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(ForgotPassword.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPassword.this,"Password reset was unsuccessful\nTry Again\nCheck Spellings or Contact Admin",Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onSupportNavigateUp();
+        startActivity(new Intent(ForgotPassword.this,LoginActivity.class));
     }
 }
