@@ -97,11 +97,25 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showPopUp3();
+
             }
         });
 
 
         handleIntent(getIntent());
+    }
+    public void quitResult(){
+        Log.i("yo",answered.toString());
+        Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
+        intent.putExtra("Total", String.valueOf(total));
+        intent.putExtra("Correct", String.valueOf(correct));
+        intent.putExtra("Incorrect", String.valueOf(wrong));
+        intent.putExtra("points", String.valueOf(points));
+        intent.putExtra("total_question", String.valueOf(total_question_number));
+        intent.putExtra("query",q);
+        intent.putExtra("answered",answered.toString());
+        intent.putExtra("score", String.valueOf(mScore));
+        startActivity(intent);
     }
 
 
@@ -118,98 +132,60 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     void showPopUp3() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("If you  exit quiz your score won't be saved");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+         new AlertDialog.Builder(QuizActivity.this)
+        .setTitle("Attention!")
+        .setMessage("are you  sure you  want to  quit?")
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
+                quitResult();
 
             }
 
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-    }
+        }).setCancelable(false).show();
 
-    void showPopUp2() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("Maximum Attended Reached for Demo Version\nPlease Kindly Subscribe for more course");
-        builder.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(QuizActivity.this, Bill.class);
-                startActivity(intent);
-            }
-
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //dialogInterface.dismiss();
-                Intent intent = new Intent(QuizActivity.this, UserActivity.class);
-                startActivity(intent);
-            }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
     }
 
     void showPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention");
-        builder.setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(QuizActivity.this)
+        .setTitle("Attention")
+        .setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin")
+        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
 
-        });
-        builder.show();
+        }).setCancelable(false).show();
 
 
     }
 
     void expiredSubscriptionPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("Your Subscription has Expired, Kindly renew");
-        builder.setPositiveButton("Renew", new DialogInterface.OnClickListener() {
+         new AlertDialog.Builder(QuizActivity.this)
+        .setTitle("Attention!")
+        .setMessage("Your Subscription has Expired, Kindly renew")
+        .setPositiveButton("Renew", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(QuizActivity.this, Bill.class);
                 startActivity(intent);
             }
 
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        })
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(QuizActivity.this, UserActivity.class);
                 startActivity(intent);
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        }).setCancelable(false).show();
+
     }
 
    /* public void totalQuestionNumber() {
@@ -249,7 +225,7 @@ public class QuizActivity extends AppCompatActivity {
                 total_question_number = (dataSnapshot.getChildrenCount());
                 total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
                 course_code.setText(query1.trim().toUpperCase());
-                startTimer(10, count_down);
+                startTimer(2000, count_down);
                 //}
 
                 total++;
@@ -643,13 +619,6 @@ public class QuizActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(QuizActivity.this, UserActivity.class));
         finish();
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Shared shared = new Shared(getApplicationContext());
-        //to  check  b  is true or false
-        shared.firstTime();
     }
 }
 

@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,6 +30,8 @@ import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TrialActivity extends AppCompatActivity {
+
+    private static final String DEFAULT = "N/A";
 
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
@@ -93,13 +98,16 @@ public class TrialActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showPopUp3();
+                stopTimer();
             }
         });
 
 
+
+
         handleIntent(getIntent());
     }
-    
+
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -113,99 +121,111 @@ public class TrialActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null){
+            SharedPreferences sharedPreferences = getSharedPreferences("Activation", Context.MODE_PRIVATE);
+            String code = sharedPreferences.getString("code",DEFAULT);
+            if (code.equals(DEFAULT)) {
+               return;
+            }else {
+                Intent intent = new Intent(TrialActivity.this,QuizActivity.class);
+                startActivity(intent);
+                Log.v("TAG","Save Code IS: "+code);
+            }
+
+        }
+
+    }
+
     void showPopUp3() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TrialActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("If you  exit quiz your score won't be saved");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+         new AlertDialog.Builder(TrialActivity.this)
+        .setIcon(R.drawable.back_img)
+        .setMessage("are you sure you  want to  quit?")
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
+               quitResult();
 
             }
 
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        }).setCancelable(false).show();
+
     }
 
     void showPopUp2() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TrialActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("Maximum Attended Reached for Demo Version\nKindly Subscribe for more course");
-        builder.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(TrialActivity.this, SubscriptionCodeActivity.class);
-                startActivity(intent);
-            }
+        new AlertDialog.Builder(TrialActivity.this)
+                .setTitle("!Attention")
+                .setMessage("Maximum Attended Reached for Demo Version\nKindly Subscribe for more questions")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(TrialActivity.this,Bill.class);
+                        startActivity(intent);
 
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    }
+
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //dialogInterface.dismiss();
-                Intent intent = new Intent(TrialActivity.this, UserActivity.class);
+                Intent intent = new Intent(TrialActivity.this,UserActivity.class);
                 startActivity(intent);
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        }).setCancelable(false).show();
     }
 
     void showPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TrialActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention");
-        builder.setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+         new AlertDialog.Builder(TrialActivity.this)
+        .setTitle("Attention")
+        .setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin")
+        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
-
-        });
-        builder.show();
-
+        }).setCancelable(false).show();
 
     }
 
     void expiredSubscriptionPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TrialActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("Your Subscription has Expired, Kindly renew");
-        builder.setPositiveButton("Renew", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(TrialActivity.this)
+        .setTitle("Attention!")
+        .setMessage("Your Subscription has Expired, Kindly renew")
+        .setPositiveButton("Renew", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(TrialActivity.this, Bill.class);
                 startActivity(intent);
             }
 
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent intent = new Intent(TrialActivity.this, UserActivity.class);
                 startActivity(intent);
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        }).setCancelable(false).show();
+
+    }
+    public void quitResult(){
+        Log.i("yo",answered.toString());
+        Intent intent = new Intent(TrialActivity.this, Result_Activity.class);
+        intent.putExtra("Total", String.valueOf(total));
+        intent.putExtra("Correct", String.valueOf(correct));
+        intent.putExtra("Incorrect", String.valueOf(wrong));
+        intent.putExtra("points", String.valueOf(points));
+        intent.putExtra("total_question", String.valueOf(total_question_number));
+        intent.putExtra("query",q);
+        intent.putExtra("answered",answered.toString());
+        intent.putExtra("score", String.valueOf(mScore));
+        startActivity(intent);
     }
 
    /* public void totalQuestionNumber() {
@@ -574,6 +594,7 @@ public class TrialActivity extends AppCompatActivity {
                 intent.putExtra("query", q);
                 intent.putExtra("answered", answered.toString());
                 intent.putExtra("score", String.valueOf(mScore));
+                stopTimer();
                 startActivity(intent);
             }
 

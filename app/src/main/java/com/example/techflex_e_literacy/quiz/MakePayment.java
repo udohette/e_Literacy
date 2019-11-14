@@ -93,54 +93,50 @@ public class MakePayment extends AppCompatActivity {
         });
     }
     void showPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MakePayment.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Payment Info!");
-        builder.setMessage("GT Bank\nDennis Samuel\nAccount Number: 0122494775\n\nUse your Email Address as Description for your Payment");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(MakePayment.this)
+        .setIcon(R.drawable.back_img)
+        .setTitle("Payment Info!")
+        .setMessage("GT Bank\nDennis Samuel\nAccount Number: 0122494775\n\nUse your Email Address as Description for your Payment")
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
 
-        });
-        builder.show();
+        })
+        .show();
     }
     void showPopUp2() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MakePayment.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("Kindly Choose your Crypto Choice?");
-        builder.setPositiveButton("Bitcoins", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(MakePayment.this)
+        .setIcon(R.drawable.back_img)
+        .setTitle("Attention!")
+        .setMessage("Kindly Choose your Crypto Choice?")
+        .setPositiveButton("Bitcoins", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Toast.makeText(MakePayment.this,"Coming Soon!", Toast.LENGTH_SHORT).show();
                 /*Intent intent = new Intent(MakePayment.this, MakePayment.class);
                 startActivity(intent);*/
             }
-
-        });
-        builder.setNegativeButton("TBC", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("TBC", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                showPopUp3();
             }
-        });
-        builder.show();
+        }).show();
     }
     void showPopUp3() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MakePayment.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("You're paying halve cash / $500 worth of TBC \n\nWallet Address!" +
-                "\nNA6PAW-7C75GG-6JPBKI-UPOTMB-OB6QTK-VQJGST-LFLI\n\nUse your Email Address as Description for your Payment");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+         new AlertDialog.Builder(MakePayment.this)
+        .setIcon(R.drawable.back_img)
+        .setTitle("Attention!")
+        .setMessage("You're paying halve cash / $500 worth of TBC \n\nWallet Address!" +
+                "\nNA6PAW-7C75GG-6JPBKI-UPOTMB-OB6QTK-VQJGST-LFLI\n\nUse your Email Address as Description for your Payment")
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
 
-        });
-        builder.show();
+        }).show();
     }
 }

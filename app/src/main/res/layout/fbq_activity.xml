@@ -137,24 +137,12 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Prev"
-                    android:background="@drawable/rect_bg2"
-                    android:textColor="#fff"
-                    android:padding="8dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="15dp"
-                    android:id="@+id/prev"
-                    android:layout_marginStart="20dp"/>
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Next"
                     android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/prev"
                     android:background="@drawable/rect_bg2"
                     android:textColor="#fff"
                     android:padding="8dp"
@@ -165,7 +153,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="End"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="130dp"
                     android:layout_toEndOf="@id/next"
                     android:background="@drawable/rect_backroung_pink"
                     android:textColor="#fff"

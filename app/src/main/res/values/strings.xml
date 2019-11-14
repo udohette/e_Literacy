@@ -19,13 +19,13 @@
     <string name="progressbar_info">creating account.....</string>
     <string name="password">password</string>
     <string name="phone_number">enter phone number</string>
-    <string name="username">Name</string>
-    <string name="title_activity_signup">Signup to e_Literacy</string>
+    <string name="username">Please enter name</string>
+    <string name="title_activity_signup">Sign up to e_Literacy</string>
     <string name="input_error_name">name required</string>
     <string name="input_error_email">email required</string>
     <string name="input_error_password">password required</string>
     <string name="input_error_phone">phone required</string>
-    <string name="input_error_password_length">password should be atleast 8 characters long</string>
+    <string name="input_error_password_length">password should be at least 8 characters long</string>
     <string name="input_error_phone_invalid">enter a valid phone number</string>
     <string name="registration_success">Registered Successfully</string>
     <string name="registration_failed">Registered Failed</string>
@@ -312,4 +312,19 @@ Dennis S.A | IT Support Executive
         <item>Computer Science</item>
         <item>Computer Science</item>
     </string-array>
+
+    <string name="new_message_notification_title_template">New message: %1$s</string>
+
+    <!-- TODO: remove this placeholder text -->
+    <string name="new_message_notification_placeholder_text_template">You said %1$s and lorem ipsum
+        dolor sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel
+        semper venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis.
+        Pellentesque vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper
+        ornare lacus. Duis ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis
+        viverra rhoncus sit amet nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec
+        tortor.
+    </string>
+
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
 </resources>

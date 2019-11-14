@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,6 +27,8 @@ import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,11 +37,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
-public class FBQAcitvity extends AppCompatActivity {
+public class TrialActivity2 extends AppCompatActivity {
+    private static final String DEFAULT = "N/A";
     private static final String TESTING_MESSAGE ="Test";
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, searchCourseView;
-    private Button prev,next, end;
+    private Button prev,next,submit;
     ProgressBar searchCourseProBar;
     Toolbar toolbar;
     EditText answer;
@@ -72,10 +76,10 @@ public class FBQAcitvity extends AppCompatActivity {
         total_question = findViewById(R.id.question_count);
         course_code = findViewById(R.id.course_code);
         answer = findViewById(R.id.answer);
-       // prev = findViewById(R.id.prev);
+        //prev = findViewById(R.id.prev);
         next = findViewById(R.id.next);
-        end = findViewById(R.id.submit);
-        end.setOnClickListener(new View.OnClickListener() {
+        submit = findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopUp3();
@@ -85,11 +89,26 @@ public class FBQAcitvity extends AppCompatActivity {
         handleIntent(getIntent());
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null){
+            SharedPreferences sharedPreferences = getSharedPreferences("Activation", Context.MODE_PRIVATE);
+            String code = sharedPreferences.getString("code",DEFAULT);
+            if (code.equals(DEFAULT)) {
+                return;
+            }else {
+                Intent intent = new Intent(TrialActivity2.this,FBQAcitvity.class);
+                startActivity(intent);
+                Log.v("TAG","Save Code IS: "+code);
+            }
+
+        }
+    }
     public void quitResult(){
-        Log.v("yo",answered.toString());
-        Log.v("yo",answer.getText().toString());
-        // open result activity
-        Intent i = new Intent(FBQAcitvity.this, Result_Activity2.class);
+        Intent i = new Intent(TrialActivity2.this, Result_Activity2.class);
         i.putExtra("Total", String.valueOf(total));
         i.putExtra("count_down", String.valueOf(count_down));
         i.putExtra("Correct", String.valueOf(correct));
@@ -103,9 +122,9 @@ public class FBQAcitvity extends AppCompatActivity {
         i.putExtra("answer",String.valueOf(answer));
         startActivity(i);
         stopTimer();
-        // prev.setEnabled(false);
+        prev.setEnabled(false);
         next.setEnabled(false);
-        end.setEnabled(false);
+        submit.setEnabled(false);
     }
 
     @Override
@@ -122,7 +141,7 @@ public class FBQAcitvity extends AppCompatActivity {
         q = query1;
         Log.i("testing",query1);
         //prev.setEnabled(false);
-        end.setEnabled(true);
+        submit.setEnabled(true);
         next.setEnabled(true);
         databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/fbq/"+query1.trim().toLowerCase());
         searchCourseProBar.setVisibility(View.VISIBLE);
@@ -140,7 +159,7 @@ public class FBQAcitvity extends AppCompatActivity {
                 total_question_number = (dataSnapshot.getChildrenCount());
                 total_question.setText("Question: "+currentQuestion+"/"+ total_question_number+"");
                 course_code.setText(query1.trim().toUpperCase());
-                startTimer(2000, count_down);
+                startTimer(60, count_down);
 
                 total++;
                 if (total > total_question_number) {
@@ -148,7 +167,7 @@ public class FBQAcitvity extends AppCompatActivity {
                     Log.v("yo",answered.toString());
                     Log.v("yo",answer.getText().toString());
                     // open result activity
-                    Intent i = new Intent(FBQAcitvity.this, Result_Activity2.class);
+                    Intent i = new Intent(TrialActivity2.this, Result_Activity2.class);
                     i.putExtra("Total", String.valueOf(total));
                     i.putExtra("count_down", String.valueOf(count_down));
                     i.putExtra("Correct", String.valueOf(correct));
@@ -162,9 +181,9 @@ public class FBQAcitvity extends AppCompatActivity {
                     i.putExtra("answer",String.valueOf(answer));
                     startActivity(i);
                     stopTimer();
-                   // prev.setEnabled(false);
+                    prev.setEnabled(false);
                     next.setEnabled(false);
-                    end.setEnabled(false);
+                    submit.setEnabled(false);
                 } else {
                     databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/fbq/"+query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
@@ -175,14 +194,14 @@ public class FBQAcitvity extends AppCompatActivity {
                                 mQuestionView.setText(fbq.getQuestion());
                                 currentQuestion++;
 
-                                /*if (currentQuestion > 5 && mCountDownTimer != null){
+                                if (currentQuestion > 5 && mCountDownTimer != null){
                                     showPopUp2();
                                     stopTimer();
-                                    prev.setEnabled(false);
+                                    //prev.setEnabled(false);
                                     next.setEnabled(false);
-                                    end.setEnabled(true);
+                                    submit.setEnabled(true);
 
-                                }*/
+                                }
                                 next.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -190,29 +209,29 @@ public class FBQAcitvity extends AppCompatActivity {
                                             answered.put(total,0);
                                             mScore = mScore+1;
                                             updateScore(mScore);
-                                            Toast.makeText(FBQAcitvity.this, "correct Answer", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(TrialActivity2.this, "correct Answer", Toast.LENGTH_SHORT).show();
                                             next.setBackgroundColor(Color.GREEN);
 
-                                                    next.setBackgroundColor(Color.parseColor("#03A9f4"));
-                                                    answer.getText().clear();
-                                                    updateQuestion(query1);
+                                            next.setBackgroundColor(Color.parseColor("#03A9f4"));
+                                            answer.getText().clear();
+                                            updateQuestion(query1);
 
 
 
                                             searchCourseProBar.setVisibility(View.GONE);
                                             searchCourseView.setVisibility(View.GONE);
                                         }else {
-                                            Toast.makeText(FBQAcitvity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(TrialActivity2.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             answered.put(total,0);
                                             wrong = wrong + 1;
                                             points = points -5;
                                             next.setBackgroundColor(Color.RED);
-                                                    answer.getText().clear();
-                                                    updateQuestion(query1);
+                                            answer.getText().clear();
+                                            updateQuestion(query1);
 
                                             searchCourseProBar.setVisibility(View.GONE);
                                             searchCourseView.setVisibility(View.GONE);
-                                                    //next.setBackgroundColor(Color.parseColor("#03A9f4"));
+                                            //next.setBackgroundColor(Color.parseColor("#03A9f4"));
                                         }
 
                                     }
@@ -237,38 +256,57 @@ public class FBQAcitvity extends AppCompatActivity {
         });
 
     }
-
     void showPopUp() {
-        new AlertDialog.Builder(FBQAcitvity.this)
-        .setIcon(R.drawable.back_img)
-        .setTitle("Attention")
-        .setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin")
-        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
+        new AlertDialog.Builder(TrialActivity2.this)
+                .setIcon(R.drawable.back_img)
+                .setTitle("Attention")
+                .setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).setCancelable(false).show();
 
+
+    }
+    void showPopUp2() {
+        new AlertDialog.Builder(TrialActivity2.this)
+                //builder.setIcon(R.drawable.back_img);
+                .setTitle("Attention!")
+                .setMessage("Maximum Attended Reached for Demo Version\nKindly Subscribe for more questions")
+                .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(TrialActivity2.this,Bill.class);
+                        startActivity(intent);
+                    }
+                }).setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(TrialActivity2.this,UserActivity.class);
+                startActivity(intent);
+            }
         }).setCancelable(false).show();
     }
     void showPopUp3() {
-        new AlertDialog.Builder(FBQAcitvity.this)
-        .setIcon(R.drawable.back_img)
-        .setTitle("Attention!")
-        .setMessage("are you  sure you  want to quit?")
-        .setPositiveButton("End Quiz", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                quitResult();
+        new AlertDialog.Builder(TrialActivity2.this)
+                .setIcon(R.drawable.back_img)
+                .setMessage("are you sure you  want to  quit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        quitResult();
 
-            }
+                    }
 
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         }).setCancelable(false).show();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -302,7 +340,7 @@ public class FBQAcitvity extends AppCompatActivity {
                 tv.setTextColor(Color.WHITE);
                 Log.i("yo",answered.toString());
                 Log.v("yo",answer.getText().toString());
-                Intent intent = new Intent(FBQAcitvity.this, Result_Activity2.class);
+                Intent intent = new Intent(TrialActivity2.this, Result_Activity2.class);
                 intent.putExtra("Total", String.valueOf(total));
                 intent.putExtra("Correct", String.valueOf(correct));
                 intent.putExtra("Incorrect", String.valueOf(wrong));
@@ -342,7 +380,7 @@ public class FBQAcitvity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(FBQAcitvity.this, UserActivity.class));
+        startActivity(new Intent(TrialActivity2.this, UserActivity.class));
         finish();
     }
 }

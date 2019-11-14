@@ -7,6 +7,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     EditText username_edittext, password_edittext, userEmail_edittext, userPhonenumber;
@@ -29,6 +33,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     TextView link_login;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +42,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         progressBar = new ProgressBar(this);
 
 
+
         //get  firebase auth  instance
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             finish();
             //start  the contentActivity
-            startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
 
         username_edittext = findViewById(R.id.username_edit_text);
@@ -67,13 +73,29 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Thanks for using our Service", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
     }
     private void registerUser(){
+
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (task.isSuccessful()){
+                    token = task.getResult().getToken();
+                    //Toast.makeText(SignupActivity.this,"Token Saved",Toast.LENGTH_SHORT).show();
+                }else{
+                    //Toast.makeText(SignupActivity.this,"Token not save",Toast.LENGTH_SHORT).show();
+                    Log.v("TAG","Token not save");
+
+                }
+
+            }
+        });
         final String userName = username_edittext.getText().toString().trim();
         final String userEmail = userEmail_edittext.getText().toString().trim();
         String userPassword = password_edittext.getText().toString().trim();
@@ -127,15 +149,22 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     User user = new User(
                             userName,
                             userEmail,
-                            phone
+                            phone,
+                            token
+
+
+
                     );
-                    FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()
+                    FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()
                     ).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
                                 Toast.makeText(SignupActivity.this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
+                                startActivity(intent);
+                                finish();
                             } else {
                                 //display  a failure message
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -165,10 +194,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             // will open the forgot password activity
         }
         if (view == link_login) {
-            finish();
             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
 
         }
 

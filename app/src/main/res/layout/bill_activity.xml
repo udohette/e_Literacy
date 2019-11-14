@@ -17,7 +17,7 @@
             android:id="@+id/course_price_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price Per Course = #1,000"
+            android:text="Price Per Course = #500"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>

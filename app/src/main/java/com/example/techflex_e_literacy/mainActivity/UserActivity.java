@@ -1,5 +1,8 @@
 package com.example.techflex_e_literacy.mainActivity;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,15 +20,18 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.techflex_e_literacy.GlideApp;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
-import com.example.techflex_e_literacy.quiz.Shared;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOOSE_IMAGE = 11;
+    private static final int JOB_ID = 101;
+    private JobScheduler jobScheduler;
+    private JobInfo jobInfo;
 
     TextView user_profile_name, take_practice_button, gp, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            past_questions, summary, contact_us,advert;
+            past_questions, summary, contact_us,advert,notify;
     ImageView dropdown_option_menu;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
@@ -38,22 +44,38 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
 
-        startService(new Intent(this, TimerService.class));
+        //Job scheduler service initialization
+        ComponentName componentName = new ComponentName(this,MJobScheduler.class);
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID,componentName);
+        builder.setPeriodic(5000);
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+        builder.setPersisted(true);
+        jobInfo = builder.build();
+        jobScheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
+
+
+        jobScheduler.schedule(jobInfo);
+        //Toast.makeText(this,"Job Scheduled",Toast.LENGTH_SHORT).show();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("updates");
+
+        //startService(new Intent(this, TimerService.class));
 
         user_profile_name = findViewById(R.id.user_profile_name);
         dropdown_option_menu = findViewById(R.id.drop_down_option_menu);
         user_profile_button = findViewById(R.id.user_profile_photo);
         take_practice_button = findViewById(R.id.take_practice_button);
         gp = findViewById(R.id.gp);
-        project_topic_button = findViewById(R.id.project_topic_button);
-        seminar_button = findViewById(R.id.seminar_topic_button);
-        it_placement_button = findViewById(R.id.it_placement_button);
+        //project_topic_button = findViewById(R.id.project_topic_button);
+        //seminar_button = findViewById(R.id.seminar_topic_button);
+        //it_placement_button = findViewById(R.id.it_placement_button);
         e_course = findViewById(R.id.e_course_button);
-        about_us = findViewById(R.id.about_us);
+       // about_us = findViewById(R.id.about_us);
         past_questions = findViewById(R.id.get_past_questions);
-        summary = findViewById(R.id.summary);
+       // summary = findViewById(R.id.summary);
         contact_us = findViewById(R.id.contact_us);
         advert = findViewById(R.id.advert);
+       // notify = findViewById(R.id.notify);
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -62,15 +84,16 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         user_profile_button.setOnClickListener(this);
         take_practice_button.setOnClickListener(this);
         gp.setOnClickListener(this);
-        project_topic_button.setOnClickListener(this);
+       // project_topic_button.setOnClickListener(this);
         e_course.setOnClickListener(this);
-        about_us.setOnClickListener(this);
+       // about_us.setOnClickListener(this);
         past_questions.setOnClickListener(this);
-        it_placement_button.setOnClickListener(this);
-        seminar_button.setOnClickListener(this);
-        summary.setOnClickListener(this);
+       // it_placement_button.setOnClickListener(this);
+       // seminar_button.setOnClickListener(this);
+        //summary.setOnClickListener(this);
         contact_us.setOnClickListener(this);
         advert.setOnClickListener(this);
+        //notify.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
@@ -129,11 +152,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         if (longPressTime + 2000 > System.currentTimeMillis()) {
+            finish();
             System.exit(0);
+
         } else {
             Toast.makeText(UserActivity.this, "Press again to  exit", Toast.LENGTH_SHORT).show();
         }
         longPressTime = System.currentTimeMillis();
+        finish();
     }
 
 
@@ -225,6 +251,5 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(UserActivity.this, Contact.class);
             startActivity(intent);
         }
-
     }
 }

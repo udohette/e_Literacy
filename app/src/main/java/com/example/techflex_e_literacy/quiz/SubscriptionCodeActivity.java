@@ -1,10 +1,10 @@
 package com.example.techflex_e_literacy.quiz;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
-import org.w3c.dom.Text;
 
 import java.security.SecureRandom;
 
@@ -68,38 +67,24 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showPopUp();
-        Shared shared = new Shared(getApplicationContext());
-        //to  change the boolean  value as true
-        shared.secondTime();
-    }
-
     void showPopUp3() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(SubscriptionCodeActivity.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Invalid Activation Code");
-        builder.setMessage("Kindly retype code carefully\n contact support for assistance");
-        builder.setPositiveButton("retry", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(SubscriptionCodeActivity.this)
+        .setTitle("Invalid Activation Code")
+        .setMessage("Kindly retype code carefully\n contact support for assistance")
+        .setPositiveButton("retry", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 showPopUp();
 
             }
 
-        });
-        builder.setNegativeButton("quit", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("quit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        }).setCancelable(false).show();
+
     }
 
     private String generateRandomKey(int len) {
@@ -130,9 +115,11 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(etSSN.getText().toString().trim())
                         && TextUtils.equals(etSSN.getText().toString(), password)) {
                     startActivity(new Intent(SubscriptionCodeActivity.this, QuizActivity.class));
-                    Shared shared = new Shared(getApplicationContext());
-                    //to  change the boolean  value as true
-                    shared.secondTime();
+                    SharedPreferences sharedPreferences = getSharedPreferences("Activation", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("code",etSSN.getText().toString());
+                    editor.commit();
+                    Toast.makeText(SubscriptionCodeActivity.this,"Code was save Successfully",Toast.LENGTH_SHORT).show();
                 } else {
                     showPopUp3();
                     //Toast.makeText(SubscriptionCodeActivity.this, "Invalid Activation Code", Toast.LENGTH_SHORT).show();
@@ -146,21 +133,28 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
 
     }
 
-    public class EmailSenderAsync extends AsyncTask<String, Void, Boolean> {
+   public class EmailSenderAsync extends AsyncTask<String, Void, Boolean> {
+
 
         private HtmlEmail email;
 
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+
+        }
 
         @Override
         protected Boolean doInBackground(String... params) {
+
             String textMsg;
             try {
+
                 String userEmail = params[0];
                 String message = params[1];
 
                 email = new HtmlEmail();
 
-                email.setAuthenticator(new DefaultAuthenticator("udohette@gmail.com", "Dennis1990"));
+                email.setAuthenticator(new DefaultAuthenticator("udohette@gmail.com", "Dennis@19901"));
 
                 email.setSmtpPort(587);
 
@@ -168,13 +162,12 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
                 email.setSSL(true);
 
                 email.setDebug(true);
-                email.setAuthentication("udohette@gmail.com", "Dennis1990");
+                email.setAuthentication("udohette@gmail.com", "Dennis@19901");
                 email.addTo(userEmail, "Sent To: ");
 
                 email.setFrom("udohette@gmail.com", "Techflex e_Literacy");
 
                 email.setSubject("Activation Code");
-
 
                 email.getMailSession().getProperties().put("mail.smtps.auth", "true");
 
@@ -192,12 +185,10 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
 
                 email.setTextMsg(message);
                 email.send();
-
-
                 return true;
 
             } catch (Exception e) {
-                Toast.makeText(SubscriptionCodeActivity.this, "There was a problem sending the Code.\n Contact Admin", Toast.LENGTH_LONG).show();
+               // Toast.makeText(SubscriptionCodeActivity.this, "There was a problem sending the Code.\n Contact Admin", Toast.LENGTH_LONG).show();
                 return false;
             }
 

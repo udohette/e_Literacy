@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/yellow"
+    android:background="@drawable/spectrum"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mainActivity.LoginActivity"
     tools:showIn="@layout/main_activity_layout"
@@ -27,10 +27,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/noun1"
+                app:srcCompat="@drawable/techflex3"
                 android:layout_marginTop="50dp"
-                tools:layout_conversion_absoluteHeight="100dp"
-                tools:layout_conversion_absoluteWidth="100dp"/>
+                android:contentDescription="login Logo" />
 
             <TextView
                 android:id="@+id/tv_login"

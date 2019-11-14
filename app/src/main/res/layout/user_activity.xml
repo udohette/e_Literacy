@@ -136,39 +136,6 @@
                     android:padding="20dp"
                     android:text="@string/e_courseware" />
                 <TextView
-                    android:id="@+id/project_topic_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:padding="20dp"
-                    android:text="@string/get_project_topics" />
-                <TextView
-                    android:id="@+id/it_placement_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:padding="20dp"
-                    android:text="@string/it_placement_report" />
-                <TextView
-                    android:id="@+id/seminar_topic_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:padding="20dp"
-                    android:text="@string/get_seminar_topics" />
-                <TextView
                     android:id="@+id/gp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -194,19 +161,6 @@
                     android:padding="20dp"
                     android:text="@string/advert" />
                 <TextView
-                    android:id="@+id/summary"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginTop="3dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:padding="20dp"
-                    android:text="@string/exam_course" />
-                <TextView
                     android:id="@+id/contact_us"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -217,18 +171,6 @@
                     android:focusable="true"
                     android:padding="20dp"
                     android:text="@string/contact" />
-
-                <TextView
-                    android:id="@+id/about_us"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:elevation="4dp"
-                    android:focusable="true"
-                    android:padding="20dp"
-                    android:text="@string/about_us_text" />
 
             </LinearLayout>
 

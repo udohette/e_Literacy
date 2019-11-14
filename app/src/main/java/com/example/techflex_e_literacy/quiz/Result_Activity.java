@@ -73,7 +73,7 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view == retake) {
             finish();
-            startActivity(new Intent(Result_Activity.this, QuizActivity.class));
+            startActivity(new Intent(Result_Activity.this, UserActivity.class));
         }else if (view.getId() == R.id.btnWrongQstns){
             if (answered.length()>2) {
                 Intent i = new Intent(Result_Activity.this, AnsweredActivity.class);

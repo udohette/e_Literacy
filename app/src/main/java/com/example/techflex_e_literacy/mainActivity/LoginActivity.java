@@ -1,5 +1,7 @@
 package com.example.techflex_e_literacy.mainActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,15 +25,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.techflex_e_literacy.R;
-import com.example.techflex_e_literacy.quiz.Shared;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     RelativeLayout login_relative_layout;
@@ -40,11 +45,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
+    public static final String CHANNEL_ID = "e_Literacy";
+    private static final String CHANNEL_NAME = "e_Literacy";
+    private static final String CHANNEL_DESC= "e_Literacy";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_layout);
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(CHANNEL_DESC);
+            NotificationManager manager= getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
         progressBar = new ProgressBar(this);
 
         //get  firebase auth  instance
@@ -94,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+
     public Boolean isConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
@@ -108,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     public AlertDialog.Builder buildDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setIcon(R.drawable.noun1);
+        builder.setIcon(R.mipmap.ic_launch);
         builder.setTitle("No Internet Connect");
         builder.setMessage("Check Login details\nYou  need a mobile internet or Wifi to  access this.");
         builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {

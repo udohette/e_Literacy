@@ -71,7 +71,7 @@ public class Result_Activity2 extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == retake) {
             finish();
-            startActivity(new Intent(Result_Activity2.this, QuizActivity.class));
+            startActivity(new Intent(Result_Activity2.this, UserActivity.class));
 
         }else if (view.getId() == R.id.show) {
             if (answered.length() > 2) {

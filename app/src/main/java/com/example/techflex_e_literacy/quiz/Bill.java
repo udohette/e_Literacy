@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,13 +73,13 @@ public class Bill extends AppCompatActivity {
                 }else if(list.contains(course)){
                     Toast.makeText(Bill.this,"course already  exits",Toast.LENGTH_SHORT).show();
 
-                }else if(course.length() < 6 || course.length() > 6){
+                }else if(course.trim().length()!= 6 && course.trim().length()> 6){
                     Toast.makeText(Bill.this,"Invalid Course Code",Toast.LENGTH_SHORT).show();
 
                 }else {
                     list.add(course);
                     coures_picked++;
-                    price = price+1000;
+                    price = price+500;
                     num_of_course.setText("Courses Picked: "+coures_picked+"@ "+"#"+price);
                     dataListView.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
@@ -93,7 +94,7 @@ public class Bill extends AppCompatActivity {
                 }else {
                     list.remove(0);
                     coures_picked--;
-                    price = price -1000;
+                    price = price -500;
                     num_of_course.setText("Courses Picked: "+coures_picked+"@ "+"#"+price);
                     arrayAdapter.notifyDataSetChanged();
                 }
@@ -132,11 +133,10 @@ public class Bill extends AppCompatActivity {
     }
 
     void showPopUp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Bill.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("Are you  Sure you want to Proceed?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(Bill.this)
+        .setTitle("Attention!")
+        .setMessage("Are you  Sure you want to Proceed?")
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
@@ -144,49 +144,42 @@ public class Bill extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Intent intent = new Intent(Bill.this, MakePayment.class);
+                Intent intent = new Intent(Bill.this, SubscriptionCodeActivity.class);
                 startActivity(intent);
             }
-
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
+        })
+                .setCancelable(false).create()
+                .show();
     }
     void showPopUp2() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Bill.this);
-        builder.setIcon(R.drawable.noun1);
-        builder.setTitle("Attention!");
-        builder.setMessage("To Subscribe Please add a Course :)");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-               dialogInterface.dismiss();
-            }
+        new AlertDialog.Builder(Bill.this)
+                .setTitle("!Attention")
+                .setMessage("to subscribe please add a course")
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .show();
 
-        });
-        builder.show();
-        AlertDialog alertDialog = builder.show();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
     }
     public void addCourse() throws ParseException {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //  users subscription start date using system date
 
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");// HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");// HH:mm:ss");
         String reg_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + reg_date);
 
-        c.add(Calendar.DATE, 3);  // number of days to add
+        c.add(Calendar.DATE, 90);  // number of days to add
         String end_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + end_date);
 
@@ -225,7 +218,7 @@ public class Bill extends AppCompatActivity {
         String id = databaseCourseReg.push().getKey();
         CourseReg coureseReg = new CourseReg(id,Arrays.toString(list),semester_count,email,reg_date,end_date);
         databaseCourseReg.child(id).setValue(coureseReg);
-        Toast.makeText(this,"CourseAdded Successfully",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Course Added Successfully",Toast.LENGTH_SHORT).show();
 
     }
     public Boolean isConnected(Context context) {
