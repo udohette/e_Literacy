@@ -122,20 +122,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return false;
 
     }
-    public AlertDialog.Builder buildDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setIcon(R.mipmap.ic_launch);
-        builder.setTitle("No Internet Connect");
-        builder.setMessage("Check Login details\nYou  need a mobile internet or Wifi to  access this.");
-        builder.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-                dialogInterface.dismiss();
+    public void showPopUp() {
+        new AlertDialog.Builder(LoginActivity.this)
+                .setTitle("No Internet Connect")
+                .setMessage("Check Login details\nYou  need a mobile internet or Wifi to  access this.")
+                .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .show();
 
-            }
-        });
-        return builder;
     }
+
 
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     startActivity(new Intent(getApplicationContext(), UserActivity.class));
                 } else {
                     //Toast.makeText(LoginActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
-                    if (!isConnected(LoginActivity.this))buildDialog().show();
+                    if (!isConnected(LoginActivity.this))showPopUp();
                     else {
                         Toast.makeText(LoginActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
                     }

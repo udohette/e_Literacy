@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/spectrum" />
+            app:srcCompat="@color/color_black" />
 
         <ImageView
             android:contentDescription="@string/profile_photo"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/header_cover_image"
-            android:background="#3700b3"
+            android:background="@color/color_black"
             android:elevation="4dp"
             android:paddingBottom="24dp">
 

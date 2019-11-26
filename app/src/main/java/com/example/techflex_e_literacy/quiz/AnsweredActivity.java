@@ -46,7 +46,8 @@ public class AnsweredActivity extends AppCompatActivity {
     String answered;
     String totalq;
     String score;
-    private TextView mQuestionView,textView7,score_count;
+    String timeLeft;
+    private TextView mQuestionView,textView7,score_count,course_code,timeFinish;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
     private Button mButtonChoice3, mButtonChoice4,next,back,quit;
@@ -72,20 +73,25 @@ public class AnsweredActivity extends AppCompatActivity {
         mButtonChoice4 = findViewById(R.id.choice4);
         textView7 = findViewById(R.id.question_count);
         score_count = findViewById(R.id.score);
+        timeFinish = findViewById(R.id.textview_count_down);
+        course_code = findViewById(R.id.course_code);
         //total_q = findViewById(R.id.question_count);
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
         quit = findViewById(R.id.quit);
         Intent i = getIntent();
         query = i.getStringExtra("query");
+        timeLeft = i.getStringExtra("timeLeft");
         answered = i.getStringExtra("answered");
         score = i.getStringExtra("score");
         totalq = i.getStringExtra("total_question");
         String questions = i.getStringExtra("Total");
         String total_question = i.getStringExtra("total_question");
 
-        textView7.setText("Questions Answered: "+questions+"/"+total_question+"");
-        score_count.setText("correctly answered: "+score);
+        textView7.setText("Total Answered: "+questions+"/"+total_question+"");
+        score_count.setText("Correctly answered: "+score);
+        timeFinish.setText(timeLeft);
+
 
         Log.i("yo_answerwd",query+"  "+answered);
         answered = answered.substring(1, answered.length()-1);           //remove curly brackets
@@ -141,7 +147,6 @@ public class AnsweredActivity extends AppCompatActivity {
 
     void showPopUp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AnsweredActivity.this);
-        builder.setIcon(R.drawable.noun1);
         builder.setTitle("Attention");
         builder.setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -206,6 +211,7 @@ public class AnsweredActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 final QuestionLibrary questionLibrary = dataSnapshot.getValue(QuestionLibrary.class);
+                                course_code.setText(query1.trim().toUpperCase());
                                 mQuestionView.setText(questionLibrary.getQuestion());
                                 mButtonChoice1.setText(questionLibrary.getOption1());
                                 mButtonChoice2.setText(questionLibrary.getOption2());

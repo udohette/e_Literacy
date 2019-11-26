@@ -1,183 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_quiz"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_black"
     tools:context="com.example.techflex_e_literacy.quiz.AnsweredActivity2">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp">
 
-        <ProgressBar
-            android:id="@+id/courseSearch"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textDirection="firstStrongLtr"
-            android:visibility="gone" />
-        <TextView
-            android:id="@+id/loadingCourse"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Loading Course....\n please wait...."
-            android:gravity="center_horizontal"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:background="@drawable/rect_backroung_pink">
-        </TextView>
-    </LinearLayout>
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/quiz_layout"
-            android:paddingStart="7dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:visibility="gone">
-            <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp">
+
+            <ProgressBar
+                android:id="@+id/courseSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textDirection="firstStrongLtr"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/loadingCourse"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/rect_backroung_pink"
-                android:layout_marginBottom="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Score: 0"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_alignParentLeft="true"
-                    android:id="@+id/score"/>
-                <TextView
-                    android:fontFamily="sans-serif-black"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BFN104"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:layout_alignParentLeft="true"
-                    android:id="@+id/course_code"/>
-
-                <TextView
-                    android:layout_marginTop="30dp"
-                    android:id="@+id/textview_count_down"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00:30"
-                    android:textColor="@color/white"
-                    android:layout_alignParentEnd="true"
-                    android:textSize="30sp"/>
-                <TextView
-                    android:layout_marginTop="40dp"
-                    android:id="@+id/question_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Questions: 1/x"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:text="Loading Course....\n please wait...."
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:background="@drawable/rect_backroung_pink">
+            </TextView>
+        </LinearLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rect_bg">
-                <TextView
+                android:orientation="vertical"
+                android:id="@+id/quiz_layout"
+                android:paddingStart="7dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:visibility="gone">
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Welcome to  Multi_Choice Quiz"
-                    android:textSize="20sp"
                     android:padding="10dp"
-                    android:id="@+id/question"
-                    android:layout_centerHorizontal="true"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:background="@color/color_black"
+                    android:layout_marginBottom="30dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_below="@id/question">
-
-                    <EditText
-                        android:id="@+id/answer"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="5dp"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:fontFamily="sans-serif-light"
-                        android:hint="input answer in lowercase"
-                        android:inputType="text"
-                        android:maxLines="1"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Score: 0"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textStyle="bold"
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/score"/>
+                    <TextView
+                        android:fontFamily="sans-serif-black"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BFN104"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/course_code"/>
 
-            </RelativeLayout>
-            <RelativeLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_marginTop="30dp"
+                        android:id="@+id/textview_count_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:30"
+                        android:textColor="@color/white"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="30sp"/>
+                    <TextView
+                        android:layout_marginTop="40dp"
+                        android:id="@+id/question_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Questions: 1/x"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Prev"
-                    android:background="@drawable/rect_bg2"
-                    android:textColor="#fff"
-                    android:padding="8dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="15dp"
-                    android:id="@+id/prev"
-                    android:layout_marginStart="20dp"/>
+                    android:background="@color/color_black">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Welcome to  Multi_Choice Quiz"
+                        android:textSize="20sp"
+                        android:padding="10dp"
+                        android:id="@+id/question"
+                        android:layout_centerHorizontal="true"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Next"
-                    android:layout_marginStart="20dp"
-                    android:layout_toEndOf="@id/prev"
-                    android:background="@drawable/rect_bg2"
-                    android:textColor="#fff"
-                    android:padding="8dp"
-                    android:layout_marginBottom="15dp"
-                    android:id="@+id/next"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_below="@id/question">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quit"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@id/next"
-                    android:background="@drawable/rect_backroung_pink"
-                    android:textColor="#fff"
-                    android:padding="2dp"
-                    android:layout_marginBottom="15dp"
-                    android:id="@+id/quit"/>
+                        <EditText
+                            android:id="@+id/answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="5dp"
+                            android:textAlignment="center"
+                            android:gravity="center_horizontal"
+                            android:fontFamily="sans-serif-light"
+                            android:hint="input answer in lowercase"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:background="@color/white"
+                            android:textColor="@color/color_black"
+                            android:textSize="20sp"
+                            android:textColorHint="@color/color_black"
+                            android:textStyle="bold" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </RelativeLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prev"
+                        android:background="@drawable/rect_bg2"
+                        android:textColor="#fff"
+                        android:padding="8dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/prev"
+                        android:layout_marginStart="20dp"/>
 
-        </LinearLayout>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Next"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/prev"
+                        android:background="@drawable/rect_bg2"
+                        android:textColor="#fff"
+                        android:padding="8dp"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/next"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quit"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@id/next"
+                        android:background="@drawable/rect_backroung_pink"
+                        android:textColor="#fff"
+                        android:padding="2dp"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/quit"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

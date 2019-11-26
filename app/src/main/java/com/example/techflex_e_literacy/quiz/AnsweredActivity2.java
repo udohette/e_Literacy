@@ -44,8 +44,10 @@ public class AnsweredActivity2 extends AppCompatActivity {
     String query;
     String totalq;
     String score;
+    String timer;
 
-    private TextView mQuestionView, textView7,score_count;
+
+    private TextView mQuestionView, textView7,score_count,course_code, count_down;
     private Button prev,next,quit;
     Toolbar toolbar;
     EditText answer;
@@ -73,6 +75,8 @@ public class AnsweredActivity2 extends AppCompatActivity {
         prev = findViewById(R.id.prev);
         next = findViewById(R.id.next);
         quit = findViewById(R.id.quit);
+        course_code = findViewById(R.id.course_code);
+        count_down = findViewById(R.id.textview_count_down);
 
         Intent i = getIntent();
         query = i.getStringExtra("query");
@@ -82,9 +86,11 @@ public class AnsweredActivity2 extends AppCompatActivity {
         String questions = i.getStringExtra("Total");
         String total_question = i.getStringExtra("total_question");
         totalq = i.getStringExtra("total_question");
+        timer = i.getStringExtra("count_down");
 
         textView7.setText("Questions Answered: "+questions+"/"+total_question+"");
         score_count.setText("correctly answered: "+score);
+        count_down.setText(timer);
 
         Log.i("yo_answerwd",query+"  "+answered+" "+answer1);
         answered = answered.substring(1, answered.length()-1);           //remove curly brackets
@@ -168,6 +174,7 @@ public class AnsweredActivity2 extends AppCompatActivity {
                             if (dataSnapshot.exists()){
                                 final QuestionLibraryFBQ fbq = dataSnapshot.getValue(QuestionLibraryFBQ.class);
                                 mQuestionView.setText(fbq.getQuestion());
+                                course_code.setText(query1.trim().toUpperCase());
                                 currentQuestion++;
 
                                 /*if (currentQuestion > 5 && mCountDownTimer != null){

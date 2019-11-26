@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/spectrum"
+    android:background="@drawable/ic_bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mainActivity.LoginActivity"
     tools:showIn="@layout/main_activity_layout"
@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/techflex3"
+                app:srcCompat="@mipmap/ic_e_learn_foreground"
                 android:layout_marginTop="50dp"
                 android:contentDescription="login Logo" />
 
@@ -39,8 +39,7 @@
                 android:text="Login"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                android:layout_marginEnd="300dp"
-                app:layout_constraintEnd_toEndOf="parent"
+               android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/techflex_logo"/>
 
@@ -64,8 +63,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_login"
-                android:autofillHints="Please enter email address" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_login"/>
 
             <EditText
                 android:id="@+id/password_edit_text"
@@ -81,7 +79,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
                 android:textColorHint="@color/white"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:autofillHints="Please enter email address"
@@ -90,11 +88,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/user_email_edit_text_edit" />
 
 
-
             <Button
                 android:id="@+id/login_now_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
                 android:background="@drawable/login_btn"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="70dp"
@@ -104,9 +102,8 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-
-                android:layout_marginTop="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.437"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />
 
@@ -127,12 +124,11 @@
                 android:background="@color/transparent"
                 android:fontFamily="sans-serif"
                 android:text="Signup Now"
-                android:layout_marginTop="20dp"
                 android:textAllCaps="true"
-                android:layout_marginEnd="280dp"
                 android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_progressbar"/>
 
@@ -146,10 +142,9 @@
                 android:textAllCaps="true"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:layout_marginStart="240dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_progressbar"/>
 
 

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -17,13 +16,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -41,15 +38,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Locale;
 
 public class QuizActivity extends AppCompatActivity {
+    private static final long  START_TIME_IN_MILLIS = 2700000;
 
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
-    private Button mButtonChoice3, mButtonChoice4, quit;
+    private Button mButtonChoice3, mButtonChoice4, quit,pause,reset;
     ProgressBar searchCourseProBar;
     Toolbar toolbar;
     private int mScore = 0;
@@ -64,7 +62,13 @@ public class QuizActivity extends AppCompatActivity {
     HashMap<Integer, Integer>  answered = new HashMap<>();
     DatabaseReference databaseReference;
     DatabaseReference mDatabaseReference;
+
     private CountDownTimer mCountDownTimer;
+    private boolean mTimeRunning;
+    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    String timeLeftFormatted;
+
+
     List<SubscriptionValidation> mValidationList;
 
     @Override
@@ -86,6 +90,8 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice2 = findViewById(R.id.choice2);
         mButtonChoice3 = findViewById(R.id.choice3);
         mButtonChoice4 = findViewById(R.id.choice4);
+        pause = findViewById(R.id.pause);
+        reset = findViewById(R.id.button_reset);
         count_down = findViewById(R.id.textview_count_down);
         searchCourseProBar = findViewById(R.id.courseSearch);
         total_question = findViewById(R.id.question_count);
@@ -100,9 +106,100 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         });
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTimeRunning){
+                    pauseTimer();
+                }else{
+                    startTimer();
+                    mButtonChoice1.setEnabled(true);
+                    mButtonChoice2.setEnabled(true);
+                    mButtonChoice3.setEnabled(true);
+                    mButtonChoice4.setEnabled(true);
+                }
+
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetTimer();
+
+            }
+        });
+        upDateCountDownText();
 
 
         handleIntent(getIntent());
+    }
+    public void startTimer(){
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftInMillis = millisUntilFinished;
+                upDateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+               mTimeRunning = false;
+               pause.setText("Retake Quiz");
+               pause.setVisibility(View.INVISIBLE);
+               reset.setVisibility(View.VISIBLE);
+                count_down.setText("Time Over");
+                count_down.setTextColor(Color.WHITE);
+                Log.i("yo",answered.toString());
+                Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
+                intent.putExtra("Total", String.valueOf(total));
+                intent.putExtra("Correct", String.valueOf(correct));
+                intent.putExtra("Incorrect", String.valueOf(wrong));
+                intent.putExtra("points", String.valueOf(points));
+                intent.putExtra("total_question", String.valueOf(total_question_number));
+                intent.putExtra("query",q);
+                intent.putExtra("answered",answered.toString());
+                intent.putExtra("score", String.valueOf(mScore));
+                startActivity(intent);
+
+            }
+        }.start();
+        mTimeRunning = true;
+        pause.setText("Pause Quiz");
+        reset.setVisibility(View.INVISIBLE);
+
+    }
+    public void pauseTimer(){
+        mButtonChoice1.setEnabled(false);
+        mButtonChoice2.setEnabled(false);
+        mButtonChoice3.setEnabled(false);
+        mButtonChoice4.setEnabled(false);
+        mCountDownTimer.cancel();
+        mTimeRunning = false;
+        pause.setText("Resume Quiz");
+        reset.setVisibility(View.VISIBLE);
+
+    }
+    public void resetTimer(){
+        mButtonChoice1.setEnabled(false);
+        mButtonChoice2.setEnabled(false);
+        mButtonChoice3.setEnabled(false);
+        mButtonChoice4.setEnabled(false);
+        mTimeLeftInMillis = START_TIME_IN_MILLIS;
+        upDateCountDownText();
+        reset.setVisibility(View.INVISIBLE);
+        pause.setVisibility(View.VISIBLE);
+
+    }
+    public void upDateCountDownText(){
+        int minutes = (int) (mTimeLeftInMillis / 1000) /60;
+        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
+        timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        count_down.setText(timeLeftFormatted);
+        if (mTimeLeftInMillis < 6000) {
+            count_down.setTextColor(Color.RED);
+        } else {
+            count_down.setTextColor(Color.WHITE);
+        }
     }
     public void quitResult(){
         Log.i("yo",answered.toString());
@@ -127,8 +224,28 @@ public class QuizActivity extends AppCompatActivity {
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
-            updateQuestions(query);
+            startQuiz();
         }
+
+    }
+    void startQuiz() {
+        new AlertDialog.Builder(QuizActivity.this)
+                .setTitle("!Attention")
+                .setMessage("Are You ready To  Start Quiz?")
+                .setPositiveButton("Start", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startTimer();
+                        updateQuestions(query);
+
+                    }
+
+                }).setNegativeButton("Not ready", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).setCancelable(false).show();
     }
 
     void showPopUp3() {
@@ -219,39 +336,38 @@ public class QuizActivity extends AppCompatActivity {
                     showPopUp();
                     return;
                 }
+                    //if (dataSnapshot.exists()) {
+                    findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
+                    total_question_number = (dataSnapshot.getChildrenCount());
+                    total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
+                    course_code.setText(query1.trim().toUpperCase());
+                    //startTimer(2000, count_down);
+                    //}
 
-                //if (dataSnapshot.exists()) {
-                findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
-                total_question_number = (dataSnapshot.getChildrenCount());
-                total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
-                course_code.setText(query1.trim().toUpperCase());
-                startTimer(2000, count_down);
-                //}
+                    total++;
 
-                total++;
+                    if (total > total_question_number) {
+                        total--;
+                        Log.i("yo", answered.toString() + total);
+                        // open result activity
+                        finish();
+                        Intent i = new Intent(QuizActivity.this, Result_Activity.class);
+                        i.putExtra("Total", String.valueOf(total));
+                        i.putExtra("Correct", String.valueOf(correct));
+                        i.putExtra("Incorrect", String.valueOf(wrong));
+                        i.putExtra("points", String.valueOf(points));
+                        i.putExtra("total_question", String.valueOf(total_question_number));
+                        i.putExtra("query",query1);
+                        i.putExtra("answered",answered.toString());
+                        i.putExtra("score",mScore);
+                        i.putExtra("current_q",currentQuestion);
 
-                if (total > total_question_number) {
-                    total--;
-                    Log.i("yo", answered.toString() + total);
-                    // open result activity
-                    finish();
-                    Intent i = new Intent(QuizActivity.this, Result_Activity.class);
-                    i.putExtra("Total", String.valueOf(total));
-                    i.putExtra("Correct", String.valueOf(correct));
-                    i.putExtra("Incorrect", String.valueOf(wrong));
-                    i.putExtra("points", String.valueOf(points));
-                    i.putExtra("total_question", String.valueOf(total_question_number));
-                    i.putExtra("query",query1);
-                    i.putExtra("answered",answered.toString());
-                    i.putExtra("score",mScore);
-                    i.putExtra("current_q",currentQuestion);
-
-                    startActivity(i);
-                    stopTimer();
-                    mButtonChoice1.setEnabled(false);
-                    mButtonChoice2.setEnabled(false);
-                    mButtonChoice3.setEnabled(false);
-                    mButtonChoice4.setEnabled(false);
+                        startActivity(i);
+                       // stopTimer();
+                        mButtonChoice1.setEnabled(false);
+                        mButtonChoice2.setEnabled(false);
+                        mButtonChoice3.setEnabled(false);
+                        mButtonChoice4.setEnabled(false);
                 }else {
                     databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
@@ -523,7 +639,7 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-    public void reverseTimer(int seconds, final TextView tv) {
+    /*public void reverseTimer(int seconds, final TextView tv) {
         mCountDownTimer = new CountDownTimer(seconds * 1000 + 1000, 1000) {
             @Override
             public void onTick(long millsUntilFinised) {
@@ -571,7 +687,7 @@ public class QuizActivity extends AppCompatActivity {
         if (mCountDownTimer == null) {
             reverseTimer(seconds, tv);
         }
-    }
+    }*/
 
     private void updateScore(int point) {
         mScoreView.setText("Score: " + mScore);
@@ -584,13 +700,13 @@ public class QuizActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+   /* @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
-    }
+    }*/
 
     public Boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -154,7 +154,7 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
 
                 email = new HtmlEmail();
 
-                email.setAuthenticator(new DefaultAuthenticator("udohette@gmail.com", "Dennis@19901"));
+                email.setAuthenticator(new DefaultAuthenticator("udohette@gmail.com", "Udohette@2019"));
 
                 email.setSmtpPort(587);
 
@@ -162,7 +162,7 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
                 email.setSSL(true);
 
                 email.setDebug(true);
-                email.setAuthentication("udohette@gmail.com", "Dennis@19901");
+                email.setAuthentication("udohette@gmail.com", "Udohette@2019");
                 email.addTo(userEmail, "Sent To: ");
 
                 email.setFrom("udohette@gmail.com", "Techflex e_Literacy");

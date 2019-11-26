@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greaend"
+    android:background="@color/color_black"
     tools:context=".cbt_activity.CBTTestPage">
 
     <androidx.constraintlayout.widget.ConstraintLayout

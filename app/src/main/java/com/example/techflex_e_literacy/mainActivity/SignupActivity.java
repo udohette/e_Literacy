@@ -23,9 +23,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     EditText username_edittext, password_edittext, userEmail_edittext, userPhonenumber;
@@ -34,12 +40,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     String token;
+    int count = 0;
+    DatabaseReference db_total_users, getDb_total_users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
         progressBar = new ProgressBar(this);
+
+        db_total_users = FirebaseDatabase.getInstance().getReference();
+
+        getDb_total_users = db_total_users.child("Total_Users");
 
 
 
@@ -151,9 +163,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             userEmail,
                             phone,
                             token
-
-
-
                     );
                     FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()
                     ).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -161,6 +170,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         public void onComplete(@NonNull Task<Void> task) {
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
+                                getDb_total_users.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        int count = (int)dataSnapshot.child("count:").getValue();
+                                        getDb_total_users.child("count").setValue(count++);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                               // count++;
                                 Toast.makeText(SignupActivity.this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
                                 startActivity(intent);
@@ -189,6 +212,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         //setting up onclick  for SignUp  button
         if (view == create_account_button) {
             registerUser();
+
         }
         if (view == reset_password_button) {
             // will open the forgot password activity

@@ -16,7 +16,7 @@ import com.example.techflex_e_literacy.cbt_activity.ProgramLevelFragment;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 
 public class Result_Activity extends AppCompatActivity implements View.OnClickListener {
-    TextView textView4,textView5,textView6,textView7;
+    TextView textView4,textView5,textView6,textView7,count_down;
     Toolbar toolbar;
     Button retake,btnWrongQstns;
 
@@ -40,6 +40,7 @@ public class Result_Activity extends AppCompatActivity implements View.OnClickLi
         textView6 = findViewById(R.id.tvPerc);
         retake = findViewById(R.id.retake_quiz);
         textView7 = findViewById(R.id.total_question_answered);
+        count_down = findViewById(R.id.textview_count_down);
 
         retake.setOnClickListener(this);
         btnWrongQstns.setOnClickListener(this);

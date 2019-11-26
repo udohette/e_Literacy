@@ -20,6 +20,8 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.techflex_e_literacy.GlideApp;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
+import com.example.techflex_e_literacy.pastQuestions.FilesActivity;
+import com.example.techflex_e_literacy.pastQuestions.ViewUpLoadsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -31,7 +33,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private JobInfo jobInfo;
 
     TextView user_profile_name, take_practice_button, gp, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            past_questions, summary, contact_us,advert,notify;
+            past_questions, summary, contact_us,advert,notify,downlaod_pq,view_pq;
     ImageView dropdown_option_menu;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
@@ -65,6 +67,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         dropdown_option_menu = findViewById(R.id.drop_down_option_menu);
         user_profile_button = findViewById(R.id.user_profile_photo);
         take_practice_button = findViewById(R.id.take_practice_button);
+        //downlaod_pq = findViewById(R.id.download_pq);
+       // view_pq =findViewById(R.id.view_pq);
         gp = findViewById(R.id.gp);
         //project_topic_button = findViewById(R.id.project_topic_button);
         //seminar_button = findViewById(R.id.seminar_topic_button);
@@ -84,6 +88,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         user_profile_button.setOnClickListener(this);
         take_practice_button.setOnClickListener(this);
         gp.setOnClickListener(this);
+        //downlaod_pq.setOnClickListener(this);
+        //view_pq.setOnClickListener(this);
        // project_topic_button.setOnClickListener(this);
         e_course.setOnClickListener(this);
        // about_us.setOnClickListener(this);
@@ -151,15 +157,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public void onBackPressed() {
-        if (longPressTime + 2000 > System.currentTimeMillis()) {
-            finish();
-            System.exit(0);
+        Intent intent =   new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
-        } else {
-            Toast.makeText(UserActivity.this, "Press again to  exit", Toast.LENGTH_SHORT).show();
-        }
-        longPressTime = System.currentTimeMillis();
-        finish();
     }
 
 

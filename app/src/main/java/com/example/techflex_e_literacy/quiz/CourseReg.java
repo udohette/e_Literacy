@@ -9,14 +9,24 @@ public class CourseReg {
     private String email;
     private String startDate;
     private String endDate;
+    private int count;
 
-    public CourseReg(String studentId, String courseReg, String semester_count, String email, String startDate, String endDate) {
+    public CourseReg(String studentId, String courseReg, String semester_count, String email, String startDate, String endDate,int count) {
         this.studentId = studentId;
         this.courseReg = courseReg;
         this.semester_count = semester_count;
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public String getStudentId() {

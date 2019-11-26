@@ -1,191 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_quiz"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:fillViewport="true"
+    android:background="@color/color_black"
+    android:animateLayoutChanges="true"
     tools:context="com.example.techflex_e_literacy.quiz.QuizActivity">
-
-    <ProgressBar
-        android:id="@+id/courseSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/rect_backroung_pink"
-        android:textDirection="firstStrongLtr"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/loadingCourse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/rect_backroung_pink"
-        android:gravity="center_horizontal"
-        android:text="Loading Course....\n please wait...."
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:visibility="gone">
-
-    </TextView>
-
     <LinearLayout
-       android:id="@+id/quiz_layout"
+        android:id="@+id/activity_quiz"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:visibility="gone">
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <RelativeLayout
+        <ProgressBar
+            android:id="@+id/courseSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|left"
-            android:layout_marginBottom="30dp"
+            android:layout_gravity="center"
             android:background="@drawable/rect_backroung_pink"
-            android:padding="10dp">
+            android:textDirection="firstStrongLtr"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:freezesText="true"
-                android:text="Score: 0"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-               android:id="@+id/course_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentEnd="true"
-                android:fontFamily="sans-serif-black"
-                android:freezesText="true"
-                android:text="BFN104"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-
-            <TextView
-               android:id="@+id/textview_count_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="30dp"
-                android:freezesText="true"
-                android:text="00:30"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-
-            <TextView
-               android:id="@+id/question_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:freezesText="true"
-                android:text="Questions: 1/x"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/loadingCourse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_gravity="center"
+            android:background="@drawable/rect_backroung_pink"
+            android:gravity="center_horizontal"
+            android:text="Loading Course....\n please wait...."
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:freezesText="true"
-                android:padding="2dp"
-                android:text="Which thing is alive?"
-                android:textColor="@color/colorPrimaryDark1"
-                android:textSize="20sp" />
+        </TextView>
 
-        </RelativeLayout>
-
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
+            android:id="@+id/quiz_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:visibility="gone">
 
-            <LinearLayout
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginBottom="30dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:freezesText="true"
+                    android:text="Score: 0"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/course_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="sans-serif-black"
+                    android:freezesText="true"
+                    android:text="BFN104"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textview_count_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="30dp"
+                    android:freezesText="true"
+                    android:text="00:30"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/question_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:freezesText="true"
+                    android:text="Questions: 1/x"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="10dp">
 
-                <Button
-                    android:id="@+id/choice1"
+                <TextView
+                    android:id="@+id/question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:background="#0091EA"
                     android:freezesText="true"
-                    android:padding="8dp"
-                    android:text="option1"
-                    android:textColor="#fff" />
+                    android:padding="2dp"
+                    android:text="Which thing is alive?"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/choice2"
+            </RelativeLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:background="#0091EA"
-                    android:freezesText="true"
-                    android:padding="8dp"
-                    android:text="option2"
-                    android:textColor="#fff" />
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/choice3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:background="#0091EA"
-                    android:freezesText="true"
-                    android:padding="8dp"
-                    android:text="option3"
-                    android:textColor="#fff" />
+                    <Button
+                        android:id="@+id/choice1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="#0091EA"
+                        android:freezesText="true"
+                        android:padding="8dp"
+                        android:text="option1"
+                        android:textColor="#fff" />
 
-                <Button
-                    android:id="@+id/choice4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:background="#0091EA"
-                    android:freezesText="true"
-                    android:padding="8dp"
-                    android:text="option4"
-                    android:textColor="#fff" />
+                    <Button
+                        android:id="@+id/choice2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#0091EA"
+                        android:freezesText="true"
+                        android:padding="8dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_below="@id/choice1"
+                        android:text="option2"
+                        android:textColor="#fff" />
 
-                <Button
-                    android:id="@+id/quit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:background="@color/red"
-                    android:freezesText="true"
-                    android:padding="8dp"
-                    android:text="Stop Quiz"
-                    android:textColor="#fff" />
+                    <Button
+                        android:id="@+id/choice3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="#0091EA"
+                        android:freezesText="true"
+                        android:padding="8dp"
+                        android:layout_below="@id/choice2"
+                        android:text="option3"
+                        android:textColor="#fff" />
 
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <Button
+                        android:id="@+id/choice4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="#0091EA"
+                        android:freezesText="true"
+                        android:padding="8dp"
+
+                        android:layout_below="@id/choice3"
+                        android:text="option4"
+                        android:textColor="#fff" />
+
+                    <Button
+                        android:id="@+id/pause"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/red"
+                        android:freezesText="true"
+                        android:padding="8dp"
+                        android:layout_below="@id/choice4"
+                        android:text="Pause Quiz"
+                        android:textColor="#fff" />
+                    <Button
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/button_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/red"
+                        android:freezesText="true"
+                        android:padding="8dp"
+                        android:layout_marginStart="130dp"
+                        android:layout_below="@id/choice4"
+                        android:text="Reset Timer"
+                        android:textColor="#fff"
+                        android:visibility="invisible"
+                        tools:visibility="visible"/>
+
+                    <Button
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/quit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/red"
+                        android:freezesText="true"
+                        android:padding="8dp"
+                        android:layout_marginStart="160dp"
+                        android:layout_toEndOf="@id/pause"
+                        android:layout_below="@id/choice4"
+                        android:text="Stop Quiz"
+                        android:textColor="#fff" />
+
+                </RelativeLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>
 

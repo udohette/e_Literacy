@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +47,7 @@ public class Bill extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     FirebaseAuth auth;
     DatabaseReference databaseCourseReg;
+    DatabaseReference databaseSub;
 
 
     @Override
@@ -61,6 +63,7 @@ public class Bill extends AppCompatActivity {
         save = findViewById(R.id.save_course_button);
         semester_select = findViewById(R.id.semester_select);
         databaseCourseReg = FirebaseDatabase.getInstance().getReference("courseRegDb");
+        databaseSub = FirebaseDatabase.getInstance().getReference("Total_Subscribers");
         list = new ArrayList<String>();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,list);
 
@@ -208,15 +211,17 @@ public class Bill extends AppCompatActivity {
         String semester_count = semester_select.getSelectedItem().toString().trim();
         String[] list = new String[dataListView.getAdapter().getCount()];
         String email = null;
+        int count = 0;
         if (user != null) {
             email = user.getEmail();
         }
         for(int i = 0; i<list.length; i++){
             list[i] = dataListView.getAdapter().getItem(i).toString();
+            count++;
            //String[] course_picked = dataListView.getAdapter().getItem(i).toString();
         }
         String id = databaseCourseReg.push().getKey();
-        CourseReg coureseReg = new CourseReg(id,Arrays.toString(list),semester_count,email,reg_date,end_date);
+        CourseReg coureseReg = new CourseReg(id,Arrays.toString(list),semester_count,email,reg_date,end_date,count);
         databaseCourseReg.child(id).setValue(coureseReg);
         Toast.makeText(this,"Course Added Successfully",Toast.LENGTH_SHORT).show();
 
@@ -234,4 +239,9 @@ public class Bill extends AppCompatActivity {
             return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Bill.this, UserActivity.class));
+    }
 }
