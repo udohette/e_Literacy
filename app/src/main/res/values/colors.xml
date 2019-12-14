@@ -26,4 +26,9 @@
     <color name="transparent">#00000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#FF0000</color>
+
+    <color name="active_dot">#ffffff</color>
+    <color name="inactive_dot">#FF000000</color>
+
+
 </resources>

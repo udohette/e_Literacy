@@ -8,6 +8,7 @@
     android:background="@color/darkPurple"
     android:gravity="center_vertical"
     app:layout_collapseMode="pin"
+    app:popupTheme="@style/menuStyle"
     app:layout_scrollFlags="scroll|enterAlways"
     android:theme="@style/Platform.MaterialComponents.Light">
     </androidx.appcompat.widget.Toolbar>

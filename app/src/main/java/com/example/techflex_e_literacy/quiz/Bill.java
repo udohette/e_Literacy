@@ -45,9 +45,7 @@ public class Bill extends AppCompatActivity {
     private  ListView dataListView;
     private ArrayList<String> list;
     ArrayAdapter<String> arrayAdapter;
-    FirebaseAuth auth;
     DatabaseReference databaseCourseReg;
-    DatabaseReference databaseSub;
 
 
     @Override
@@ -63,7 +61,6 @@ public class Bill extends AppCompatActivity {
         save = findViewById(R.id.save_course_button);
         semester_select = findViewById(R.id.semester_select);
         databaseCourseReg = FirebaseDatabase.getInstance().getReference("courseRegDb");
-        databaseSub = FirebaseDatabase.getInstance().getReference("Total_Subscribers");
         list = new ArrayList<String>();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,list);
 
@@ -82,7 +79,7 @@ public class Bill extends AppCompatActivity {
                 }else {
                     list.add(course);
                     coures_picked++;
-                    price = price+500;
+                    price = price+200;
                     num_of_course.setText("Courses Picked: "+coures_picked+"@ "+"#"+price);
                     dataListView.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
@@ -97,7 +94,7 @@ public class Bill extends AppCompatActivity {
                 }else {
                     list.remove(0);
                     coures_picked--;
-                    price = price -500;
+                    price = price -200;
                     num_of_course.setText("Courses Picked: "+coures_picked+"@ "+"#"+price);
                     arrayAdapter.notifyDataSetChanged();
                 }

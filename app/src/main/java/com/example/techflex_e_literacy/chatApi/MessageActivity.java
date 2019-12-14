@@ -182,7 +182,7 @@ public class MessageActivity extends AppCompatActivity {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                if (!dataSnapshot.exists()){
-                   chatRef.child("id").setValue(userid);
+                   chatRef.child("id").setValue(fUser.getUid());
                }
            }
 

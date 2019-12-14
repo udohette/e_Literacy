@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/ic_bg"
+    android:background="@color/color_black"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mainActivity.LoginActivity"
     tools:showIn="@layout/main_activity_layout"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:text="Login"
-                android:textColor="@color/white"
+                android:textColor="@color/red"
                 android:textSize="30sp"
                android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,12 +48,13 @@
                 android:id="@+id/user_email_edit_text_edit"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/et_bg"
+
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/enter_email"
                 android:inputType="textWebEmailAddress"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:drawableLeft="@drawable/ic_action_email"
                 android:paddingStart="20sp"
                 android:paddingEnd="20sp"
                 android:textStyle="bold"
@@ -69,12 +70,12 @@
                 android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/et_bg"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:paddingStart="20sp"
+                android:drawableLeft="@drawable/ic_action_password"
                 android:paddingEnd="20sp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
@@ -99,7 +100,7 @@
                 android:paddingRight="70dp"
                 android:text="Login  Now"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,36 +118,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_now_button" />
 
+
             <Button
                 android:id="@+id/sign_up_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/transparent"
                 android:fontFamily="sans-serif"
                 android:text="Signup Now"
                 android:textAllCaps="true"
+                android:textColor="@color/red"
                 android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_progressbar"/>
+                app:layout_constraintTop_toBottomOf="@+id/login_progressbar" />
 
             <Button
                 android:id="@+id/password_reset_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="136dp"
                 android:background="@color/transparent"
                 android:fontFamily="sans-serif"
                 android:text="forgot password?"
                 android:textAllCaps="true"
+                android:textColor="@color/red"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_progressbar"/>
-
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_btn" />
 
             <TextView
                 android:layout_width="match_parent"

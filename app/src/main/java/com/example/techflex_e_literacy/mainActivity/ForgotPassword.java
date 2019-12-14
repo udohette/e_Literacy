@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class ForgotPassword extends AppCompatActivity {
     EditText resetpassword_edit_text;
     Button resetpassword_button;
@@ -37,20 +39,28 @@ public class ForgotPassword extends AppCompatActivity {
         resetpassword_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                resetpassword_progressbar.setVisibility(View.VISIBLE);
-                firebaseAuth.sendPasswordResetEmail(resetpassword_edit_text.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        resetpassword_progressbar.setVisibility(View.GONE);
-                        if (task.isSuccessful()){
-                            Toast.makeText(ForgotPassword.this,"Password send to your email",Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(ForgotPassword.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(ForgotPassword.this,"Password reset was unsuccessful\nTry Again\nCheck Spellings or Contact Admin",Toast.LENGTH_SHORT).show();
+                String email = resetpassword_edit_text.getText().toString();
+                if (email.equals("")){
+                    Toast.makeText(ForgotPassword.this,"Field Can't be empty",Toast.LENGTH_LONG).show();
+                }else {
+                    resetpassword_progressbar.setVisibility(View.VISIBLE);
+                    firebaseAuth.sendPasswordResetEmail(resetpassword_edit_text.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            resetpassword_progressbar.setVisibility(View.GONE);
+                            if (task.isSuccessful()){
+                                Toast.makeText(ForgotPassword.this,"Password send to your email",Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(ForgotPassword.this,LoginActivity.class));
+                                finish();
+                            }else {
+                                Toast.makeText(ForgotPassword.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPassword.this,"Password reset was unsuccessful\nTry Again\nCheck Spellings or Contact Admin",Toast.LENGTH_SHORT).show();
 
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
     }

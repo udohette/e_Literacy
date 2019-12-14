@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,7 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
@@ -41,13 +45,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class QuizActivity extends AppCompatActivity {
-    private static final long  START_TIME_IN_MILLIS = 2700000;
+    private ConstraintLayout mConstraintLayout;
 
+    private EditText mEditTextInput;
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
-    private Button mButtonChoice3, mButtonChoice4, quit,pause,reset;
+    private Button mButtonChoice3, mButtonChoice4, quit,pause,reset,set;
     ProgressBar searchCourseProBar;
     Toolbar toolbar;
     private int mScore = 0;
@@ -65,7 +70,9 @@ public class QuizActivity extends AppCompatActivity {
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimeRunning;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private long mStartTimeInMillis;
+    private long mEndTime;
+    private long mTimeLeftInMillis;
     String timeLeftFormatted;
 
 
@@ -92,18 +99,42 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice4 = findViewById(R.id.choice4);
         pause = findViewById(R.id.pause);
         reset = findViewById(R.id.button_reset);
+        mEditTextInput = findViewById(R.id.edit_text_input);
+        set = findViewById(R.id.button_set);
         count_down = findViewById(R.id.textview_count_down);
         searchCourseProBar = findViewById(R.id.courseSearch);
         total_question = findViewById(R.id.question_count);
         loadingCousreText = findViewById(R.id.loadingCourse);
+        mConstraintLayout = findViewById(R.id.timerLayout);
         course_code = findViewById(R.id.course_code);
         quit = findViewById(R.id.quit);
+
+
+
+        handleIntent(getIntent());
         //num = FirebaseDatabase.getInstance().getReference("NumberOfQuestion");
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopUp3();
 
+            }
+        });
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = mEditTextInput.getText().toString();
+                if (input.length() == 0){
+                    Toast.makeText(QuizActivity.this, "Field can't be Empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                long millisInput = Long.parseLong(input) * 60000;
+                if (millisInput == 0){
+                    Toast.makeText(QuizActivity.this, "Please enter a Positive Number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                setTime(millisInput);
+                mEditTextInput.setText("");
             }
         });
         pause.setOnClickListener(new View.OnClickListener() {
@@ -128,12 +159,16 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         });
-        upDateCountDownText();
 
+    }
+    public void setTime(long milliseconds){
+        mStartTimeInMillis = milliseconds;
+        resetTimer();
+        stopkeyboard();
 
-        handleIntent(getIntent());
     }
     public void startTimer(){
+        mEndTime = System.currentTimeMillis()+mTimeLeftInMillis;
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -144,29 +179,41 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                mTimeRunning = false;
-               pause.setText("Retake Quiz");
-               pause.setVisibility(View.INVISIBLE);
-               reset.setVisibility(View.VISIBLE);
-                count_down.setText("Time Over");
+                mButtonChoice1.setEnabled(false);
+                mButtonChoice2.setEnabled(false);
+                mButtonChoice3.setEnabled(false);
+                mButtonChoice4.setEnabled(false);
+                count_down.setText("Time Up!");
                 count_down.setTextColor(Color.WHITE);
-                Log.i("yo",answered.toString());
-                Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
-                intent.putExtra("Total", String.valueOf(total));
-                intent.putExtra("Correct", String.valueOf(correct));
-                intent.putExtra("Incorrect", String.valueOf(wrong));
-                intent.putExtra("points", String.valueOf(points));
-                intent.putExtra("total_question", String.valueOf(total_question_number));
-                intent.putExtra("query",q);
-                intent.putExtra("answered",answered.toString());
-                intent.putExtra("score", String.valueOf(mScore));
-                startActivity(intent);
+                reset.setText("Reset Timer");
+                pause.setVisibility(View.INVISIBLE);
+                reset.setVisibility(View.VISIBLE);
+                mConstraintLayout.setVisibility(View.VISIBLE);
+                quit.setText("View Result");
+              //updateWatchInterface();
+                quit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.i("yo",answered.toString());
+                        Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
+                        intent.putExtra("Total", String.valueOf(total));
+                        intent.putExtra("Correct", String.valueOf(correct));
+                        intent.putExtra("Incorrect", String.valueOf(wrong));
+                        intent.putExtra("points", String.valueOf(points));
+                        intent.putExtra("total_question", String.valueOf(total_question_number));
+                        intent.putExtra("query",q);
+                        intent.putExtra("answered",answered.toString());
+                        intent.putExtra("score", String.valueOf(mScore));
+                        startActivity(intent);
+                    }
+                });
+
 
             }
+
         }.start();
         mTimeRunning = true;
-        pause.setText("Pause Quiz");
-        reset.setVisibility(View.INVISIBLE);
-
+        updateWatchInterface();
     }
     public void pauseTimer(){
         mButtonChoice1.setEnabled(false);
@@ -175,8 +222,7 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice4.setEnabled(false);
         mCountDownTimer.cancel();
         mTimeRunning = false;
-        pause.setText("Resume Quiz");
-        reset.setVisibility(View.VISIBLE);
+        updateWatchInterface();
 
     }
     public void resetTimer(){
@@ -184,16 +230,21 @@ public class QuizActivity extends AppCompatActivity {
         mButtonChoice2.setEnabled(false);
         mButtonChoice3.setEnabled(false);
         mButtonChoice4.setEnabled(false);
-        mTimeLeftInMillis = START_TIME_IN_MILLIS;
+        mTimeLeftInMillis = mStartTimeInMillis;
         upDateCountDownText();
-        reset.setVisibility(View.INVISIBLE);
-        pause.setVisibility(View.VISIBLE);
+        updateWatchInterface();
 
     }
     public void upDateCountDownText(){
-        int minutes = (int) (mTimeLeftInMillis / 1000) /60;
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) /60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-        timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        if (hours > 0){
+            timeLeftFormatted = String.format(Locale.getDefault(),"%d:%02d:%02d",hours,minutes,seconds);
+        }else {
+            timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        }
+
         count_down.setText(timeLeftFormatted);
         if (mTimeLeftInMillis < 6000) {
             count_down.setTextColor(Color.RED);
@@ -201,6 +252,77 @@ public class QuizActivity extends AppCompatActivity {
             count_down.setTextColor(Color.WHITE);
         }
     }
+    public void updateWatchInterface(){
+        if (mTimeRunning){
+            quit.setText("Stop Quiz");
+            mConstraintLayout.setVisibility(View.INVISIBLE);
+            reset.setVisibility(View.INVISIBLE);
+            pause.setText("Pause");
+        }else {
+            mConstraintLayout.setVisibility(View.VISIBLE);
+            pause.setText("Start");
+            quit.setText("View Result");
+            if (mTimeLeftInMillis < 1000){
+                pause.setVisibility(View.INVISIBLE);
+                quit.setText("Stop Quiz");
+            }else {
+                pause.setVisibility(View.VISIBLE);
+                quit.setText("Stop Quiz");
+            }
+            if (mTimeLeftInMillis < mStartTimeInMillis){
+                reset.setVisibility(View.VISIBLE);
+                quit.setText("Stop Quiz");
+
+            }else {
+                reset.setVisibility(View.INVISIBLE);
+                quit.setText("Stop  Quiz");
+            }
+        }
+    }
+    private void stopkeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null){
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("startTimeMillis", mStartTimeInMillis);
+       editor.putLong("millisLeft",mTimeLeftInMillis);
+        editor.putBoolean("timerRunning",mTimeRunning);
+        editor.putLong("endTime", mEndTime);
+       editor.apply();
+        if (mCountDownTimer != null){
+            mCountDownTimer.cancel();
+        }
+    }
+
+   @Override
+    protected void onStart() {
+        super.onStart();
+
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        mStartTimeInMillis = prefs.getLong("startTimeMillis",3000000);
+       mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
+       mTimeRunning  = prefs.getBoolean("timerRunning",false);
+        mEndTime = prefs.getLong("endTime",0);
+      if (mTimeLeftInMillis < 0){
+           mTimeLeftInMillis = 0;
+           mTimeRunning = false;
+           upDateCountDownText();
+           updateWatchInterface();
+       }else {
+           startTimer();
+           mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
+       }
+
+    }
+
     public void quitResult(){
         Log.i("yo",answered.toString());
         Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
@@ -235,8 +357,8 @@ public class QuizActivity extends AppCompatActivity {
                 .setPositiveButton("Start", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startTimer();
-                        updateQuestions(query);
+                        //startTimer();
+                       updateQuestions(query);
 
                     }
 
@@ -369,7 +491,8 @@ public class QuizActivity extends AppCompatActivity {
                         mButtonChoice3.setEnabled(false);
                         mButtonChoice4.setEnabled(false);
                 }else {
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
+                    databaseReference = FirebaseDatabase.getInstance().getReference()
+                            .child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -382,18 +505,6 @@ public class QuizActivity extends AppCompatActivity {
                                 mButtonChoice4.setText(questionLibrary.getOption4());
                                 currentQuestion++;
 
-
-//                                if (currentQuestion > 5 && mCountDownTimer != null) {
-//                                    showPopUp2();
-//                                    stopTimer();
-//                                    //totalQuestionNumber();
-//                                    mButtonChoice1.setEnabled(false);
-//                                    mButtonChoice2.setEnabled(false);
-//                                    mButtonChoice3.setEnabled(false);
-//                                    mButtonChoice4.setEnabled(false);
-//
-//
-//                                }
 
                                 mButtonChoice1.setOnClickListener(new View.OnClickListener() {
                                     @Override

@@ -61,18 +61,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             manager.createNotificationChannel(channel);
         }
         progressBar = new ProgressBar(this);
-
-        //get  firebase auth  instance
-        auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null){
-            //login  activity here
-            finish();
-            //start  the contentActivity
-            startActivity(new Intent(getApplicationContext(), UserActivity.class));
-            //Shared shared = new Shared(getApplicationContext());
-            //to  change the boolean value as true
-           // shared.secondTime();
-        }
         username_edittext = findViewById(R.id.username_edit_text);
         password_edittext = findViewById(R.id.password_edit_text);
         login_now_button = findViewById(R.id.login_now_button);
@@ -108,6 +96,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //get  firebase auth  instance
+        auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null){
+            //login  activity here
+            //start  the contentActivity
+            startActivity(new Intent(getApplicationContext(), UserActivity.class));
+            finish();
+
+        }
     }
 
     public Boolean isConnected(Context context){
@@ -164,7 +166,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String userEmail = userEmail_edittext.getText().toString().trim();
         String userPassword = password_edittext.getText().toString().trim();
 
-        if (userEmail.isEmpty()) {
+        if (userEmail == null) {
+            //Toast.makeText(this, "Email Required", Toast.LENGTH_SHORT).show();
             username_edittext.setError(getString(R.string.input_error_email));
             username_edittext.requestFocus();
             //stopping  the function executing further
@@ -175,7 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             userEmail_edittext.requestFocus();
             return;
         }
-        if (userPassword.isEmpty()) {
+        if (userPassword == null) {
             username_edittext.setError(getString(R.string.input_error_password));
             username_edittext.requestFocus();
             //stopping  the function executing further
@@ -192,9 +195,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    finish();
                     //start  the contentActivity
                     startActivity(new Intent(getApplicationContext(), UserActivity.class));
+                    finish();
                 } else {
                     //Toast.makeText(LoginActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
                     if (!isConnected(LoginActivity.this))showPopUp();

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/ic_bg"
+    android:background="@color/color_black"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".mainActivity.SignupActivity"
     android:fillViewport="true"
@@ -40,7 +40,7 @@
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-medium"
             android:text="REGISTRATION"
-            android:textColor="@color/white"
+            android:textColor="@color/red"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.072"
@@ -51,12 +51,12 @@
             android:id="@+id/username_edit_text"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/et_bg"
             android:fontFamily="sans-serif-light"
             android:hint="@string/username"
             android:inputType="textWebEmailAddress"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:drawableLeft="@drawable/ic_action_name"
             android:paddingStart="20sp"
             android:paddingEnd="20sp"
             android:textStyle="bold"
@@ -73,7 +73,7 @@
             android:id="@+id/user_email_edit_text"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/et_bg"
+           android:drawableLeft="@drawable/ic_action_email"
             android:fontFamily="sans-serif-light"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
@@ -96,7 +96,7 @@
             android:id="@+id/password_edit_text"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/et_bg"
+           android:drawableLeft="@drawable/ic_action_password"
             android:fontFamily="sans-serif-light"
             android:hint="@string/enter_password"
             android:inputType="textPassword"
@@ -115,13 +115,12 @@
             app:layout_constraintTop_toBottomOf="@+id/user_email_edit_text"/>
 
         <EditText
-            android:id="@+id/userPhone_edit_text"
+            android:id="@+id/department"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/et_bg"
             android:fontFamily="sans-serif-light"
-            android:hint="@string/phone_number"
-            android:inputType="number"
+            android:hint="Department"
+            android:inputType="textAutoComplete"
             android:textColor="@color/white"
             android:paddingStart="20sp"
             android:paddingEnd="20sp"
@@ -131,11 +130,28 @@
             android:layout_marginTop="20dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:autofillHints="Please enter Phone Number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />
-
+        <EditText
+            android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-light"
+            android:hint="State"
+            android:inputType="textAutoComplete"
+            android:textColor="@color/white"
+            android:paddingStart="20sp"
+            android:paddingEnd="20sp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:textColorHint="@color/white"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/department" />
 
 
         <Button
@@ -148,13 +164,13 @@
             android:paddingRight="70dp"
             android:text="Create Account"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/red"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userPhone_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/state" />
 
         <ProgressBar
             android:id="@+id/progressbar"
@@ -177,7 +193,7 @@
             android:textAllCaps="true"
             android:textStyle="bold"
             android:padding="10dp"
-            android:textColor="@color/white"
+            android:textColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/progressbar"/>
