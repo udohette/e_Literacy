@@ -77,6 +77,10 @@
             android:layout_height="@dimen/_40"
             android:layout_alignParentEnd="true">
         </ImageButton>
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
 
     </RelativeLayout>
 </RelativeLayout>

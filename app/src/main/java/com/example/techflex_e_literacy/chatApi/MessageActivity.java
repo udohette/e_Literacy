@@ -3,10 +3,13 @@ package com.example.techflex_e_literacy.chatApi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ValueAnimator;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import com.example.techflex_e_literacy.Notifications.Sender;
 import com.example.techflex_e_literacy.Notifications.Token;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.fragments.APIService;
+import com.example.techflex_e_literacy.fragments.ProfileFragment;
 import com.example.techflex_e_literacy.model.Chat;
 import com.example.techflex_e_literacy.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,6 +91,12 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                startActivity(new Intent(MessageActivity.this,ChatAPI.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        });
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);

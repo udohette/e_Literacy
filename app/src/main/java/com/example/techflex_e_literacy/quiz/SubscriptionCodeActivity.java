@@ -165,7 +165,7 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
                 email.setAuthentication("udohette@gmail.com", "Udohette@2019");
                 email.addTo(userEmail, "Sent To: ");
 
-                email.setFrom("udohette@gmail.com", "Techflex e_Literacy");
+                email.setFrom("udohette@gmail.com", "Techflex e_Learn");
 
                 email.setSubject("Activation Code");
 

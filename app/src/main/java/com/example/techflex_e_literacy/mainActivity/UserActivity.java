@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -25,6 +29,7 @@ import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
 import com.example.techflex_e_literacy.chatApi.ChatAPI;
 import com.example.techflex_e_literacy.model.User;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,11 +50,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseReference mReference;
     FirebaseUser fuser;
 
-    TextView user_profile_name, take_practice_button, gp, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
+    TextView user_profile_name, take_practice_button, gp,gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
             past_questions, summary, contact_us,advert,timee_table,portal_analysis;
     ImageView chat;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
+    private AdView mAdView;
 
     Toolbar toolbar;
 
@@ -57,6 +63,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
+
+        //creating AdMobs
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+
 
         //Job scheduler service initialization
         ComponentName componentName = new ComponentName(this,MJobScheduler.class);
@@ -76,19 +89,21 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //startService(new Intent(this, TimerService.class));
 
         user_profile_name = findViewById(R.id.user_profile_name);
+       // map = findViewById(R.id.map);
         user_profile_button = findViewById(R.id.profile_image);
         take_practice_button = findViewById(R.id.take_practice_button);
         chat = findViewById(R.id.chat);
         gp = findViewById(R.id.gp);
+        gp4 = findViewById(R.id.gp4);
         timee_table = findViewById(R.id.time_table);
         portal_analysis = findViewById(R.id.portal_analysis);
         //project_topic_button = findViewById(R.id.project_topic_button);
         //seminar_button = findViewById(R.id.seminar_topic_button);
-        //it_placement_button = findViewById(R.id.it_placement_button);
+        it_placement_button = findViewById(R.id.it_placement);
         e_course = findViewById(R.id.e_course_button);
        // about_us = findViewById(R.id.about_us);
         past_questions = findViewById(R.id.get_past_questions);
-       // summary = findViewById(R.id.summary);
+        summary = findViewById(R.id.summary);
         contact_us = findViewById(R.id.contact_us);
         advert = findViewById(R.id.advert);
        // notify = findViewById(R.id.notify);
@@ -102,15 +117,16 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         timee_table.setOnClickListener(this);
         chat.setOnClickListener(this);
         gp.setOnClickListener(this);
+        gp4.setOnClickListener(this);
         //downlaod_pq.setOnClickListener(this);
         //view_pq.setOnClickListener(this);
        // project_topic_button.setOnClickListener(this);
         e_course.setOnClickListener(this);
        // about_us.setOnClickListener(this);
         past_questions.setOnClickListener(this);
-       // it_placement_button.setOnClickListener(this);
+        it_placement_button.setOnClickListener(this);
        // seminar_button.setOnClickListener(this);
-        //summary.setOnClickListener(this);
+        summary.setOnClickListener(this);
         contact_us.setOnClickListener(this);
         advert.setOnClickListener(this);
         //notify.setOnClickListener(this);
@@ -194,12 +210,22 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (view == gp){
+            //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse("http://www.techflexco.com/scale5.php"));
+            intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
             startActivity(intent);
         }
+        if (view == gp4){
+            //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
+            startActivity(intent);
+        }
+
         //String number = "+2348025774336";
         if (view == project_topic_button){
             String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on";
@@ -215,11 +241,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if (view == timee_table){
-            Intent intent = new Intent();
+            Toast.makeText(this, "Till  Exam Start!", Toast.LENGTH_SHORT).show();
+            /*Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setData(Uri.parse("http://tommydigitaltech.tk/timetable/"));
-            startActivity(intent);
+            startActivity(intent);*/
         }
         if (view == portal_analysis){
             Toast.makeText(this, "Coming Soon!", Toast.LENGTH_SHORT).show();
@@ -235,7 +262,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(i);
         }
         if (view == it_placement_button) {
-            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on%20IT%20Placement,%20Log Book Filling,%20IT Report";
+            String url = "https://api.whatsapp.com/send?phone=2348136559569&text=I%20need%20your%20service%20on%20IT%20Placement,%20Log Book Filling,%20IT Report";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
@@ -263,5 +290,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         if (view == chat){
             startActivity(new Intent(UserActivity.this, ChatAPI.class));
         }
+
     }
 }

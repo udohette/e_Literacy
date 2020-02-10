@@ -86,7 +86,8 @@ Dennis S.A | IT Support Executive
     <string name="send">Send</string>
     <string name="need_help_contact_us_now">Need Help? | Contact us Now!</string>
     <string name="options_logout_user_activity">options_logout_user_activity</string>
-    <string name="check_your_cgpa">Check Your CGPA</string>
+    <string name="check_your_cgpa">Check Your CGPA SCALE 5</string>
+    <string name="check_your_cgpa4">Check Your CGPA SCALE 4</string>
     <string name="enter_course_code_e_g_bus205"> e.g bus205</string>
     <string name="title_activity_about">About</string>
     <string name="large_text">
@@ -326,6 +327,7 @@ Dennis S.A | IT Support Executive
 
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- Slide 1 Title and Description-->
     <string name="slide_1_title">Welcome to TechFlex E_Learn</string>
@@ -355,6 +357,18 @@ Dennis S.A | IT Support Executive
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="time_table">Time Table</string>
     <string name="portal_analysis">Portal Analysis</string>
+    <string name="course_summary">Course Summary</string>
+
+    <string-array name="types">
+        <item>atm</item>
+        <item>school</item>
+        <item>bakery</item>
+        <item>food</item>
+        <item>bank</item>
+        <item>church</item>
+
+
+    </string-array>
 
 
 </resources>

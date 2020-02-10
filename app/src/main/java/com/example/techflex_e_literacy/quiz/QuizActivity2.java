@@ -1,5 +1,13 @@
 package com.example.techflex_e_literacy.quiz;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MenuItemCompat;
+
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
@@ -16,22 +24,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
-
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,16 +44,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class TrialActivity extends AppCompatActivity {
-    private static final long  START_TIME_IN_MILLIS = 2700000;
+public class QuizActivity2 extends AppCompatActivity {
+    private ConstraintLayout mConstraintLayout;
 
-    private static final String DEFAULT = "N/A";
-
+    private EditText mEditTextInput;
     private TextView mScoreView;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
-    private Button mButtonChoice3, mButtonChoice4, quit,pause,reset;
+    private Button mButtonChoice3, mButtonChoice4, quit,pause,reset,set;
     ProgressBar searchCourseProBar;
     Toolbar toolbar;
     private int mScore = 0;
@@ -70,7 +70,9 @@ public class TrialActivity extends AppCompatActivity {
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimeRunning;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private long mStartTimeInMillis;
+    private long mEndTime;
+    private long mTimeLeftInMillis;
     String timeLeftFormatted;
 
 
@@ -79,8 +81,7 @@ public class TrialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz2);
-
+        setContentView(R.layout.activity_quiz3);
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -90,26 +91,49 @@ public class TrialActivity extends AppCompatActivity {
 
 
         mScoreView = findViewById(R.id.score);
-        pause = findViewById(R.id.pause);
         mQuestionView = findViewById(R.id.question);
         mButtonChoice1 = findViewById(R.id.choice1);
         mButtonChoice2 = findViewById(R.id.choice2);
         mButtonChoice3 = findViewById(R.id.choice3);
         mButtonChoice4 = findViewById(R.id.choice4);
+        pause = findViewById(R.id.pause);
+        reset = findViewById(R.id.button_reset);
+        mEditTextInput = findViewById(R.id.edit_text_input);
+        set = findViewById(R.id.button_set);
         count_down = findViewById(R.id.textview_count_down);
         searchCourseProBar = findViewById(R.id.courseSearch);
         total_question = findViewById(R.id.question_count);
         loadingCousreText = findViewById(R.id.loadingCourse);
+        mConstraintLayout = findViewById(R.id.timerLayout);
         course_code = findViewById(R.id.course_code);
-        reset = findViewById(R.id.button_reset);
         quit = findViewById(R.id.quit);
-        //num = FirebaseDatabase.getInstance().getReference("NumberOfQuestion");
 
+
+
+        handleIntent(getIntent());
+        //num = FirebaseDatabase.getInstance().getReference("NumberOfQuestion");
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopUp3();
 
+            }
+        });
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = mEditTextInput.getText().toString();
+                if (input.length() == 0){
+                    Toast.makeText(QuizActivity2.this, "Field can't be Empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                long millisInput = Long.parseLong(input) * 60000;
+                if (millisInput == 0){
+                    Toast.makeText(QuizActivity2.this, "Please enter a Positive Number", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                setTime(millisInput);
+                mEditTextInput.setText("");
             }
         });
         pause.setOnClickListener(new View.OnClickListener() {
@@ -131,14 +155,20 @@ public class TrialActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetTimer();
+
             }
         });
 
-
-        handleIntent(getIntent());
     }
-    public void startTimer() {
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+    public void setTime(long milliseconds){
+        mStartTimeInMillis = milliseconds;
+        resetTimer();
+        stopkeyboard();
+
+    }
+    public void startTimer(){
+        mEndTime = System.currentTimeMillis()+mTimeLeftInMillis;
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 mTimeLeftInMillis = millisUntilFinished;
@@ -148,28 +178,41 @@ public class TrialActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 mTimeRunning = false;
-                pause.setText("Retake Quiz");
+                mButtonChoice1.setEnabled(false);
+                mButtonChoice2.setEnabled(false);
+                mButtonChoice3.setEnabled(false);
+                mButtonChoice4.setEnabled(false);
+                count_down.setText("Time Up!");
+                count_down.setTextColor(Color.WHITE);
+                reset.setText("Reset Timer");
                 pause.setVisibility(View.INVISIBLE);
                 reset.setVisibility(View.VISIBLE);
-                count_down.setText("Time Over");
-                count_down.setTextColor(Color.WHITE);
-                Log.i("yo", answered.toString());
-                Intent intent = new Intent(TrialActivity.this, Result_Activity.class);
-                intent.putExtra("Total", String.valueOf(total));
-                intent.putExtra("Correct", String.valueOf(correct));
-                intent.putExtra("Incorrect", String.valueOf(wrong));
-                intent.putExtra("points", String.valueOf(points));
-                intent.putExtra("total_question", String.valueOf(total_question_number));
-                intent.putExtra("query", q);
-                intent.putExtra("answered", answered.toString());
-                intent.putExtra("score", String.valueOf(mScore));
-                startActivity(intent);
+                mConstraintLayout.setVisibility(View.VISIBLE);
+                quit.setText("View Result");
+                //updateWatchInterface();
+                quit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.i("yo",answered.toString());
+                        Intent intent = new Intent(QuizActivity2.this, Result_Activity3.class);
+                        intent.putExtra("Total", String.valueOf(total));
+                        intent.putExtra("Correct", String.valueOf(correct));
+                        intent.putExtra("Incorrect", String.valueOf(wrong));
+                        intent.putExtra("points", String.valueOf(points));
+                        intent.putExtra("total_question", String.valueOf(total_question_number));
+                        intent.putExtra("query",q);
+                        intent.putExtra("answered",answered.toString());
+                        intent.putExtra("score", String.valueOf(mScore));
+                        startActivity(intent);
+                    }
+                });
+
 
             }
+
         }.start();
         mTimeRunning = true;
-        pause.setText("Pause Quiz");
-        reset.setVisibility(View.INVISIBLE);
+        updateWatchInterface();
     }
     public void pauseTimer(){
         mButtonChoice1.setEnabled(false);
@@ -178,8 +221,7 @@ public class TrialActivity extends AppCompatActivity {
         mButtonChoice4.setEnabled(false);
         mCountDownTimer.cancel();
         mTimeRunning = false;
-        pause.setText("Resume Quiz");
-        reset.setVisibility(View.VISIBLE);
+        updateWatchInterface();
 
     }
     public void resetTimer(){
@@ -187,16 +229,21 @@ public class TrialActivity extends AppCompatActivity {
         mButtonChoice2.setEnabled(false);
         mButtonChoice3.setEnabled(false);
         mButtonChoice4.setEnabled(false);
-        mTimeLeftInMillis = START_TIME_IN_MILLIS;
+        mTimeLeftInMillis = mStartTimeInMillis;
         upDateCountDownText();
-        reset.setVisibility(View.INVISIBLE);
-        pause.setVisibility(View.VISIBLE);
+        updateWatchInterface();
 
     }
     public void upDateCountDownText(){
-        int minutes = (int) (mTimeLeftInMillis / 1000) /60;
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) /60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-        timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        if (hours > 0){
+            timeLeftFormatted = String.format(Locale.getDefault(),"%d:%02d:%02d",hours,minutes,seconds);
+        }else {
+            timeLeftFormatted = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        }
+
         count_down.setText(timeLeftFormatted);
         if (mTimeLeftInMillis < 6000) {
             count_down.setTextColor(Color.RED);
@@ -204,133 +251,80 @@ public class TrialActivity extends AppCompatActivity {
             count_down.setTextColor(Color.WHITE);
         }
     }
-        @Override
-    public void onNewIntent(Intent intent) {
-        handleIntent(intent);
+    public void updateWatchInterface(){
+        if (mTimeRunning){
+            quit.setText("Stop Quiz");
+            mConstraintLayout.setVisibility(View.INVISIBLE);
+            reset.setVisibility(View.INVISIBLE);
+            pause.setText("Pause");
+        }else {
+            mConstraintLayout.setVisibility(View.VISIBLE);
+            pause.setText("Start");
+            quit.setText("View Result");
+            if (mTimeLeftInMillis < 1000){
+                pause.setVisibility(View.INVISIBLE);
+                quit.setText("Stop Quiz");
+            }else {
+                pause.setVisibility(View.VISIBLE);
+                quit.setText("Stop Quiz");
+            }
+            if (mTimeLeftInMillis < mStartTimeInMillis){
+                reset.setVisibility(View.VISIBLE);
+                quit.setText("Stop Quiz");
+
+            }else {
+                reset.setVisibility(View.INVISIBLE);
+                quit.setText("Stop  Quiz");
+            }
+        }
+    }
+    private void stopkeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null){
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
     }
 
-    public void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = intent.getStringExtra(SearchManager.QUERY);
-            //updateQuestions(query);
-            start();
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("startTimeMillis", mStartTimeInMillis);
+        editor.putLong("millisLeft",mTimeLeftInMillis);
+        editor.putBoolean("timerRunning",mTimeRunning);
+        editor.putLong("endTime", mEndTime);
+        editor.apply();
+        if (mCountDownTimer != null){
+            mCountDownTimer.cancel();
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null){
-            SharedPreferences sharedPreferences = getSharedPreferences("Activation", Context.MODE_PRIVATE);
-            String code = sharedPreferences.getString("code",DEFAULT);
-            if (code.equals(DEFAULT)) {
-               return;
-            }else {
-                Intent intent = new Intent(TrialActivity.this,QuizActivity.class);
-                startActivity(intent);
-                Log.v("TAG","Save Code IS: "+code);
-            }
 
+        SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);
+        mStartTimeInMillis = prefs.getLong("startTimeMillis",3000000);
+        mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
+        mTimeRunning  = prefs.getBoolean("timerRunning",false);
+        mEndTime = prefs.getLong("endTime",0);
+        if (mTimeLeftInMillis < 0){
+            mTimeLeftInMillis = 0;
+            mTimeRunning = false;
+            upDateCountDownText();
+            updateWatchInterface();
+        }else {
+            startTimer();
+            mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
         }
 
     }
-    void start() {
-        new AlertDialog.Builder(TrialActivity.this)
-                .setTitle("!Attention")
-                .setMessage("Are You ready To  Start Quiz?")
-                .setPositiveButton("Start", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                       updateQuestions(query);
-                       startTimer();
 
-                    }
-
-                }).setNegativeButton("Not ready", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).setCancelable(false).show();
-
-    }
-
-    void showPopUp3() {
-         new AlertDialog.Builder(TrialActivity.this)
-        .setMessage("are you sure you  want to  quit?")
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-               quitResult();
-
-            }
-
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).setCancelable(false).show();
-
-    }
-
-    void showPopUp2() {
-        new AlertDialog.Builder(TrialActivity.this)
-                .setTitle("!Attention")
-                .setMessage("Maximum Attended Reached for Demo Version\nKindly Subscribe for more questions")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(TrialActivity.this,Bill.class);
-                        startActivity(intent);
-
-                    }
-
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-               quitResult();
-            }
-        }).setCancelable(false).show();
-    }
-
-    void showPopUp() {
-         new AlertDialog.Builder(TrialActivity.this)
-        .setTitle("Attention")
-        .setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin")
-        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).setCancelable(false).show();
-
-    }
-
-    void expiredSubscriptionPopUp() {
-        new AlertDialog.Builder(TrialActivity.this)
-        .setTitle("Attention!")
-        .setMessage("Your Subscription has Expired, Kindly renew")
-        .setPositiveButton("Renew", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(TrialActivity.this, Bill.class);
-                startActivity(intent);
-            }
-
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(TrialActivity.this, UserActivity.class);
-                startActivity(intent);
-            }
-        }).setCancelable(false).show();
-
-    }
     public void quitResult(){
         Log.i("yo",answered.toString());
-        Intent intent = new Intent(TrialActivity.this, Result_Activity.class);
+        Intent intent = new Intent(QuizActivity2.this, Result_Activity3.class);
         intent.putExtra("Total", String.valueOf(total));
         intent.putExtra("Correct", String.valueOf(correct));
         intent.putExtra("Incorrect", String.valueOf(wrong));
@@ -340,6 +334,96 @@ public class TrialActivity extends AppCompatActivity {
         intent.putExtra("answered",answered.toString());
         intent.putExtra("score", String.valueOf(mScore));
         startActivity(intent);
+    }
+
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    public void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+            startQuiz();
+        }
+
+    }
+    void startQuiz() {
+        new AlertDialog.Builder(QuizActivity2.this)
+                .setTitle("!Attention")
+                .setMessage("Are You ready To  Start Quiz?")
+                .setPositiveButton("Start", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //startTimer();
+                        updateQuestions(query);
+
+                    }
+
+                }).setNegativeButton("Not ready", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).setCancelable(false).show();
+    }
+
+    void showPopUp3() {
+        new AlertDialog.Builder(QuizActivity2.this)
+                .setTitle("Attention!")
+                .setMessage("are you  sure you  want to  quit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        quitResult();
+
+                    }
+
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).setCancelable(false).show();
+
+    }
+
+    void showPopUp() {
+        new AlertDialog.Builder(QuizActivity2.this)
+                .setTitle("Attention")
+                .setMessage("Check spellings\nCheck internet connection if first-time use\nContact admin")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+
+                }).setCancelable(false).show();
+
+
+    }
+
+    void expiredSubscriptionPopUp() {
+        new AlertDialog.Builder(QuizActivity2.this)
+                .setTitle("Attention!")
+                .setMessage("Your Subscription has Expired, Kindly renew")
+                .setPositiveButton("Renew", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(QuizActivity2.this, Bill.class);
+                        startActivity(intent);
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(QuizActivity2.this, UserActivity.class);
+                        startActivity(intent);
+                    }
+                }).setCancelable(false).show();
+
     }
 
    /* public void totalQuestionNumber() {
@@ -355,12 +439,12 @@ public class TrialActivity extends AppCompatActivity {
 
     private void updateQuestions(final String query1) {
         q = query1;
-        Log.i("teating", query1);
+        Log.i("teating",query1);
         mButtonChoice1.setEnabled(true);
         mButtonChoice2.setEnabled(true);
         mButtonChoice3.setEnabled(true);
         mButtonChoice4.setEnabled(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/currentpq/" + query1.trim().toLowerCase());
         searchCourseProBar.setVisibility(View.VISIBLE);
         loadingCousreText.setVisibility(View.VISIBLE);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -373,14 +457,12 @@ public class TrialActivity extends AppCompatActivity {
                     showPopUp();
                     return;
                 }
-
-
                 //if (dataSnapshot.exists()) {
                 findViewById(R.id.quiz_layout).setVisibility(View.VISIBLE);
                 total_question_number = (dataSnapshot.getChildrenCount());
                 total_question.setText("Question: " + currentQuestion + "/" + total_question_number + "");
                 course_code.setText(query1.trim().toUpperCase());
-                 //startTimer(60, count_down);
+                //startTimer(2000, count_down);
                 //}
 
                 total++;
@@ -390,25 +472,26 @@ public class TrialActivity extends AppCompatActivity {
                     Log.i("yo", answered.toString() + total);
                     // open result activity
                     finish();
-                    Intent i = new Intent(TrialActivity.this, Result_Activity.class);
+                    Intent i = new Intent(QuizActivity2.this, Result_Activity3.class);
                     i.putExtra("Total", String.valueOf(total));
                     i.putExtra("Correct", String.valueOf(correct));
                     i.putExtra("Incorrect", String.valueOf(wrong));
                     i.putExtra("points", String.valueOf(points));
                     i.putExtra("total_question", String.valueOf(total_question_number));
-                    i.putExtra("query", query1);
-                    i.putExtra("answered", answered.toString());
-                    i.putExtra("score", mScore);
-                    i.putExtra("current_q", currentQuestion);
+                    i.putExtra("query",query1);
+                    i.putExtra("answered",answered.toString());
+                    i.putExtra("score",mScore);
+                    i.putExtra("current_q",currentQuestion);
 
                     startActivity(i);
-                   //stopTimer();
+                    // stopTimer();
                     mButtonChoice1.setEnabled(false);
                     mButtonChoice2.setEnabled(false);
                     mButtonChoice3.setEnabled(false);
                     mButtonChoice4.setEnabled(false);
-                } else {
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("e_literacy/exam/quiz/" + query1.trim().toLowerCase()).child(String.valueOf(total));
+                }else {
+                    databaseReference = FirebaseDatabase.getInstance().getReference()
+                            .child("e_literacy/exam/currentpq/" + query1.trim().toLowerCase()).child(String.valueOf(total));
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -422,18 +505,6 @@ public class TrialActivity extends AppCompatActivity {
                                 currentQuestion++;
 
 
-                                if (currentQuestion > 5 && mCountDownTimer != null) {
-                                    showPopUp2();
-                                    mCountDownTimer.cancel();
-                                    //totalQuestionNumber();
-                                    mButtonChoice1.setEnabled(false);
-                                    mButtonChoice2.setEnabled(false);
-                                    mButtonChoice3.setEnabled(false);
-                                    mButtonChoice4.setEnabled(false);
-
-
-                                }
-
                                 mButtonChoice1.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -442,10 +513,10 @@ public class TrialActivity extends AppCompatActivity {
                                         mButtonChoice3.setEnabled(false);
                                         mButtonChoice4.setEnabled(false);
                                         if (mButtonChoice1.getText().toString().equals(questionLibrary.getAnswer())) {
-                                            answered.put(total, 0);
+                                            answered.put(total,0);
                                             mScore = mScore + 1;
                                             updateScore(mScore);
-                                            Toast.makeText(TrialActivity.this, "correct Answer", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(QuizActivity2.this, "correct Answer", Toast.LENGTH_SHORT).show();
                                             mButtonChoice1.setBackgroundColor(Color.GREEN);
                                             Handler handler = new Handler();
                                             handler.postDelayed(new Runnable() {
@@ -461,8 +532,8 @@ public class TrialActivity extends AppCompatActivity {
                                                 }
                                             }, 1500);
                                         } else {
-                                            answered.put(total, 0);
-                                            Toast.makeText(TrialActivity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
+                                            answered.put(total,0);
+                                            Toast.makeText(QuizActivity2.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             wrong = wrong + 1;
                                             points = points - 5;
                                             mButtonChoice1.setBackgroundColor(Color.RED);
@@ -498,10 +569,10 @@ public class TrialActivity extends AppCompatActivity {
                                         mButtonChoice3.setEnabled(false);
                                         mButtonChoice4.setEnabled(false);
                                         if (mButtonChoice2.getText().toString().equals(questionLibrary.getAnswer())) {
-                                            answered.put(total, 1);
+                                            answered.put(total,1);
                                             mScore = mScore + 1;
                                             updateScore(mScore);
-                                            Toast.makeText(TrialActivity.this, "correct Answer", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(QuizActivity2.this, "correct Answer", Toast.LENGTH_SHORT).show();
                                             mButtonChoice2.setBackgroundColor(Color.GREEN);
                                             Handler handler = new Handler();
                                             handler.postDelayed(new Runnable() {
@@ -516,8 +587,8 @@ public class TrialActivity extends AppCompatActivity {
                                                 }
                                             }, 1500);
                                         } else {
-                                            answered.put(total, 1);
-                                            Toast.makeText(TrialActivity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
+                                            answered.put(total,1);
+                                            Toast.makeText(QuizActivity2.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             wrong = wrong + 1;
                                             points = points - 5;
                                             mButtonChoice2.setBackgroundColor(Color.RED);
@@ -553,10 +624,10 @@ public class TrialActivity extends AppCompatActivity {
                                         mButtonChoice3.setEnabled(false);
                                         mButtonChoice4.setEnabled(false);
                                         if (mButtonChoice3.getText().toString().equals(questionLibrary.getAnswer())) {
-                                            answered.put(total, 2);
+                                            answered.put(total,2);
                                             mScore = mScore + 1;
                                             updateScore(mScore);
-                                            Toast.makeText(TrialActivity.this, "correct Answer", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(QuizActivity2.this, "correct Answer", Toast.LENGTH_SHORT).show();
                                             mButtonChoice3.setBackgroundColor(Color.GREEN);
                                             Handler handler = new Handler();
                                             handler.postDelayed(new Runnable() {
@@ -571,8 +642,8 @@ public class TrialActivity extends AppCompatActivity {
                                                 }
                                             }, 1500);
                                         } else {
-                                            answered.put(total, 2);
-                                            Toast.makeText(TrialActivity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
+                                            answered.put(total,2);
+                                            Toast.makeText(QuizActivity2.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             wrong = wrong + 1;
                                             points = points - 5;
                                             mButtonChoice3.setBackgroundColor(Color.RED);
@@ -608,10 +679,10 @@ public class TrialActivity extends AppCompatActivity {
                                         mButtonChoice3.setEnabled(false);
                                         mButtonChoice4.setEnabled(false);
                                         if (mButtonChoice4.getText().toString().equals(questionLibrary.getAnswer())) {
-                                            answered.put(total, 3);
+                                            answered.put(total,3);
                                             mScore = mScore + 1;
                                             updateScore(mScore);
-                                            Toast.makeText(TrialActivity.this, "correct Answer", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(QuizActivity2.this, "correct Answer", Toast.LENGTH_SHORT).show();
                                             mButtonChoice4.setBackgroundColor(Color.GREEN);
                                             Handler handler = new Handler();
                                             handler.postDelayed(new Runnable() {
@@ -626,8 +697,8 @@ public class TrialActivity extends AppCompatActivity {
                                                 }
                                             }, 1500);
                                         } else {
-                                            answered.put(total, 3);
-                                            Toast.makeText(TrialActivity.this, "wrong Answer", Toast.LENGTH_SHORT).show();
+                                            answered.put(total,3);
+                                            Toast.makeText(QuizActivity2.this, "wrong Answer", Toast.LENGTH_SHORT).show();
                                             wrong = wrong + 1;
                                             points = points - 5;
                                             mButtonChoice4.setBackgroundColor(Color.RED);
@@ -661,7 +732,7 @@ public class TrialActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(TrialActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuizActivity2.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -671,12 +742,62 @@ public class TrialActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(TrialActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuizActivity2.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
 
     }
+
+    /*public void reverseTimer(int seconds, final TextView tv) {
+        mCountDownTimer = new CountDownTimer(seconds * 1000 + 1000, 1000) {
+            @Override
+            public void onTick(long millsUntilFinised) {
+                int seconds = (int) (millsUntilFinised / 1000);
+                int minutes = seconds / 60;
+                seconds = seconds % 60;
+                tv.setText(String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+
+                if (millsUntilFinised < 10000) {
+                    tv.setTextColor(Color.RED);
+                } else {
+                    tv.setTextColor(Color.WHITE);
+                }
+
+            }
+
+            @Override
+            public void onFinish() {
+                tv.setText("Done!");
+                tv.setTextColor(Color.WHITE);
+                Log.i("yo",answered.toString());
+                Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
+                intent.putExtra("Total", String.valueOf(total));
+                intent.putExtra("Correct", String.valueOf(correct));
+                intent.putExtra("Incorrect", String.valueOf(wrong));
+                intent.putExtra("points", String.valueOf(points));
+                intent.putExtra("total_question", String.valueOf(total_question_number));
+                intent.putExtra("query",q);
+                intent.putExtra("answered",answered.toString());
+                intent.putExtra("score", String.valueOf(mScore));
+                startActivity(intent);
+            }
+
+        }.start();
+    }
+
+    public void stopTimer() {
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+
+        }
+    }
+
+    public void startTimer(int seconds, final TextView tv) {
+        if (mCountDownTimer == null) {
+            reverseTimer(seconds, tv);
+        }
+    }*/
 
     private void updateScore(int point) {
         mScoreView.setText("Score: " + mScore);
@@ -689,13 +810,13 @@ public class TrialActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
+   /* @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
-    }
+    }*/
 
     public Boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -722,34 +843,8 @@ public class TrialActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(TrialActivity.this, UserActivity.class));
+        startActivity(new Intent(QuizActivity2.this, UserActivity.class));
+        finish();
     }
-
 }
 
-
-//Getting Users Subscription Start Date and Users Subscription End Date
-   /* public class SubscriptionAdapter extends ArrayAdapter<SubscriptionValidation> {
-        private Activity context;
-        private List<SubscriptionValidation> mValidations;
-
-
-        public SubscriptionAdapter(Activity context, List<SubscriptionValidation> mvalidation) {
-            super(context, R.layout.list_layout, mvalidation);
-            this.context = context;
-            this.mValidations = mvalidation;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View listViewItem = inflater.inflate(R.layout.list_layout, null, true);
-
-            TextView startDate = listViewItem.findViewById(R.id.textView1);
-            TextView endDate = listViewItem.findViewById(R.id.textView2);
-            SubscriptionValidation subscriptionValidation = mValidations.get(position);
-            startDate.setText(subscriptionValidation.getStartDate());
-            endDate.setText(subscriptionValidation.getEndDate());
-            //Log.d("TAG",subscriptionValidation.getStartDate());
-            //Log.d("TAG",subscri*/

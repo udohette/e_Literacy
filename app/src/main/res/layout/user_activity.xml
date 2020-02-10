@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,9 +30,6 @@
             android:src="@mipmap/ic_e_learn_foreground"
             app:civ_border_color="#FF000000">
         </de.hdodenhof.circleimageview.CircleImageView>
-
-
-
 
         <RelativeLayout
             android:id="@+id/profile_layout"
@@ -78,6 +76,17 @@
                 android:text="@string/please_kindly_choose_your_activity"
                 android:textColor="#fff"
                 android:textSize="14sp" />
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_below="@id/user_profile_short_bio"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id">
+            </com.google.android.gms.ads.AdView>
         </RelativeLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -109,7 +118,6 @@
                     android:textColor="@color/color_black"
                     android:padding="20dp"
                     android:text="@string/read_past_questions" />
-
                 <TextView
                     android:id="@+id/take_practice_button"
                     android:layout_width="fill_parent"
@@ -149,6 +157,42 @@
                     android:elevation="4dp"
                     android:padding="20dp"
                     android:text="@string/check_your_cgpa" />
+                <TextView
+                    android:id="@+id/gp4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColor="@color/color_black"
+                    android:elevation="4dp"
+                    android:padding="20dp"
+                    android:text="@string/check_your_cgpa4" />
+                <TextView
+                    android:id="@+id/it_placement"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="4dp"
+                    android:textColor="@color/color_black"
+                    android:padding="20dp"
+                    android:text="@string/it_placement_report" />
+                <TextView
+                    android:id="@+id/summary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="4dp"
+                    android:textColor="@color/color_black"
+                    android:padding="20dp"
+                    android:text="@string/course_summary" />
                 <TextView
                     android:id="@+id/time_table"
                     android:layout_width="fill_parent"
@@ -200,11 +244,9 @@
                     android:textColor="@color/color_black"
                     android:padding="20dp"
                     android:text="@string/contact" />
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
     </RelativeLayout>
 

@@ -2,7 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.techflex_e_literacy">
-
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <supports-screens
@@ -31,10 +36,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".chatApi.MessageActivity"
-            android:theme="@style/AppTheme.NoActionBar">
 
+        <activity
+            android:name=".quiz.FBActivity2"
+            android:label="enter course code">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
+
+
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
+
+        <activity
+            android:name=".chatApi.MessageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".chatApi.ChatAPI"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -48,17 +70,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".quiz.TrialActivity2"
-            android:label="enter course code">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
 
         <service
@@ -79,9 +90,48 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:name=".quiz.TrialActivity2"
+            android:label="enter course code">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".quiz.TrialActivity3"
+            android:label="enter course code">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".quiz.TrialActivity4"
+            android:label="enter course code">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity android:name=".quiz.AnsweredActivity" />
         <activity android:name=".quiz.Result_Activity2" />
         <activity android:name=".quiz.AnsweredActivity2" />
-        <activity android:name=".quiz.AnsweredActivity" />
+        <activity android:name=".quiz.AnsweredActivity3" />
+        <activity android:name=".quiz.Result_Activity3" />
+        <activity android:name=".quiz.Result_Activity4"/>
+        <activity android:name=".quiz.AnsweredActivity4" />
+
         <activity android:name=".quiz.QRcode" />
         <activity android:name=".quiz.MakePayment" />
         <activity
@@ -131,6 +181,28 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:name=".quiz.QuizActivity2"
+            android:label="enter course code">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.techflexco.com"
+                    android:scheme="http" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
         <activity android:name=".quiz.Result_Activity" />
         <activity android:name=".mainActivity.ForgotPassword" />
         <activity
@@ -166,17 +238,15 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service android:name=".Notifications.MyFirebaseMessagingService"
-            android:stopWithTask="false"
+        <service
+            android:name=".Notifications.MyFirebaseMessagingService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:stopWithTask="false">
             <intent-filter>
-
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_EVENT">
-                </action>
+                <action android:name="com.google.firebase.INSTANCE_EVENT" />
             </intent-filter>
-
         </service>
         <!--
  Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -192,6 +262,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 
 </manifest>

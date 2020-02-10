@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 public class TimerService extends Service {
 
-    public static final int notify = 120000;  //interval between two services(Here Service run every 5 Minute)
+    public static final int notify = 10000;  //interval between two services(Here Service run every 5 Minute)
     private Handler mHandler = new Handler();   //run on another Thread to avoid crash
     private Timer mTimer = null;    //timer handling
 
