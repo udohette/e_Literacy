@@ -286,8 +286,8 @@ public class FBActivity2 extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){
-                                final QuestionLibraryFBQ fbq = dataSnapshot.getValue(QuestionLibraryFBQ.class);
-                                mQuestionView.setText(fbq.getQuestion());
+                                final QuestionLibraryFBQ fbq2 = dataSnapshot.getValue(QuestionLibraryFBQ.class);
+                                mQuestionView.setText(fbq2.getQuestion());
                                 currentQuestion++;
 
                                 /*if (currentQuestion > 5 && mCountDownTimer != null){
@@ -301,7 +301,7 @@ public class FBActivity2 extends AppCompatActivity {
                                 next.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        if (answer.getText().toString().toLowerCase().trim().equals(fbq.getAnswer())){
+                                        if (answer.getText().toString().equalsIgnoreCase(fbq2.getAnswer().toLowerCase().trim())){
                                             answered.put(total,0);
                                             mScore = mScore+1;
                                             updateScore(mScore);
@@ -310,7 +310,7 @@ public class FBActivity2 extends AppCompatActivity {
 
                                             next.setBackgroundColor(Color.parseColor("#03A9f4"));
                                             answer.getText().clear();
-                                            updateQuestion(query1);
+                                               updateQuestion(query1);
 
 
 

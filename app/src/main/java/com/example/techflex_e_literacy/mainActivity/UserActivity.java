@@ -51,7 +51,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseUser fuser;
 
     TextView user_profile_name, take_practice_button, gp,gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            past_questions, summary, contact_us,advert,timee_table,portal_analysis;
+            past_questions, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper;
     ImageView chat;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
@@ -95,6 +95,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         chat = findViewById(R.id.chat);
         gp = findViewById(R.id.gp);
         gp4 = findViewById(R.id.gp4);
+        tma_score_keeper = findViewById(R.id.tma_score_keeper);
         timee_table = findViewById(R.id.time_table);
         portal_analysis = findViewById(R.id.portal_analysis);
         //project_topic_button = findViewById(R.id.project_topic_button);
@@ -118,6 +119,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         chat.setOnClickListener(this);
         gp.setOnClickListener(this);
         gp4.setOnClickListener(this);
+        tma_score_keeper.setOnClickListener(this);
         //downlaod_pq.setOnClickListener(this);
         //view_pq.setOnClickListener(this);
        // project_topic_button.setOnClickListener(this);
@@ -237,7 +239,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse("http://www.nou.edu.ng/courseware"));
+            intent.setData(Uri.parse("https://nou.edu.ng/courseware"));
             startActivity(intent);
         }
         if (view == timee_table){
@@ -289,6 +291,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view == chat){
             startActivity(new Intent(UserActivity.this, ChatAPI.class));
+        }
+        if (view == tma_score_keeper){
+            startActivity(new Intent(UserActivity.this,TMAScoreSheet.class));
         }
 
     }

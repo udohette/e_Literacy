@@ -66,6 +66,17 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="10dp"
                 android:layout_below="@id/dept"
+                android:textColor="@color/colorPrimaryDark"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Study Center"
+                android:id="@+id/study_center"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@id/state"
                 android:textColor="@color/colorPrimaryDark">
 
             </TextView>

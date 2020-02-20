@@ -43,18 +43,19 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class ProfileFragment extends Fragment {
-    StorageReference storageReference;
+    private StorageReference storageReference;
     private static final int IMAGE_REQUEST = 1;
     private Uri imageURL;
     private StorageTask uploadTask;
 
-    CircleImageView image_profile;
-    TextView username;
-    TextView dept;
-    TextView state;
+    private CircleImageView image_profile;
+    private TextView username;
+    private TextView dept;
+    private TextView state;
+    private TextView study_center;
 
-    DatabaseReference mReference;
-    FirebaseUser fuser;
+    private DatabaseReference mReference;
+    private FirebaseUser fuser;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment {
         username = view.findViewById(R.id.username);
         dept =  view.findViewById(R.id.dept);
         state = view.findViewById(R.id.state);
+        study_center = view.findViewById(R.id.study_center);
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
@@ -73,9 +75,10 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isAdded()){
                     User user = dataSnapshot.getValue(User.class);
-                    username.setText(user.getUsername());
-                    dept.setText(user.getDepartment());
-                    state.setText(user.getState());
+                    username.setText(String.format("Name: %s", user.getUsername()));
+                    dept.setText(String.format("Department: %s", user.getDepartment()));
+                    state.setText(String.format("State: %s", user.getState()));
+                    study_center.setText(String.format("Study Center: %s", user.getStudy_center()));
                     if (user.getImageURL().equals("default")){
                         image_profile.setImageResource(R.mipmap.ic_e_learn_foreground);
                     }else {

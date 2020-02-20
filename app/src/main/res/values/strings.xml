@@ -358,6 +358,7 @@ Dennis S.A | IT Support Executive
     <string name="time_table">Time Table</string>
     <string name="portal_analysis">Portal Analysis</string>
     <string name="course_summary">Course Summary</string>
+    <string name="tma_score_keeper">TMA Score Keeper</string>
 
     <string-array name="types">
         <item>atm</item>

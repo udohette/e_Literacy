@@ -8,12 +8,13 @@ public class User {
     private String search;
     private String department;
     private String state;
+    private String study_center;
 
 
     public User() {
     }
 
-    public User(String id, String username, String imageURL, String status, String search,String department, String state) {
+    public User(String id, String username, String imageURL, String status, String search,String department, String state,String study_center) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
@@ -21,7 +22,9 @@ public class User {
         this.search = search;
         this.department = department;
         this.state = state;
+        this.study_center = study_center;
     }
+
 
     public String getId() {
         return id;
@@ -77,5 +80,13 @@ public class User {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public void setStudy_center(String study_center) {
+        this.study_center = study_center;
+    }
+
+    public String getStudy_center() {
+        return study_center;
     }
 }

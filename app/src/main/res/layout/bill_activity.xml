@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:text="Price Per Course = #200"
+            android:text="Price Per Course = #250"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"

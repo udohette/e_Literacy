@@ -79,7 +79,7 @@ public class Bill extends AppCompatActivity {
                 }else {
                     list.add(course);
                     coures_picked++;
-                    price = price+200;
+                    price = price+250;
                     num_of_course.setText("Courses Picked: "+coures_picked+"@ "+"#"+price);
                     dataListView.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
@@ -94,7 +94,7 @@ public class Bill extends AppCompatActivity {
                 }else {
                     list.remove(0);
                     coures_picked--;
-                    price = price -200;
+                    price = price -250;
                     num_of_course.setText("Courses Picked: "+coures_picked+"@ "+"#"+price);
                     arrayAdapter.notifyDataSetChanged();
                 }
@@ -182,27 +182,6 @@ public class Bill extends AppCompatActivity {
         c.add(Calendar.DATE, 90);  // number of days to add
         String end_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + end_date);
-
-        /*Date date  = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
-        String strDate = formatter.format(date);
-        Log.d("TAG2", "Start Date: " + strDate);
-
-        //getting users subscription end-date
-        Date enddate  = new Date();
-        SimpleDateFormat formatter1 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
-        String endDate = formatter.format(enddate);
-        Calendar calendar1 = Calendar.getInstance();
-
-        try {
-            calendar1.setTime(formatter1.parse(endDate));
-            calendar1.add(Calendar.DATE, 2); // number of days for subscription = 2days
-            endDate = formatter1.format(calendar1.getTime());
-            Log.d("TAG2", "End Date: " +endDate);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
 
 
         String semester_count = semester_select.getSelectedItem().toString().trim();

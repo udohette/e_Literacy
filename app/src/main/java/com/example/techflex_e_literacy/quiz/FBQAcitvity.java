@@ -303,7 +303,7 @@ public class FBQAcitvity extends AppCompatActivity {
                                 next.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        if (answer.getText().toString().toLowerCase().trim().equals(fbq.getAnswer())){
+                                        if (answer.getText().toString().equalsIgnoreCase(fbq.getAnswer().toLowerCase().trim())){
                                             answered.put(total,0);
                                             mScore = mScore+1;
                                             updateScore(mScore);

@@ -45,7 +45,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity{
-    EditText username_edittext, password_edittext, userEmail_edittext, department,state;
+    EditText username_edittext, password_edittext, userEmail_edittext, department,state,study_center;
     Button login_now_button, create_account_button;
     TextView link_login;
     private FirebaseAuth auth;
@@ -62,6 +62,7 @@ public class SignupActivity extends AppCompatActivity{
         password_edittext = findViewById(R.id.password_edit_text);
         login_now_button = findViewById(R.id.login_now_button);
         state = findViewById(R.id.state);
+        study_center = findViewById(R.id.study_center);
         create_account_button = findViewById(R.id.create_account_button);
         userEmail_edittext = findViewById(R.id.user_email_edit_text);
         link_login = findViewById(R.id.link_login);
@@ -96,6 +97,7 @@ public class SignupActivity extends AppCompatActivity{
                 final String userPassword = password_edittext.getText().toString().trim();
                 final String department1 = department.getText().toString().trim();
                 final String userState = state.getText().toString().trim();
+                final String stud_center = study_center.getText().toString().trim();
                 if (userName.isEmpty()) {
                     username_edittext.setError(getString(R.string.input_error_name));
                     username_edittext.requestFocus();
@@ -132,14 +134,14 @@ public class SignupActivity extends AppCompatActivity{
                     return;
                 }
 
-                registerUser(userName,userEmail,userPassword,department1,userState);
+                registerUser(userName,userEmail,userPassword,department1,userState,stud_center);
 
 
             }
         });
 
     }
-    private void registerUser(final String username, String email, String password, final String department, final String state){
+    private void registerUser(final String username, String email, String password, final String department, final String state, final String study_cen){
         progressBar.setVisibility(View.VISIBLE);
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -155,6 +157,7 @@ public class SignupActivity extends AppCompatActivity{
                     hashMap.put("username", username);
                     hashMap.put("department",department);
                     hashMap.put("state",state);
+                    hashMap.put("study_center",study_cen);
                     hashMap.put("imageURL", "default");
                     hashMap.put("status","offline");
                     //hashMap.put("timestamp",ServerValue.TIMESTAMP);

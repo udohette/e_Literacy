@@ -170,6 +170,18 @@
                     android:padding="20dp"
                     android:text="@string/check_your_cgpa4" />
                 <TextView
+                    android:id="@+id/tma_score_keeper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="4dp"
+                    android:textColor="@color/color_black"
+                    android:padding="20dp"
+                    android:text="@string/tma_score_keeper" />
+                <TextView
                     android:id="@+id/it_placement"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
