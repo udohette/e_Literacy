@@ -33,13 +33,17 @@ import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.example.techflex_e_literacy.model.Courses;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -346,6 +350,38 @@ public class QuizActivity extends AppCompatActivity {
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
+            mDatabaseReference.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot d:dataSnapshot.getChildren()){
+                        try {
+                            Courses c = d.getValue(Courses.class);
+                            Log.i("testing_courses",c.getEndDate());
+                            if (c.getCourseReg().contains(query)){
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+                                Date strDate = dateFormat.parse(c.getEndDate());
+                                if (!new Date().after(strDate)) {
+                                    startQuiz();
+                                }else {
+                                    Toast.makeText(QuizActivity.this,"Expired",Toast.LENGTH_LONG).show();
+                                }
+
+                            }else {
+                                Toast.makeText(QuizActivity.this,"Not added course",Toast.LENGTH_LONG).show();
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             startQuiz();
         }
 
