@@ -26,12 +26,16 @@ import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.example.techflex_e_literacy.model.Courses;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -56,6 +60,7 @@ public class FBActivity2 extends AppCompatActivity {
     String course_code1;
     HashMap<Integer, Integer> answered = new HashMap<>();
     DatabaseReference databaseReference;
+    DatabaseReference mDatabaseReference;
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimeRunning;
@@ -68,6 +73,8 @@ public class FBActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_fb2);
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("courseRegDb");
 
         mScoreView = findViewById(R.id.score);
         mQuestionView = findViewById(R.id.question);
@@ -203,11 +210,48 @@ public class FBActivity2 extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
+            mDatabaseReference.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot d:dataSnapshot.getChildren()){
+                        try {
+                            Courses c = d.getValue(Courses.class);
+                            Log.i("testing_courses",c.getEndDate());
+                            if (c.getCourseReg().contains(query)){
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+                                Date strDate = dateFormat.parse(c.getEndDate());
+                                if (!new Date().after(strDate)) {
+                                    //startQuiz();
+                                    return;
+                                }else {
+                                    // Toast.makeText(QuizActivity.this,"Expired",Toast.LENGTH_LONG).show();
+                                    expiredSubscriptionPopUp();
+                                }
+
+                            }else {
+                                Toast.makeText(FBActivity2.this,"You didn't Subscribe for this course",Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(FBActivity2.this, FBActivity2.class);
+                                startActivity(intent);
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             startQuiz();
             //updateQuestion(query);
         }
@@ -391,6 +435,27 @@ public class FBActivity2 extends AppCompatActivity {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+    void expiredSubscriptionPopUp() {
+        new AlertDialog.Builder(FBActivity2.this)
+                .setTitle("Attention!")
+                .setMessage("Your Subscription has Expired, Kindly renew")
+                .setPositiveButton("Renew", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(FBActivity2.this, Bill.class);
+                        startActivity(intent);
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(FBActivity2.this, UserActivity.class);
+                        startActivity(intent);
+                    }
+                }).setCancelable(false).show();
+
     }
     /*public void reverseTimer(int seconds, final TextView tv) {
         mCountDownTimer = new CountDownTimer(seconds * 1000 + 1000, 1000) {

@@ -48,13 +48,16 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
+    implementation 'com.google.firebase:firebase-ads:18.3.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     annotationProcessor 'com.android.support:support-annotations:28.0.0'
     implementation 'com.github.leinardi:FloatingActionButtonSpeedDial:master-SNAPSHOT'
+    implementation 'br.com.simplepass:loading-button-android:1.14.0'
     compile 'com.androidadvance:topsnackbar:0.0.9'
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
+
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 }

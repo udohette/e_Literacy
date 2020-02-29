@@ -30,19 +30,19 @@
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_below="@+id/edt_facultyName"
-        android:src="@drawable/ic_arrow_forward_black_24dp"
+        android:src="@drawable/ic_arrow_forward"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:background="@drawable/rect_bg2"/>
+        android:background="@drawable/dialog_btn_next"/>
 
     <ImageButton
         android:id="@+id/btn_previous"
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_below="@+id/edt_facultyName"
-        android:src="@drawable/ic_arrow_back_black_24dp"
+        android:src="@drawable/ic_arrow_back"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:background="@drawable/rect_bg2"/>
+        android:background="@drawable/dialog_btn_previous"/>
 
 </RelativeLayout>

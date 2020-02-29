@@ -206,8 +206,9 @@ public class TrialActivity extends AppCompatActivity {
     }
         @Override
     public void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
+            super.onNewIntent(intent);
+            handleIntent(intent);
+        }
 
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {

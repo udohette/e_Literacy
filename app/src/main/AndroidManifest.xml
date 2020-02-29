@@ -36,6 +36,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".mainActivity.TMAScoreSheet"
             android:label="TMA Score Sheet">
 

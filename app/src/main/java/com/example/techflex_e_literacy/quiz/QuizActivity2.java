@@ -33,19 +33,28 @@ import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.example.techflex_e_literacy.model.Courses;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class QuizActivity2 extends AppCompatActivity {
     private ConstraintLayout mConstraintLayout;
+    private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
+    private InterstitialAd mInterstitialAd;
 
     private EditText mEditTextInput;
     private TextView mScoreView;
@@ -84,6 +93,51 @@ public class QuizActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_quiz3);
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //displaying adds
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
+                .build();
+        //creating interstitialAd
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(adRequest);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                // Load the next interstitial.
+                //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                onBackPressed();
+                onSupportNavigateUp();
+            }
+        });
+
 
         //listView = findViewById(R.id.listview_sub);
         mValidationList = new ArrayList<>();
@@ -339,12 +393,49 @@ public class QuizActivity2 extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
 
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
+            mDatabaseReference.orderByChild("email").equalTo(FirebaseAuth.getInstance().getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot d:dataSnapshot.getChildren()){
+                        try {
+                            Courses c = d.getValue(Courses.class);
+                            Log.i("testing_courses",c.getEndDate());
+                            if (c.getCourseReg().contains(query)){
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+                                Date strDate = dateFormat.parse(c.getEndDate());
+                                if (!new Date().after(strDate)) {
+                                    //startQuiz();
+                                    return;
+                                }else {
+                                    // Toast.makeText(QuizActivity.this,"Expired",Toast.LENGTH_LONG).show();
+                                    expiredSubscriptionPopUp();
+                                }
+
+                            }else {
+                                Toast.makeText(QuizActivity2.this,"You didn't Subscribe for this course",Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(QuizActivity2.this, QuizActivity2.class);
+                                startActivity(intent);
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             startQuiz();
         }
 
@@ -425,17 +516,6 @@ public class QuizActivity2 extends AppCompatActivity {
                 }).setCancelable(false).show();
 
     }
-
-   /* public void totalQuestionNumber() {
-        int number_of_question = total;
-        String id = num.push().getKey();
-        NumberOfQuestion numberOfQuestion = new NumberOfQuestion(number_of_question, id);
-        num.child(id).setValue(numberOfQuestion);
-        //Toast.makeText(this,"CourseAdded Successfully",Toast.LENGTH_SHORT).show();
-        Log.d("TAG", number_of_question + "");
-
-    }*/
-
 
     private void updateQuestions(final String query1) {
         q = query1;
@@ -805,9 +885,15 @@ public class QuizActivity2 extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
-        finish();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            //Do something else
+            onBackPressed();
+            finish();
+        }
         return true;
+
     }
 
    /* @Override
@@ -842,9 +928,16 @@ public class QuizActivity2 extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(QuizActivity2.this, UserActivity.class));
-        finish();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            mCountDownTimer.cancel();
+            startActivity(new Intent(QuizActivity2.this, UserActivity.class));
+            finish();
+        }
+
     }
 }
 

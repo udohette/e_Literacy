@@ -40,18 +40,18 @@ public class Bill extends AppCompatActivity {
     TextView num_of_course;
     int coures_picked = 0;
     int price;
-    Spinner semester_select;
     private EditText course_code;
     private  ListView dataListView;
     private ArrayList<String> list;
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseCourseReg;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bill_activity);
+
+
 
         add = findViewById(R.id.add_course);
         num_of_course = findViewById(R.id.num_of_course);
@@ -59,7 +59,6 @@ public class Bill extends AppCompatActivity {
         dataListView = findViewById(R.id.listview);
         course_code = findViewById(R.id.course_code);
         save = findViewById(R.id.save_course_button);
-        semester_select = findViewById(R.id.semester_select);
         databaseCourseReg = FirebaseDatabase.getInstance().getReference("courseRegDb");
         list = new ArrayList<String>();
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,list);
@@ -171,6 +170,8 @@ public class Bill extends AppCompatActivity {
 
     }
     public void addCourse() throws ParseException {
+        Spinner semester_select;
+       semester_select = findViewById(R.id.semester_select);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //  users subscription start date using system date
 
@@ -179,7 +180,7 @@ public class Bill extends AppCompatActivity {
         String reg_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + reg_date);
 
-        c.add(Calendar.DATE, 90);  // number of days to add
+        c.add(Calendar.DATE, 1);  // number of days to add
         String end_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + end_date);
 
