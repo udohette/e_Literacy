@@ -40,6 +40,8 @@
         <activity
             android:name=".mainActivity.TMAScoreSheet"
             android:label="TMA Score Sheet"></activity>
+
+        </activity>
         <activity
             android:name=".quiz.FBActivity2"
             android:label="enter course code">

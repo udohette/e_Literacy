@@ -29,8 +29,10 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
 
 import java.security.SecureRandom;
+import java.text.ParseException;
 
 public class SubscriptionCodeActivity extends AppCompatActivity {
+    Context mContext;
     private String password;
     String email = null;
     String phoneNumber = null;
@@ -42,6 +44,7 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_code);
         showPopUp();
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         password = generateRandomKey(6);

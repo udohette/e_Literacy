@@ -359,6 +359,8 @@ Dennis S.A | IT Support Executive
     <string name="portal_analysis">Portal Analysis</string>
     <string name="course_summary">Course Summary</string>
     <string name="tma_score_keeper">TMA Score Keeper</string>
+    <string name="course_videos">Course Videos</string>
+    <string name="how_to_use_app">how to use App</string>
 
     <string-array name="types">
         <item>atm</item>

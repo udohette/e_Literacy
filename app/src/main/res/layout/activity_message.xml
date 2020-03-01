@@ -22,7 +22,6 @@
                 android:id="@+id/toolbar"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_width="match_parent"
-                app:popupTheme="@style/menuStyle"
                 android:theme="@style/Theme.AppCompat.Light"
                 android:background="@color/colorPrimaryDark">
                 <de.hdodenhof.circleimageview.CircleImageView

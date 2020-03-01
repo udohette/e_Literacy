@@ -26,6 +26,9 @@ import com.example.techflex_e_literacy.cbt_activity.ProgramLevelFragment;
 import com.example.techflex_e_literacy.mainActivity.ForgotPassword;
 import com.example.techflex_e_literacy.mainActivity.LoginActivity;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +44,8 @@ import java.util.Random;
 import java.util.Set;
 
 public class AnsweredActivity extends AppCompatActivity {
+    private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
+    private InterstitialAd mInterstitialAd;
 
     String query;
     String answered;
@@ -65,6 +70,50 @@ public class AnsweredActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answered);
+
+        //displaying adds
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
+                .build();
+        //creating interstitialAd
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                // Load the next interstitial.
+                //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                onBackPressed();
+                finish();
+            }
+        });
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("courseRegDb");
         mQuestionView = findViewById(R.id.question);
         mButtonChoice1 = findViewById(R.id.choice1);
@@ -138,8 +187,13 @@ public class AnsweredActivity extends AppCompatActivity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                startActivity(new Intent(AnsweredActivity.this, UserActivity.class));
+                if (mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                }else {
+                    //Do something else
+                    finish();
+                    startActivity(new Intent(AnsweredActivity.this, UserActivity.class));
+                }
             }
         });
 
@@ -271,8 +325,14 @@ public class AnsweredActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(AnsweredActivity.this, UserActivity.class));
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            startActivity(new Intent(AnsweredActivity.this, UserActivity.class));
+        }
+
     }
 
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,8 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,17 +36,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     RelativeLayout login_relative_layout;
+    ImageView how_to;
     EditText username_edittext, password_edittext, userEmail_edittext;
-    Button login_now_button, signup_now_button,reset_password_button;
+    Button login_now_button;
+    TextView signup_now_button,reset_password_button;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private CircularProgressButton cirLoginButton;
+
 
     public static final String CHANNEL_ID = "e_Literacy";
     private static final String CHANNEL_NAME = "e_Literacy";
@@ -52,7 +64,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //for changing status bar icon colors
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         setContentView(R.layout.main_activity_layout);
+
+        cirLoginButton = findViewById(R.id.cirLoginButton);
+        cirLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cirLoginButton.startAnimation();
+                userLogin();
+            }
+        });
+
+        TextView marquee = findViewById(R.id.marquee);
+        marquee.setSelected(true);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
@@ -63,9 +91,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar = new ProgressBar(this);
         username_edittext = findViewById(R.id.username_edit_text);
         password_edittext = findViewById(R.id.password_edit_text);
-        login_now_button = findViewById(R.id.login_now_button);
+       // login_now_button = findViewById(R.id.login_now_button);
         signup_now_button = findViewById(R.id.sign_up_btn);
-        progressBar = findViewById(R.id.login_progressbar);
+        how_to = findViewById(R.id.how_to);
+       // progressBar = findViewById(R.id.login_progressbar);
         reset_password_button = findViewById(R.id.password_reset_btn);
         //login_relative_layout = findViewById(R.id.login_relative_layout);
         userEmail_edittext = findViewById(R.id.user_email_edit_text_edit);
@@ -82,7 +111,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         handler.postDelayed(runnable, 3000);
 
         signup_now_button.setOnClickListener(this);
-        login_now_button.setOnClickListener(this);
+        //login_now_button.setOnClickListener(this);
+        how_to.setOnClickListener(this);
         reset_password_button.setOnClickListener(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -212,16 +242,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        if (view == login_now_button){
-            userLogin();
-        }
         if (view == signup_now_button){
             finish();
             startActivity(new Intent(this, SignupActivity.class));
+            //overridePendingTransition(R.anim.slide_in_right,R.anim.stay);
         }
         if (view == reset_password_button){
             finish();
             startActivity(new Intent(this, ForgotPassword.class));
+        }
+        if (view == how_to){
+            startActivity(new Intent(LoginActivity.this,HowTo.class));
         }
     }
 

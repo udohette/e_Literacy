@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity{
 
         username_edittext = findViewById(R.id.username_edit_text);
         password_edittext = findViewById(R.id.password_edit_text);
-        login_now_button = findViewById(R.id.login_now_button);
+       // login_now_button = findViewById(R.id.login_now_button);
         state = findViewById(R.id.state);
         study_center = findViewById(R.id.study_center);
         create_account_button = findViewById(R.id.create_account_button);

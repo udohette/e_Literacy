@@ -22,6 +22,9 @@ import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +38,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AnsweredActivity4 extends AppCompatActivity {
+    private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
+    private InterstitialAd mInterstitialAd;
     String answered;
     String query;
     String totalq;
@@ -61,6 +66,50 @@ public class AnsweredActivity4 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answered4);
+
+        //displaying adds
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
+                .build();
+        //creating interstitialAd
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                // Load the next interstitial.
+                //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                onBackPressed();
+                onSupportNavigateUp();
+                finish();
+            }
+        });
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mQuestionView = findViewById(R.id.question);
@@ -123,8 +172,13 @@ public class AnsweredActivity4 extends AppCompatActivity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
+                if (mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                }else {
+                    //Do something else
+                    finish();
+                    startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
+                }
             }
         });
     }
@@ -231,14 +285,27 @@ public class AnsweredActivity4 extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            //Do something else
+            onBackPressed();
+        }
+
         return true;
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
-        finish();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
+            finish();
+        }
+
+
     }
 }
 

@@ -1,169 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/color_black"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/login_bk_color"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:layout_gravity="center"
     tools:context=".mainActivity.LoginActivity"
     tools:showIn="@layout/main_activity_layout"
-    android:fillViewport="true"
     android:id="@+id/relativeLayout5">
+        <TextView
+            android:id="@+id/marquee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*TMA1 to Start 9th March 2020*Exam  Begins 1st July 2020*Noun Releases another Graduation List*Clearance start from 9th march 2020*Convocation to  take place by  March 2020 @ Abuja*Payment of fee extended till 31th March 2020*Always goto your Study center for Assistance* Always Chat Admin  for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textColorLink="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:marqueeRepeatLimit="marquee_forever"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:paddingTop="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_centerVertical="true"
+                                    android:layout_alignParentLeft="true"
+                                    style="@style/viewParent.headerText.NoMode"
+                                    android:text="Already \nhave an \nAccount?"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_register_hero"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/techflex_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_e_learn_foreground"
-                android:layout_marginTop="50dp"
-                android:contentDescription="login Logo" />
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textInputEmail"
+                            style="@style/parent"
+                            android:layout_marginTop="@dimen/loginViewsMargin">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/user_email_edit_text_edit"
+                                    style="@style/modifiedEditText"
+                                    android:inputType="textEmailAddress"
+                                    android:drawableStart="@drawable/ic_action_email"
+                                    android:maxLines="1"
+                                    android:textSize="20sp"
+                                    android:hint="@string/enter_email">
 
-            <TextView
-                android:id="@+id/tv_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Login"
-                android:textColor="@color/red"
-                android:textSize="30sp"
-               android:layout_marginStart="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/techflex_logo"/>
+                                </com.google.android.material.textfield.TextInputEditText>
 
+                        </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/user_email_edit_text_edit"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textInputPassword"
+                            style="@style/parent"
+                            android:layout_marginTop="@dimen/loginViewsMargin">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/password_edit_text"
+                                    style="@style/modifiedEditText"
+                                    android:inputType="textEmailAddress"
+                                    android:drawableStart="@drawable/ic_action_password"
+                                    android:maxLines="1"
+                                    android:textSize="20sp"
+                                    android:hint="@string/enter_password">
 
-                android:fontFamily="sans-serif-light"
-                android:hint="@string/enter_email"
-                android:inputType="textWebEmailAddress"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:drawableLeft="@drawable/ic_action_email"
-                android:paddingStart="20sp"
-                android:paddingEnd="20sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:textColorHint="@color/white"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_login"/>
+                                </com.google.android.material.textfield.TextInputEditText>
 
-            <EditText
-                android:id="@+id/password_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:fontFamily="sans-serif-light"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword"
-                android:textColor="@color/white"
-                android:paddingStart="20sp"
-                android:drawableLeft="@drawable/ic_action_password"
-                android:paddingEnd="20sp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:textColorHint="@color/white"
-                android:layout_marginTop="20dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:autofillHints="Please enter email address"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_email_edit_text_edit" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
+                        <TextView
+                            android:id="@+id/password_reset_btn"
+                            style="@style/viewParent"
+                            android:text="Forgot Password?"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/newsMoreTextSize"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="10dp"/>
 
-            <Button
-                android:id="@+id/login_now_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:background="@drawable/login_btn"
-                android:fontFamily="sans-serif-medium"
-                android:paddingLeft="70dp"
-                android:paddingRight="70dp"
-                android:text="Login  Now"
-                android:textAllCaps="false"
-                android:textColor="@color/red"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.437"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password_edit_text" />
+                        <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                            android:id="@+id/cirLoginButton"
+                            style="@style/loginButton"
+                            app:spinning_bar_width="4dp"
+                            app:spinning_bar_color="#FFF"
+                            android:text="Login"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/loginViewsMargin"
+                            app:spinning_bar_padding="6dp"
+                            app:initialCornerAngle="27dp"/>
 
-            <ProgressBar
-                android:id="@+id/login_progressbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_now_button" />
+                        <TextView
+                            android:id="@+id/sign_up_btn"
+                            style="@style/parent"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/themeColor"
+                            android:textSize="17sp"
+                            android:text="New user? Register Now"
+                            android:layout_marginTop="@dimen/loginViewsMargin" />
 
 
-            <Button
-                android:id="@+id/sign_up_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:weightSum="12"
+                            android:gravity="center"
+                            android:layout_marginTop="30dp">
 
-                android:background="@color/transparent"
-                android:fontFamily="sans-serif"
-                android:text="Signup Now"
-                android:textAllCaps="true"
-                android:textColor="@color/red"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_progressbar" />
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:background="@color/colorPrimaryDark"
+                                    android:layout_weight="3"/>
 
-            <Button
-                android:id="@+id/password_reset_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/transparent"
-                android:fontFamily="sans-serif"
-                android:text="forgot password?"
-                android:textAllCaps="true"
-                android:textColor="@color/red"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sign_up_btn" />
+                                <TextView
+                                    style="@style/viewParent.headerText.NoMode"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Use other Methods"
+                                    android:layout_weight="6"
+                                    android:textSize="12sp"
+                                    android:textAlignment="center"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:gravity="center"
-                android:text="@string/_2019_techflex_e_Literacy"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:background="@color/colorPrimaryDark"
+                                    android:layout_weight="3"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="20dp">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_facebook"/>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_google_plus"
+                                    android:layout_marginLeft="10dp"/>
+                        </LinearLayout>
+                </LinearLayout>
+        </ScrollView>
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="11dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_side_bg"/>
+        <ImageView
+            android:id="@+id/how_to"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_img"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="30dp"
+            android:contentDescription="@string/how_to_use_app" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/_2019_techflex_e_Literacy"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

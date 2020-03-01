@@ -5,17 +5,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/themeColor"
     tools:context=".mainActivity.UserActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/marquee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*TMA1 to Start 9th March 2020*Exam  Begins 1st July 2020*Noun Releases another Graduation List*Clearance start from 9th march 2019*Convocation to  take place by  March 2020 @ Abuja*Payment of fee extended till 31th March 2020*Always goto your Study center for Assistance* Always Chat Admin  for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:padding="3dp"
+            android:textStyle="bold"
+            android:textColorLink="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:marqueeRepeatLimit="marquee_forever">
+
+        </TextView>
 
         <ImageView
             android:contentDescription="@string/top_background"
             android:id="@+id/header_cover_image"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_below="@id/marquee"
             android:scaleType="centerCrop"
             app:srcCompat="@color/color_black" />
         <de.hdodenhof.circleimageview.CircleImageView
@@ -132,6 +151,18 @@
                     android:textColor="@color/color_black"
                     android:padding="20dp"
                     android:text="@string/take_cbt_practice" />
+                <TextView
+                    android:id="@+id/tma_score_keeper"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="4dp"
+                    android:textColor="@color/color_black"
+                    android:padding="20dp"
+                    android:text="@string/tma_score_keeper" />
 
                 <TextView
                     android:id="@+id/e_course_button"
@@ -169,18 +200,7 @@
                     android:elevation="4dp"
                     android:padding="20dp"
                     android:text="@string/check_your_cgpa4" />
-                <TextView
-                    android:id="@+id/tma_score_keeper"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="#fff"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:elevation="4dp"
-                    android:textColor="@color/color_black"
-                    android:padding="20dp"
-                    android:text="@string/tma_score_keeper" />
+
                 <TextView
                     android:id="@+id/it_placement"
                     android:layout_width="fill_parent"
@@ -244,6 +264,21 @@
                     android:textColor="@color/color_black"
                     android:padding="20dp"
                     android:text="@string/advert" />
+
+                <TextView
+                    android:id="@+id/course_video"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="4dp"
+                    android:textColor="@color/color_black"
+                    android:padding="20dp"
+                    android:text="@string/course_videos" />
                 <TextView
                     android:id="@+id/contact_us"
                     android:layout_width="fill_parent"

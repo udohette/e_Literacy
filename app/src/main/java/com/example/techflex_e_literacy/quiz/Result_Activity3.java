@@ -13,8 +13,13 @@ import android.widget.Toast;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class Result_Activity3 extends AppCompatActivity implements View.OnClickListener {
+    private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
+    private InterstitialAd mInterstitialAd;
     TextView textView4,textView5,textView6,textView7,count_down;
     Toolbar toolbar;
     Button retake,btnWrongQstns;
@@ -31,6 +36,48 @@ public class Result_Activity3 extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_3);
+        //displaying adds
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
+                .build();
+        //creating interstitialAd
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                // Load the next interstitial.
+                //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                onBackPressed();
+                onSupportNavigateUp();
+            }
+        });
 
         btnWrongQstns = findViewById(R.id.btnWrongQstns);
 
@@ -72,8 +119,13 @@ public class Result_Activity3 extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view == retake) {
-            finish();
-            startActivity(new Intent(Result_Activity3.this, UserActivity.class));
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }else {
+                //Do something else
+                onBackPressed();
+                finish();
+            }
         }else if (view.getId() == R.id.btnWrongQstns){
             if (answered.length()>2) {
                 Intent i = new Intent(Result_Activity3.this, AnsweredActivity3.class);
@@ -92,14 +144,25 @@ public class Result_Activity3 extends AppCompatActivity implements View.OnClickL
     }
 
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            onBackPressed();
+        }
         return true;
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(Result_Activity3.this, UserActivity.class));
-        //no  back tracking after click  on  back  button
-        finish();
+        if (mInterstitialAd.isLoaded()){
+            mInterstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            startActivity(new Intent(Result_Activity3.this, UserActivity.class));
+            //no  back tracking after click  on  back  button
+            finish();
+
+        }
+
     }
 }

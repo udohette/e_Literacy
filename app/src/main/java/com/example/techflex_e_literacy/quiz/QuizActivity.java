@@ -344,6 +344,7 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
 
@@ -361,13 +362,17 @@ public class QuizActivity extends AppCompatActivity {
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
                                 Date strDate = dateFormat.parse(c.getEndDate());
                                 if (!new Date().after(strDate)) {
-                                    startQuiz();
+                                    //startQuiz();
+                                    return;
                                 }else {
-                                    Toast.makeText(QuizActivity.this,"Expired",Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(QuizActivity.this,"Expired",Toast.LENGTH_LONG).show();
+                                    expiredSubscriptionPopUp();
                                 }
 
                             }else {
-                                Toast.makeText(QuizActivity.this,"Not added course",Toast.LENGTH_LONG).show();
+                                Toast.makeText(QuizActivity.this,"You didn't Subscribe for this course",Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(QuizActivity.this, QuizActivity.class);
+                                startActivity(intent);
                             }
 
 
@@ -462,17 +467,6 @@ public class QuizActivity extends AppCompatActivity {
         }).setCancelable(false).show();
 
     }
-
-   /* public void totalQuestionNumber() {
-        int number_of_question = total;
-        String id = num.push().getKey();
-        NumberOfQuestion numberOfQuestion = new NumberOfQuestion(number_of_question, id);
-        num.child(id).setValue(numberOfQuestion);
-        //Toast.makeText(this,"CourseAdded Successfully",Toast.LENGTH_SHORT).show();
-        Log.d("TAG", number_of_question + "");
-
-    }*/
-
 
     private void updateQuestions(final String query1) {
         q = query1;
@@ -786,56 +780,6 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-    /*public void reverseTimer(int seconds, final TextView tv) {
-        mCountDownTimer = new CountDownTimer(seconds * 1000 + 1000, 1000) {
-            @Override
-            public void onTick(long millsUntilFinised) {
-                int seconds = (int) (millsUntilFinised / 1000);
-                int minutes = seconds / 60;
-                seconds = seconds % 60;
-                tv.setText(String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-
-                if (millsUntilFinised < 10000) {
-                    tv.setTextColor(Color.RED);
-                } else {
-                    tv.setTextColor(Color.WHITE);
-                }
-
-            }
-
-            @Override
-            public void onFinish() {
-                tv.setText("Done!");
-                tv.setTextColor(Color.WHITE);
-                Log.i("yo",answered.toString());
-                Intent intent = new Intent(QuizActivity.this, Result_Activity.class);
-                intent.putExtra("Total", String.valueOf(total));
-                intent.putExtra("Correct", String.valueOf(correct));
-                intent.putExtra("Incorrect", String.valueOf(wrong));
-                intent.putExtra("points", String.valueOf(points));
-                intent.putExtra("total_question", String.valueOf(total_question_number));
-                intent.putExtra("query",q);
-                intent.putExtra("answered",answered.toString());
-                intent.putExtra("score", String.valueOf(mScore));
-                startActivity(intent);
-            }
-
-        }.start();
-    }
-
-    public void stopTimer() {
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-
-        }
-    }
-
-    public void startTimer(int seconds, final TextView tv) {
-        if (mCountDownTimer == null) {
-            reverseTimer(seconds, tv);
-        }
-    }*/
-
     private void updateScore(int point) {
         mScoreView.setText("Score: " + mScore);
     }
@@ -846,14 +790,6 @@ public class QuizActivity extends AppCompatActivity {
         finish();
         return true;
     }
-
-   /* @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-        }
-    }*/
 
     public Boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -880,35 +816,8 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mCountDownTimer.cancel();
         startActivity(new Intent(QuizActivity.this, UserActivity.class));
         finish();
     }
 }
-
-
-
-    //Getting Users Subscription Start Date and Users Subscription End Date
-   /* public class SubscriptionAdapter extends ArrayAdapter<SubscriptionValidation> {
-        private Activity context;
-        private List<SubscriptionValidation> mValidations;
-
-
-        public SubscriptionAdapter(Activity context, List<SubscriptionValidation> mvalidation) {
-            super(context, R.layout.list_layout, mvalidation);
-            this.context = context;
-            this.mValidations = mvalidation;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View listViewItem = inflater.inflate(R.layout.list_layout, null, true);
-
-            TextView startDate = listViewItem.findViewById(R.id.textView1);
-            TextView endDate = listViewItem.findViewById(R.id.textView2);
-            SubscriptionValidation subscriptionValidation = mValidations.get(position);
-            startDate.setText(subscriptionValidation.getStartDate());
-            endDate.setText(subscriptionValidation.getEndDate());
-            //Log.d("TAG",subscriptionValidation.getStartDate());
-            //Log.d("TAG",subscri*/

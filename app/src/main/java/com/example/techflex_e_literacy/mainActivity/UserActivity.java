@@ -51,11 +51,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseUser fuser;
 
     TextView user_profile_name, take_practice_button, gp,gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            past_questions, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper;
+            past_questions, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper, course_videos;
     ImageView chat;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
+
+    private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
     Toolbar toolbar;
 
@@ -63,12 +66,55 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
+        MobileAds.initialize(this,APP_ID);
 
         //creating AdMobs
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
                 .build();
         mAdView.loadAd(adRequest);
+        //creating interstitialAd
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(adRequest);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+        });
+
+        TextView marquee = findViewById(R.id.marquee);
+        marquee.setSelected(true);
 
 
         //Job scheduler service initialization
@@ -95,6 +141,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         chat = findViewById(R.id.chat);
         gp = findViewById(R.id.gp);
         gp4 = findViewById(R.id.gp4);
+        marquee = findViewById(R.id.marquee);
+        course_videos = findViewById(R.id.course_video);
         tma_score_keeper = findViewById(R.id.tma_score_keeper);
         timee_table = findViewById(R.id.time_table);
         portal_analysis = findViewById(R.id.portal_analysis);
@@ -131,6 +179,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         summary.setOnClickListener(this);
         contact_us.setOnClickListener(this);
         advert.setOnClickListener(this);
+        course_videos.setOnClickListener(this);
         //notify.setOnClickListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -218,6 +267,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
             startActivity(intent);
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }else {
+                //Do something else
+            }
         }
         if (view == gp4){
             //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
@@ -226,6 +280,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
             startActivity(intent);
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }else {
+                //Do something else
+            }
         }
 
         //String number = "+2348025774336";
@@ -241,6 +300,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
             intent.setData(Uri.parse("https://nou.edu.ng/courseware"));
             startActivity(intent);
+            if (mInterstitialAd.isLoaded()){
+                mInterstitialAd.show();
+            }else {
+                //Do something else
+            }
         }
         if (view == timee_table){
             Toast.makeText(this, "Till  Exam Start!", Toast.LENGTH_SHORT).show();
@@ -295,6 +359,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         if (view == tma_score_keeper){
             startActivity(new Intent(UserActivity.this,TMAScoreSheet.class));
         }
-
+        if (view == course_videos){
+            Toast.makeText(this, "Coming Soon!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
