@@ -30,6 +30,7 @@ import com.example.techflex_e_literacy.Notifications.Token;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.fragments.APIService;
 import com.example.techflex_e_literacy.fragments.ProfileFragment;
+import com.example.techflex_e_literacy.mainActivity.ProfileActivity;
 import com.example.techflex_e_literacy.model.Chat;
 import com.example.techflex_e_literacy.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,6 +83,7 @@ public class MessageActivity extends AppCompatActivity {
         btn_send = findViewById(R.id.btn_send);
         text_send = findViewById(R.id.text_send);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -110,6 +112,18 @@ public class MessageActivity extends AppCompatActivity {
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         mIntent = getIntent();
         final String userid = mIntent.getStringExtra("userid");
+
+
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("testing_uuid",userid+"");
+                Intent intent = new Intent(MessageActivity.this, ProfileActivity.class);
+                intent.putExtra("userid",userid);
+                startActivity(intent);
+            }
+        });
+
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
