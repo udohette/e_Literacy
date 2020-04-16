@@ -314,13 +314,15 @@ public class AnsweredActivity3 extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        if (mInterstitialAd.isLoaded()){
+        super.onBackPressed();
+        startActivity(new Intent(AnsweredActivity3.this, UserActivity.class));
+        /*if (mInterstitialAd.isLoaded()){
             mInterstitialAd.show();
         }else {
             //Do something else
             super.onBackPressed();
             startActivity(new Intent(AnsweredActivity3.this, UserActivity.class));
-        }
+        }*/
 
 
     }

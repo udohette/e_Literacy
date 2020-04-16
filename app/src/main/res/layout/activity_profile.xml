@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/profilePrimaryDark"
     tools:context=".fragments.ProfileFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -82,4 +83,6 @@
             </TextView>
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
+
+
 </RelativeLayout>

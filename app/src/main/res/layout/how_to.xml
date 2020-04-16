@@ -38,11 +38,34 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_3"
                     android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin_8"
+                        android:layout_height="@dimen/margin_8"
+                        android:layout_marginLeft="@dimen/margin_9"
+                        android:layout_marginStart="@dimen/margin_9"
+                        app:srcCompat="@drawable/bullet" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text=" create an account\n and login"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_4"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_7"
+                    android:layout_marginTop="@dimen/margin_6"
                     android:orientation="horizontal">
 
                     <ImageView

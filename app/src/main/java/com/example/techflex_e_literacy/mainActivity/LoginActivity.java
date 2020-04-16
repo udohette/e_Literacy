@@ -50,16 +50,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     RelativeLayout login_relative_layout;
     ImageView how_to;
     EditText username_edittext, password_edittext, userEmail_edittext;
-    Button login_now_button;
     TextView signup_now_button,reset_password_button;
-    private ProgressBar progressBar;
     private FirebaseAuth auth;
     private CircularProgressButton cirLoginButton;
-
-
-    public static final String CHANNEL_ID = "e_Literacy";
-    private static final String CHANNEL_NAME = "e_Literacy";
-    private static final String CHANNEL_DESC= "e_Literacy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,19 +75,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         TextView marquee = findViewById(R.id.marquee);
         marquee.setSelected(true);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription(CHANNEL_DESC);
-            NotificationManager manager= getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-        progressBar = new ProgressBar(this);
         username_edittext = findViewById(R.id.username_edit_text);
         password_edittext = findViewById(R.id.password_edit_text);
        // login_now_button = findViewById(R.id.login_now_button);
         signup_now_button = findViewById(R.id.sign_up_btn);
         how_to = findViewById(R.id.how_to);
-       // progressBar = findViewById(R.id.login_progressbar);
         reset_password_button = findViewById(R.id.password_reset_btn);
         //login_relative_layout = findViewById(R.id.login_relative_layout);
         userEmail_edittext = findViewById(R.id.user_email_edit_text_edit);
@@ -111,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         handler.postDelayed(runnable, 3000);
 
         signup_now_button.setOnClickListener(this);
-        //login_now_button.setOnClickListener(this);
         how_to.setOnClickListener(this);
         reset_password_button.setOnClickListener(this);
 
@@ -126,6 +110,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .setAction("Action", null).show();
             }
         });
+    }
+    private void DisplayNotifcation(){
+
     }
 
     @Override
@@ -200,30 +187,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //Toast.makeText(this, "Email Required", Toast.LENGTH_SHORT).show();
             username_edittext.setError(getString(R.string.input_error_email));
             username_edittext.requestFocus();
+            cirLoginButton.revertAnimation();
+            cirLoginButton.stopAnimation();
             //stopping  the function executing further
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
             userEmail_edittext.setError(getString(R.string.input_error_email_invalid));
             userEmail_edittext.requestFocus();
+            cirLoginButton.revertAnimation();
+            cirLoginButton.stopAnimation();
             return;
         }
         if (userPassword == null) {
             username_edittext.setError(getString(R.string.input_error_password));
             username_edittext.requestFocus();
+            cirLoginButton.revertAnimation();
+            cirLoginButton.stopAnimation();
             //stopping  the function executing further
             return;
         }
         if (userPassword.length() < 8) {
             password_edittext.setError(getString(R.string.input_error_password_length));
             password_edittext.requestFocus();
+            cirLoginButton.revertAnimation();
+            cirLoginButton.stopAnimation();
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
         auth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     //start  the contentActivity
                     startActivity(new Intent(getApplicationContext(), UserActivity.class));

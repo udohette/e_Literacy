@@ -44,7 +44,6 @@ import java.util.Random;
 import java.util.Set;
 
 public class AnsweredActivity extends AppCompatActivity {
-    private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
     private InterstitialAd mInterstitialAd;
 
     String query;
@@ -72,11 +71,10 @@ public class AnsweredActivity extends AppCompatActivity {
         setContentView(R.layout.activity_answered);
 
         //displaying adds
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
-                .build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         //creating interstitialAd
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
         mInterstitialAd.loadAd(adRequest);
         mInterstitialAd.setAdListener(new AdListener() {
             @Override

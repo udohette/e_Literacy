@@ -56,6 +56,7 @@ dependencies {
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     testImplementation 'junit:junit:4.12'
+    implementation 'net.colindodd:gradientlayout:1.2'
     androidTestImplementation 'androidx.test:runner:1.2.0'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

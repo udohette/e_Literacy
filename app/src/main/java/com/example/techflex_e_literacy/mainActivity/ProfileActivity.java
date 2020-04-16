@@ -44,10 +44,11 @@ public class ProfileActivity extends AppCompatActivity {
     private StorageTask uploadTask;
 
     private CircleImageView image_profile;
-    private TextView username;
+    private TextView username,email,back_button;
     private TextView dept;
     private TextView state;
     private TextView study_center;
+    private FirebaseUser fuser;
 
     private DatabaseReference mReference;
 
@@ -65,14 +66,15 @@ public class ProfileActivity extends AppCompatActivity {
         state = findViewById(R.id.state);
         study_center = findViewById(R.id.study_center);
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
         mReference = FirebaseDatabase.getInstance().getReference("User").child(userid);
+
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     User user = dataSnapshot.getValue(User.class);
-                    username.setText(String.format("Name: %s", user.getUsername()));
+                    username.setText(String.format("Name: %s", "@"+user.getUsername()));
                     dept.setText(String.format("Department: %s", user.getDepartment()));
                     state.setText(String.format("State: %s", user.getState()));
                     study_center.setText(String.format("Study Center: %s", user.getStudy_center()));
@@ -90,8 +92,4 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
 }

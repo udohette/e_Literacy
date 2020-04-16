@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,13 @@ import androidx.cardview.widget.CardView;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.PasswordPopUp;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,6 +40,10 @@ import java.security.SecureRandom;
 import java.text.ParseException;
 
 public class SubscriptionCodeActivity extends AppCompatActivity {
+    //creating adBanners Variables;
+    private AdView adView;
+    private FrameLayout frameLayout;
+    private InterstitialAd interstitialAd;
     Context mContext;
     private String password;
     String email = null;
@@ -44,6 +56,16 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_code);
         showPopUp();
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -136,12 +158,10 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
 
     }
 
-   public class EmailSenderAsync extends AsyncTask<String, Void, Boolean> {
+   public static class EmailSenderAsync extends AsyncTask<String, Void, Boolean> {
 
 
-        private HtmlEmail email;
-
-        @Override
+       @Override
         protected void onPostExecute(Boolean aBoolean) {
 
         }
@@ -155,7 +175,7 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
                 String userEmail = params[0];
                 String message = params[1];
 
-                email = new HtmlEmail();
+                HtmlEmail email = new HtmlEmail();
 
                 email.setAuthenticator(new DefaultAuthenticator("udohette@gmail.com", "Udohette@2019"));
 
@@ -199,15 +219,95 @@ public class SubscriptionCodeActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
-        finish();
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
+                finish();
+            }
+        });
+
+        if (interstitialAd.isLoaded()){
+            interstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
+            finish();
+        }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
-        finish();
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
+                finish();
+            }
+        });
+
+        if (interstitialAd.isLoaded()){
+            interstitialAd.show();
+        }else {
+            //Do something else
+            startActivity(new Intent(SubscriptionCodeActivity.this, UserActivity.class));
+            finish();
+            return super.onSupportNavigateUp();
+        }
         return super.onSupportNavigateUp();
     }
+
 }

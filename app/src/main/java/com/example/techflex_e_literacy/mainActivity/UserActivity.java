@@ -3,22 +3,35 @@ package com.example.techflex_e_literacy.mainActivity;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.techflex_e_literacy.chatApi.MessageActivity;
+import com.example.techflex_e_literacy.model.Courses;
+import com.example.techflex_e_literacy.quiz.Bill;
+import com.example.techflex_e_literacy.quiz.QuizActivity;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
@@ -30,6 +43,11 @@ import com.example.techflex_e_literacy.cbt_activity.CBTTestPage;
 import com.example.techflex_e_literacy.chatApi.ChatAPI;
 import com.example.techflex_e_literacy.model.User;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,9 +57,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
     private static final int CHOOSE_IMAGE = 11;
     private static final int JOB_ID = 101;
     private JobScheduler jobScheduler;
@@ -52,33 +73,51 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     TextView user_profile_name, take_practice_button, gp,gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
             past_questions, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper, course_videos;
-    ImageView chat;
+    ImageView chat,logout;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
-    private AdView mAdView;
-    private InterstitialAd mInterstitialAd;
+
+    //creating adBanners Variables;
+    private AdView adView;
+    private FrameLayout frameLayout;
+    private InterstitialAd interstitialAd;
+    private RewardedVideoAd mAd;
 
     private static final String APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
     Toolbar toolbar;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_activity);
-        MobileAds.initialize(this,APP_ID);
+
+        MobileAds.initialize(getApplicationContext(),getString(R.string.mobileAPiD));
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideo();
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
 
         //creating AdMobs
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("313C6DAD9D1C192244C9AB5CCC279361")
-                .build();
-        mAdView.loadAd(adRequest);
-        //creating interstitialAd
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(adRequest);
 
-        mInterstitialAd.setAdListener(new AdListener() {
+       frameLayout = findViewById(R.id.banner_id_ad);
+       adView = new AdView(this);
+       adView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+       frameLayout.addView(adView);
+       loadBanner();
+        //creating interstitialAd
+
+        interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
@@ -109,7 +148,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 // Code to be executed when the interstitial ad is closed.
 
                 // Load the next interstitial.
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                interstitialAd.loadAd(new AdRequest.Builder().build());
             }
         });
 
@@ -141,6 +180,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         chat = findViewById(R.id.chat);
         gp = findViewById(R.id.gp);
         gp4 = findViewById(R.id.gp4);
+        logout = findViewById(R.id.menu_icon);
         marquee = findViewById(R.id.marquee);
         course_videos = findViewById(R.id.course_video);
         tma_score_keeper = findViewById(R.id.tma_score_keeper);
@@ -154,7 +194,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         past_questions = findViewById(R.id.get_past_questions);
         summary = findViewById(R.id.summary);
         contact_us = findViewById(R.id.contact_us);
-        advert = findViewById(R.id.advert);
        // notify = findViewById(R.id.notify);
 
 
@@ -167,6 +206,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         chat.setOnClickListener(this);
         gp.setOnClickListener(this);
         gp4.setOnClickListener(this);
+        logout.setOnClickListener(this);
         tma_score_keeper.setOnClickListener(this);
         //downlaod_pq.setOnClickListener(this);
         //view_pq.setOnClickListener(this);
@@ -178,7 +218,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
        // seminar_button.setOnClickListener(this);
         summary.setOnClickListener(this);
         contact_us.setOnClickListener(this);
-        advert.setOnClickListener(this);
         course_videos.setOnClickListener(this);
         //notify.setOnClickListener(this);
 
@@ -197,7 +236,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
                     User user = dataSnapshot.getValue(User.class);
                 assert user != null;
-                user_profile_name.setText(user.getUsername());
+                    user_profile_name.setText(user.getUsername());
                     if (user.getImageURL().equals("default")){
                         user_profile_button.setImageResource(R.mipmap.ic_e_learn_foreground);
                     }else {
@@ -212,11 +251,70 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+    public void loadRewardedVideo(){
+        if (!mAd.isLoaded()){
+            mAd.loadAd(getString(R.string.rewardedVideo_ad_unit),new AdRequest.Builder().build());
+        }
+    }
+    private void loadBanner() {
+        // Create an ad request. Check your logcat output for the hashed device ID
+        // to get test ads on a physical device, e.g.,
+        // "Use AdRequest.Builder.addTestDevice("ABCDE0123") to get test ads on this
+        // device."
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                        .build();
+
+        AdSize adSize = getAdSize();
+        // Step 4 - Set the adaptive ad size on the ad view.
+        adView.setAdSize(adSize);
+
+        // Step 5 - Start loading the ad in the background.
+        adView.loadAd(adRequest);
+    }
+
+    private AdSize getAdSize() {
+        // Step 2 - Determine the screen width (less decorations) to use for the ad width.
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float widthPixels = outMetrics.widthPixels;
+        float density = outMetrics.density;
+
+        int adWidth = (int) (widthPixels / density);
+
+        // Step 3 - Get adaptive ad size and return for setting on the ad view.
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    }
+    void expiredSubscriptionPopUp() {
+        new AlertDialog.Builder(UserActivity.this)
+                .setTitle("Attention!")
+                .setMessage("Your Subscription has Expired, Kindly renew")
+                .setPositiveButton("Renew", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(UserActivity.this, Bill.class);
+                        startActivity(intent);
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(UserActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                }).setCancelable(false).show();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.master_bottom_navigation,menu);
         return true;
     }
 
@@ -225,6 +323,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
         int id2 = item.getItemId();
         //noinspection SimplifiableIfStatement
@@ -237,7 +336,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            System.exit(0);
+            FirebaseAuth.getInstance().signOut();
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         }
 
@@ -245,10 +346,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     public void onBackPressed() {
-        Intent intent =   new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        if (mAd.isLoaded()){
+            mAd.show();
+        }else {
+            Intent intent =   new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
 
     }
 
@@ -261,49 +366,211 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (view == gp){
-            //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
-            startActivity(intent);
-            if (mInterstitialAd.isLoaded()){
-                mInterstitialAd.show();
+            mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoAdLoaded() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdOpened() {
+
+                }
+
+                @Override
+                public void onRewardedVideoStarted() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdClosed() {
+                    loadRewardedVideo();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public void onRewarded(RewardItem rewardItem) {
+                    Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                            rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onRewardedVideoAdLeftApplication() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdFailedToLoad(int i) {
+
+                }
+
+                @Override
+                public void onRewardedVideoCompleted() {
+                    //loadRewardedVideo();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
+                    startActivity(intent);
+
+
+
+                }
+            });
+            if (mAd.isLoaded()){
+                mAd.show();
             }else {
-                //Do something else
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
+                startActivity(intent);
+
             }
         }
         if (view == gp4){
-            //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
-            startActivity(intent);
-            if (mInterstitialAd.isLoaded()){
-                mInterstitialAd.show();
+            mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoAdLoaded() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdOpened() {
+
+                }
+
+                @Override
+                public void onRewardedVideoStarted() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdClosed() {
+                    loadRewardedVideo();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public void onRewarded(RewardItem rewardItem) {
+                    Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                            rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onRewardedVideoAdLeftApplication() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdFailedToLoad(int i) {
+
+                }
+
+                @Override
+                public void onRewardedVideoCompleted() {
+                   // loadRewardedVideo();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
+                    startActivity(intent);
+
+                }
+            });
+            if (mAd.isLoaded()){
+                mAd.show();
             }else {
-                //Do something else
             }
         }
 
         //String number = "+2348025774336";
         if (view == project_topic_button){
-            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on";
+            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20IT%20Placement%20and%20Process";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
         if (view == e_course){
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.setData(Uri.parse("https://nou.edu.ng/courseware"));
-            startActivity(intent);
-            if (mInterstitialAd.isLoaded()){
-                mInterstitialAd.show();
+            mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+                @Override
+                public void onRewardedVideoAdLoaded() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdOpened() {
+
+                }
+
+                @Override
+                public void onRewardedVideoStarted() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdClosed() {
+                    loadRewardedVideo();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://nou.edu.ng/courseware"));
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public void onRewarded(RewardItem rewardItem) {
+                    Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                            rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onRewardedVideoAdLeftApplication() {
+
+                }
+
+                @Override
+                public void onRewardedVideoAdFailedToLoad(int i) {
+
+                }
+
+                @Override
+                public void onRewardedVideoCompleted() {
+                    //loadRewardedVideo();
+                    //Toast.makeText(this, "On Maintenance", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse("https://nou.edu.ng/courseware"));
+                    startActivity(intent);
+
+
+                }
+            });
+            if (mAd.isLoaded()){
+                mAd.show();
             }else {
-                //Do something else
             }
         }
         if (view == timee_table){
@@ -322,34 +589,30 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if (view == past_questions) {
-            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20past%20questions%20for";
+            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20Past%20Questions%20for%20the%20following%20courses";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
         if (view == it_placement_button) {
-            String url = "https://api.whatsapp.com/send?phone=2348136559569&text=I%20need%20your%20service%20on%20IT%20Placement,%20Log Book Filling,%20IT Report";
+            String url = "https://wa.me/2348136559569?text=I'm%20interested%20in%20IT%20Placement%20and%20Process";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
         if (view == seminar_button) {
-            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on%20Seminar Topic";
+            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20Writing%20Seminar%20and%20Process";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
         if (view == summary) {
-            String url = "https://api.whatsapp.com/send?phone=2348025774336&text=I%20need%20your%20service%20on%20Course Summary";
+            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20Summary%20for%20the%20following%20courses";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
         if (view == contact_us){
-            Intent intent = new Intent(UserActivity.this, Contact.class);
-            startActivity(intent);
-        }
-        if (view == advert){
             Intent intent = new Intent(UserActivity.this, Contact.class);
             startActivity(intent);
         }
@@ -362,5 +625,55 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         if (view == course_videos){
             Toast.makeText(this, "Coming Soon!", Toast.LENGTH_SHORT).show();
         }
+        if (view == logout){
+            FirebaseAuth.getInstance().signOut();
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        loadRewardedVideo();
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+        loadRewardedVideo();
+        //startActivity(new Intent(this,UserActivity.class));
+
     }
 }

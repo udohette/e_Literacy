@@ -9,16 +9,28 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.techflex_e_literacy.R;
+import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.example.techflex_e_literacy.model.User;
+import com.example.techflex_e_literacy.quiz.TrialActivity2;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,7 +61,7 @@ public class ProfileFragment extends Fragment {
     private StorageTask uploadTask;
 
     private CircleImageView image_profile;
-    private TextView username;
+    private TextView username,email;
     private TextView dept;
     private TextView state;
     private TextView study_center;
@@ -60,13 +72,14 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile,container,false);
+        final View view = inflater.inflate(R.layout.fragment_profile,container,false);
         image_profile =view.findViewById(R.id.profile_image);
         username = view.findViewById(R.id.username);
         dept =  view.findViewById(R.id.dept);
         state = view.findViewById(R.id.state);
         study_center = view.findViewById(R.id.study_center);
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
+
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         mReference = FirebaseDatabase.getInstance().getReference("User").child(fuser.getUid());
@@ -75,7 +88,7 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isAdded()){
                     User user = dataSnapshot.getValue(User.class);
-                    username.setText(String.format("Name: %s", user.getUsername()));
+                    username.setText(String.format("Name: %s", "@"+user.getUsername()));
                     dept.setText(String.format("Department: %s", user.getDepartment()));
                     state.setText(String.format("State: %s", user.getState()));
                     study_center.setText(String.format("Study Center: %s", user.getStudy_center()));

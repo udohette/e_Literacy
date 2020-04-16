@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:gravity="center"
-            android:text="@string/_2019_techflex_e_Literacy"
+            android:text="@string/_2020_techflex_e_Literacy"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="13sp"

@@ -27,6 +27,11 @@ import android.widget.Toast;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.example.techflex_e_literacy.model.Courses;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,9 +44,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class FBActivity2 extends AppCompatActivity {
+public class FBActivity2 extends AppCompatActivity implements RewardedVideoAdListener {
     private static final long  START_TIME_IN_MILLIS = 2700000;
     private static final String TESTING_MESSAGE ="Test";
+    private Context context;
     private TextView mScoreView,reset, pause;
     private TextView mQuestionView, count_down, total_question, course_code, searchCourseView;
     private Button prev,next, end;
@@ -61,6 +67,7 @@ public class FBActivity2 extends AppCompatActivity {
     HashMap<Integer, Integer> answered = new HashMap<>();
     DatabaseReference databaseReference;
     DatabaseReference mDatabaseReference;
+    private RewardedVideoAd mAd;
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimeRunning;
@@ -73,6 +80,11 @@ public class FBActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_fb2);
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        MobileAds.initialize(getApplicationContext(),getString(R.string.mobileAPiD));
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideo();
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("courseRegDb");
 
@@ -158,11 +170,70 @@ public class FBActivity2 extends AppCompatActivity {
         reset.setVisibility(View.INVISIBLE);
     }
     public void pauseTimer(){
-        next.setEnabled(false);
-        mCountDownTimer.cancel();
-        mTimeRunning = false;
-        pause.setText("Resume Quiz");
-        reset.setVisibility(View.VISIBLE);
+        if (mAd.isLoaded()){
+            mAd.show();
+        }else {
+            next.setEnabled(false);
+            mCountDownTimer.cancel();
+            mTimeRunning = false;
+            pause.setText("Resume Quiz");
+            reset.setVisibility(View.VISIBLE);
+        }
+        mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                loadRewardedVideo();
+                next.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                pause.setText("Resume Quiz");
+                reset.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                        rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+                loadRewardedVideo();
+                next.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                pause.setText("Resume Quiz");
+                reset.setVisibility(View.VISIBLE);
+
+            }
+        });
 
     }
     public void resetTimer(){
@@ -212,6 +283,11 @@ public class FBActivity2 extends AppCompatActivity {
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntent(intent);
+    }
+    public void loadRewardedVideo(){
+        if (!mAd.isLoaded()){
+            mAd.loadAd(getString(R.string.rewardedVideo_ad_unit),new AdRequest.Builder().build());
+        }
     }
     public void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -523,6 +599,51 @@ public class FBActivity2 extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(FBActivity2.this, UserActivity.class));
         finish();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        loadRewardedVideo();
+       // pauseTimer();
+
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+        loadRewardedVideo();
+       // pauseTimer();
+
     }
 }
 

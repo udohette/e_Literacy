@@ -172,13 +172,15 @@ public class AnsweredActivity4 extends AppCompatActivity {
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mInterstitialAd.isLoaded()){
+                finish();
+                startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
+               /* if (mInterstitialAd.isLoaded()){
                     mInterstitialAd.show();
                 }else {
                     //Do something else
                     finish();
                     startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
-                }
+                }*/
             }
         });
     }
@@ -285,25 +287,29 @@ public class AnsweredActivity4 extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        if (mInterstitialAd.isLoaded()){
+        onBackPressed();
+        /*if (mInterstitialAd.isLoaded()){
             mInterstitialAd.show();
         }else {
             //Do something else
             onBackPressed();
-        }
+        }*/
 
         return true;
     }
     @Override
     public void onBackPressed() {
-        if (mInterstitialAd.isLoaded()){
+        super.onBackPressed();
+        startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
+        finish();
+        /*if (mInterstitialAd.isLoaded()){
             mInterstitialAd.show();
         }else {
             //Do something else
             super.onBackPressed();
             startActivity(new Intent(AnsweredActivity4.this, UserActivity.class));
             finish();
-        }
+        }*/
 
 
     }

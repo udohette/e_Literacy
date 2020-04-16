@@ -19,6 +19,8 @@ import com.example.techflex_e_literacy.quiz.TrialActivity;
 import com.example.techflex_e_literacy.quiz.TrialActivity2;
 import com.example.techflex_e_literacy.quiz.TrialActivity3;
 import com.example.techflex_e_literacy.quiz.TrialActivity4;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class ProgramLevelFragment extends Fragment {
     Button mcq,fbq,currentpq2019;
@@ -47,6 +49,15 @@ public class ProgramLevelFragment extends Fragment {
             @Override
             public void onClick(View v) {
                showPopUp2();
+            }
+        });
+
+        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Bill.class);
+                view.getContext().startActivity(intent);
             }
         });
 

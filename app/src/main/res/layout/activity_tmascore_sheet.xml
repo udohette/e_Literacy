@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             app:tabMode="fixed"
             app:tabGravity="fill">
-
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager.widget.ViewPager

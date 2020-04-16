@@ -27,6 +27,11 @@ import androidx.core.view.MenuItemCompat;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,11 +43,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class TrialActivity2 extends AppCompatActivity {
+public class TrialActivity2 extends AppCompatActivity implements RewardedVideoAdListener {
     private static final long  START_TIME_IN_MILLIS = 2700000;
     private static final String DEFAULT = "N/A";
     private static final String TESTING_MESSAGE ="Test";
     private TextView mScoreView,reset, pause;
+    Context context;
     private TextView mQuestionView, count_down, total_question, course_code, searchCourseView;
     private Button prev,next,submit;
     ProgressBar searchCourseProBar;
@@ -59,6 +65,8 @@ public class TrialActivity2 extends AppCompatActivity {
     String q;
     HashMap<Integer, Integer> answered = new HashMap<>();
     DatabaseReference databaseReference;
+    private RewardedVideoAd mAd;
+
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimeRunning;
@@ -69,6 +77,11 @@ public class TrialActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fbq_activity);
+
+        MobileAds.initialize(getApplicationContext(),getString(R.string.mobileAPiD));
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideo();
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -156,12 +169,70 @@ public class TrialActivity2 extends AppCompatActivity {
         reset.setVisibility(View.INVISIBLE);
     }
     public void pauseTimer(){
-        next.setEnabled(false);
-        mCountDownTimer.cancel();
-        mTimeRunning = false;
-        pause.setText("Resume Quiz");
-        reset.setVisibility(View.VISIBLE);
+        if (mAd.isLoaded()){
+            mAd.show();
+        }else {
+            next.setEnabled(false);
+            mCountDownTimer.cancel();
+            mTimeRunning = false;
+            pause.setText("Resume Quiz");
+            reset.setVisibility(View.VISIBLE);
+        }
+        mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
 
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                loadRewardedVideo();
+                next.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                pause.setText("Resume Quiz");
+                reset.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                        rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+                public void onRewardedVideoCompleted() {
+                loadRewardedVideo();
+                next.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                pause.setText("Resume Quiz");
+                reset.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
     public void resetTimer(){
         next.setEnabled(false);
@@ -222,6 +293,7 @@ public class TrialActivity2 extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
     public void handleIntent(Intent intent) {
@@ -229,6 +301,11 @@ public class TrialActivity2 extends AppCompatActivity {
             query = intent.getStringExtra(SearchManager.QUERY);
             startQuiz();
             //updateQuestion(query);
+        }
+    }
+    public void loadRewardedVideo(){
+        if (!mAd.isLoaded()){
+            mAd.loadAd(getString(R.string.rewardedVideo_ad_unit),new AdRequest.Builder().build());
         }
     }
     public  void updateQuestion(final String query1){
@@ -289,12 +366,69 @@ public class TrialActivity2 extends AppCompatActivity {
                                 currentQuestion++;
 
                                 if (currentQuestion > 5 && mCountDownTimer != null){
-                                    showPopUp2();
-                                    mCountDownTimer.cancel();
-                                    //prev.setEnabled(false);
-                                    next.setEnabled(false);
-                                    submit.setEnabled(true);
+                                    if (mAd.isLoaded()){
+                                        mAd.show();
+                                    }else {
+                                        showPopUp2();
+                                        mCountDownTimer.cancel();
+                                        //prev.setEnabled(false);
+                                        next.setEnabled(false);
+                                        submit.setEnabled(true);
+                                    }
+                                    mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+                                        @Override
+                                        public void onRewardedVideoAdLoaded() {
 
+                                        }
+
+                                        @Override
+                                        public void onRewardedVideoAdOpened() {
+
+                                        }
+
+                                        @Override
+                                        public void onRewardedVideoStarted() {
+
+                                        }
+
+                                        @Override
+                                        public void onRewardedVideoAdClosed() {
+                                            loadRewardedVideo();
+                                            showPopUp2();
+                                            mCountDownTimer.cancel();
+                                            //prev.setEnabled(false);
+                                            next.setEnabled(false);
+                                            submit.setEnabled(true);
+
+                                        }
+
+                                        @Override
+                                        public void onRewarded(RewardItem rewardItem) {
+                                            Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                                                    rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                        @Override
+                                        public void onRewardedVideoAdLeftApplication() {
+
+                                        }
+
+                                        @Override
+                                        public void onRewardedVideoAdFailedToLoad(int i) {
+
+                                        }
+
+                                        @Override
+                                        public void onRewardedVideoCompleted() {
+                                            loadRewardedVideo();
+                                            showPopUp2();
+                                            mCountDownTimer.cancel();
+                                            //prev.setEnabled(false);
+                                            next.setEnabled(false);
+                                            submit.setEnabled(true);
+                                        }
+                                    });
                                 }
                                 next.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -494,5 +628,45 @@ public class TrialActivity2 extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(TrialActivity2.this, UserActivity.class));
         finish();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
     }
 }

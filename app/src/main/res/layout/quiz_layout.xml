@@ -147,9 +147,6 @@
                     app:layout_constraintStart_toEndOf="@+id/edit_text_input"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,13 +165,12 @@
             </RelativeLayout>
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <Button
                         android:id="@+id/choice1"
                         android:layout_width="match_parent"
@@ -218,7 +214,6 @@
                         android:background="#0091EA"
                         android:freezesText="true"
                         android:padding="8dp"
-
                         android:layout_below="@id/choice3"
                         android:text="option4"
                         android:textColor="#fff" />
@@ -265,26 +260,9 @@
                         android:layout_below="@id/choice4"
                         android:text="Stop Quiz"
                         android:textColor="#fff" />
-
                 </RelativeLayout>
             </androidx.core.widget.NestedScrollView>
-
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/add_course"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/add">
-            </com.google.android.material.floatingactionbutton.FloatingActionButton>
-        </LinearLayout>
-
-
     </LinearLayout>
-
-
 </ScrollView>
 

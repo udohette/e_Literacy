@@ -8,10 +8,10 @@
     <string name="action_quit">Quit App </string>
     <string name="action_logout">Logout</string>
     <string name="how_to">How to?</string>
-    <string name="_2019_techflex_e_Literacy">©2019 Techflex e_Learn | ALL RIGHT RESERVED</string>
+    <string name="_2020_techflex_e_Literacy">©2020 Techflex e_Learn | ALL RIGHT RESERVED</string>
     <string name="enter_password"> password</string>
     <string name="that_s_it">That\'s it!</string>
-    <string name="answer_the_questions">Answer the questions</string>
+    <string name="answer_the_questions">Follow the OnScreen Command</string>
     <string name="play">Play!</string>
     <string name="choose_a_category">Choose your Activity</string>
     <string name="enter_course_code">enter Course Code</string>
@@ -328,6 +328,21 @@ Dennis S.A | IT Support Executive
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="rewardedVideo_ad_unit">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="mobileAPiD">ca-app-pub-3940256099942544~3347511713</string>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Slide 1 Title and Description-->
     <string name="slide_1_title">Welcome to TechFlex E_Learn</string>
@@ -361,17 +376,7 @@ Dennis S.A | IT Support Executive
     <string name="tma_score_keeper">TMA Score Keeper</string>
     <string name="course_videos">Course Videos</string>
     <string name="how_to_use_app">how to use App</string>
-
-    <string-array name="types">
-        <item>atm</item>
-        <item>school</item>
-        <item>bakery</item>
-        <item>food</item>
-        <item>bank</item>
-        <item>church</item>
-
-
-    </string-array>
+    <string name="update_marquee">*TMA1 date extended till 15 April 2020*Exam Begins 1st July 2020* Course and Exam Registration extended to April 15th 2020*2020 Convocation Postponed due to  Corona Virus*Always go to your Study center for Assistance* Always Chat Admin for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336</string>
 
 
 </resources>

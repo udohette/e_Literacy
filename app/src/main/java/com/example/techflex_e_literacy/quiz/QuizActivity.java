@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,16 @@ import androidx.core.view.MenuItemCompat;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.example.techflex_e_literacy.model.Courses;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,11 +59,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class QuizActivity extends AppCompatActivity {
+public class QuizActivity extends AppCompatActivity implements RewardedVideoAdListener {
     private ConstraintLayout mConstraintLayout;
 
     private EditText mEditTextInput;
     private TextView mScoreView;
+    private Context context;
     private TextView mQuestionView, count_down, total_question, course_code, loadingCousreText;
     private Button mButtonChoice1;
     private Button mButtonChoice2;
@@ -79,6 +91,12 @@ public class QuizActivity extends AppCompatActivity {
     private long mTimeLeftInMillis;
     String timeLeftFormatted;
 
+    //creating adBanners Variables;
+    private AdView adView;
+    private FrameLayout frameLayout;
+    private InterstitialAd interstitialAd;
+    private RewardedVideoAd mAd;
+
 
     List<SubscriptionValidation> mValidationList;
 
@@ -86,6 +104,56 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_layout);
+        MobileAds.initialize(getApplicationContext(),getString(R.string.mobileAPiD));
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideo();
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+
+                // Load the next interstitial.
+               quitResult();
+            }
+        });
 
         toolbar = findViewById(R.id.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -165,6 +233,11 @@ public class QuizActivity extends AppCompatActivity {
         });
 
     }
+    public void loadRewardedVideo(){
+        if (!mAd.isLoaded()){
+            mAd.loadAd(getString(R.string.rewardedVideo_ad_unit),new AdRequest.Builder().build());
+        }
+    }
     public void setTime(long milliseconds){
         mStartTimeInMillis = milliseconds;
         resetTimer();
@@ -220,14 +293,76 @@ public class QuizActivity extends AppCompatActivity {
         updateWatchInterface();
     }
     public void pauseTimer(){
-        mButtonChoice1.setEnabled(false);
-        mButtonChoice2.setEnabled(false);
-        mButtonChoice3.setEnabled(false);
-        mButtonChoice4.setEnabled(false);
-        mCountDownTimer.cancel();
-        mTimeRunning = false;
-        updateWatchInterface();
+        if (mAd.isLoaded()){
+            mAd.show();
+        }else {
+            mButtonChoice1.setEnabled(false);
+            mButtonChoice2.setEnabled(false);
+            mButtonChoice3.setEnabled(false);
+            mButtonChoice4.setEnabled(false);
+            mCountDownTimer.cancel();
+            mTimeRunning = false;
+            updateWatchInterface();
+        }
+        mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
 
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                loadRewardedVideo();
+                mButtonChoice1.setEnabled(false);
+                mButtonChoice2.setEnabled(false);
+                mButtonChoice3.setEnabled(false);
+                mButtonChoice4.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                updateWatchInterface();
+
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                        rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+                loadRewardedVideo();
+                mButtonChoice1.setEnabled(false);
+                mButtonChoice2.setEnabled(false);
+                mButtonChoice3.setEnabled(false);
+                mButtonChoice4.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                updateWatchInterface();
+
+            }
+        });
     }
     public void resetTimer(){
         mButtonChoice1.setEnabled(false);
@@ -418,7 +553,12 @@ public class QuizActivity extends AppCompatActivity {
         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                quitResult();
+                if (interstitialAd.isLoaded()){
+                    interstitialAd.show();
+                }else {
+                    //Do something else
+                    quitResult();
+                }
 
             }
 
@@ -815,9 +955,110 @@ public class QuizActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        mCountDownTimer.cancel();
-        startActivity(new Intent(QuizActivity.this, UserActivity.class));
-        finish();
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                startActivity(new Intent(QuizActivity.this, UserActivity.class));
+                finish();
+            }
+        });
+
+        if (interstitialAd.isLoaded()){
+            interstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            mCountDownTimer.cancel();
+            startActivity(new Intent(QuizActivity.this, UserActivity.class));
+            finish();
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        loadRewardedVideo();
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+        quitResult();
+
+    }
+
+    @Override
+    protected void onPause() {
+        mAd.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        mAd.resume(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mAd.destroy(this);
+        super.onDestroy();
     }
 }

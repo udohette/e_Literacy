@@ -19,40 +19,38 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+
 public class ForgotPassword extends AppCompatActivity {
     EditText resetpassword_edit_text;
-    Button resetpassword_button;
-    ProgressBar resetpassword_progressbar;
-    TextView email_sent_succesful;
     FirebaseAuth firebaseAuth;
+    private CircularProgressButton cirLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forgot_password_activity);
         resetpassword_edit_text = findViewById(R.id.reset_password_edit_text);
-        resetpassword_progressbar = findViewById(R.id.progressbar_reset);
-        resetpassword_button =  findViewById(R.id.reset_password_button);
-        email_sent_succesful = findViewById(R.id.email_sent_successful_text_view);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        resetpassword_button.setOnClickListener(new View.OnClickListener() {
+        cirLoginButton = findViewById(R.id.cirLoginButton);
+        cirLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                cirLoginButton.startAnimation();
                 String email = resetpassword_edit_text.getText().toString();
                 if (email.equals("")){
                     Toast.makeText(ForgotPassword.this,"Field Can't be empty",Toast.LENGTH_LONG).show();
                 }else {
-                    resetpassword_progressbar.setVisibility(View.VISIBLE);
                     firebaseAuth.sendPasswordResetEmail(resetpassword_edit_text.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            resetpassword_progressbar.setVisibility(View.GONE);
                             if (task.isSuccessful()){
                                 Toast.makeText(ForgotPassword.this,"Password send to your email",Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(ForgotPassword.this,LoginActivity.class));
                                 finish();
                             }else {
+                                cirLoginButton.stopAnimation();
+                                cirLoginButton.revertAnimation();
                                 Toast.makeText(ForgotPassword.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                                 Toast.makeText(ForgotPassword.this,"Password reset was unsuccessful\nTry Again\nCheck Spellings or Contact Admin",Toast.LENGTH_SHORT).show();
 
@@ -63,6 +61,8 @@ public class ForgotPassword extends AppCompatActivity {
 
             }
         });
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override

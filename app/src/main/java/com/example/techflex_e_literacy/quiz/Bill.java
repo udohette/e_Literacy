@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,20 +20,33 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Bill extends AppCompatActivity {
     private static final String LIST_VIEW_STATE = "list_view";
@@ -46,10 +60,26 @@ public class Bill extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseCourseReg;
 
+    //creating adBanners Variables;
+    private AdView adView;
+    private FrameLayout frameLayout;
+    private InterstitialAd interstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bill_activity);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
 
 
 
@@ -180,7 +210,7 @@ public class Bill extends AppCompatActivity {
         String reg_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + reg_date);
 
-        c.add(Calendar.DATE, 1);  // number of days to add
+        c.add(Calendar.DATE, 90);  // number of days to add
         String end_date = df.format(c.getTime());
         Log.d("TAG2", "Start Date: " + end_date);
 
@@ -198,10 +228,9 @@ public class Bill extends AppCompatActivity {
            //String[] course_picked = dataListView.getAdapter().getItem(i).toString();
         }
         String id = databaseCourseReg.push().getKey();
-        CourseReg coureseReg = new CourseReg(id,Arrays.toString(list),semester_count,email,reg_date,end_date,count);
-        databaseCourseReg.child(id).setValue(coureseReg);
-        Toast.makeText(this,"Course Added Successfully",Toast.LENGTH_SHORT).show();
-
+        final CourseReg coureseReg = new CourseReg(id,Arrays.toString(list),semester_count,email,reg_date,end_date,count);
+            databaseCourseReg.child(id).setValue(coureseReg);
+            Toast.makeText(this,"Course Added Successfully",Toast.LENGTH_SHORT).show();
     }
     public Boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -218,7 +247,47 @@ public class Bill extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(Bill.this, UserActivity.class));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                startActivity(new Intent(Bill.this, UserActivity.class));
+                finish();
+            }
+        });
+
+        if (interstitialAd.isLoaded()){
+            interstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            startActivity(new Intent(Bill.this, UserActivity.class));
+            finish();
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,16 @@ import androidx.core.view.MenuItemCompat;
 import com.example.techflex_e_literacy.R;
 import com.example.techflex_e_literacy.mainActivity.UserActivity;
 import com.example.techflex_e_literacy.model.Courses;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class FBQAcitvity extends AppCompatActivity {
+public class FBQAcitvity extends AppCompatActivity implements RewardedVideoAdListener {
     private static final long  START_TIME_IN_MILLIS = 2700000;
     private static final String TESTING_MESSAGE ="Test";
     private TextView mScoreView,reset, pause;
@@ -61,16 +72,73 @@ public class FBQAcitvity extends AppCompatActivity {
     HashMap<Integer, Integer> answered = new HashMap<>();
     DatabaseReference databaseReference;
     DatabaseReference mDatabaseReference;
+    private RewardedVideoAd mAd;
+
+    //creating adBanners Variables;
+    private AdView adView;
+    private FrameLayout frameLayout;
+    private InterstitialAd interstitialAd;
 
     private CountDownTimer mCountDownTimer;
     private boolean mTimeRunning;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
     String timeLeftFormatted;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fbq_activity);
+
+        MobileAds.initialize(getApplicationContext(),getString(R.string.mobileAPiD));
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        loadRewardedVideo();
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+
+                // Load the next interstitial.
+                quitResult();
+            }
+        });
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -160,12 +228,70 @@ public class FBQAcitvity extends AppCompatActivity {
         reset.setVisibility(View.INVISIBLE);
     }
     public void pauseTimer(){
-        next.setEnabled(false);
-        mCountDownTimer.cancel();
-        mTimeRunning = false;
-        pause.setText("Resume Quiz");
-        reset.setVisibility(View.VISIBLE);
+        if (mAd.isLoaded()){
+            mAd.show();
+        }else {
+            next.setEnabled(false);
+            mCountDownTimer.cancel();
+            mTimeRunning = false;
+            pause.setText("Resume Quiz");
+            reset.setVisibility(View.VISIBLE);
+        }
+        mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
 
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                loadRewardedVideo();
+                next.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                pause.setText("Resume Quiz");
+                reset.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Toast.makeText(context, "onRewarded! currency: " + rewardItem.getType() + "  amount: " +
+                        rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+                loadRewardedVideo();
+                next.setEnabled(false);
+                mCountDownTimer.cancel();
+                mTimeRunning = false;
+                pause.setText("Resume Quiz");
+                reset.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
     public void resetTimer(){
         next.setEnabled(false);
@@ -418,7 +544,11 @@ public class FBQAcitvity extends AppCompatActivity {
         .setPositiveButton("End Quiz", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                quitResult();
+                if (interstitialAd.isLoaded()){
+                    interstitialAd.show();
+                }else {
+                    quitResult();
+                }
 
             }
 
@@ -523,8 +653,93 @@ public class FBQAcitvity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(FBQAcitvity.this, UserActivity.class));
-        finish();
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the interstitial ad is closed.
+                startActivity(new Intent(FBQAcitvity.this, UserActivity.class));
+                finish();
+            }
+        });
+
+        if (interstitialAd.isLoaded()){
+            interstitialAd.show();
+        }else {
+            //Do something else
+            super.onBackPressed();
+            startActivity(new Intent(FBQAcitvity.this, UserActivity.class));
+            finish();
+        }
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+    }
+    public void loadRewardedVideo(){
+        if (!mAd.isLoaded()){
+            mAd.loadAd(getString(R.string.rewardedVideo_ad_unit),new AdRequest.Builder().build());
+        }
     }
 }

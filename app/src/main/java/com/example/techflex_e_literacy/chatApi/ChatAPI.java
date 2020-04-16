@@ -96,13 +96,15 @@ public class ChatAPI extends AppCompatActivity {
                     if (chat.getReceiver().equals(firebaseUser.getUid())&& !chat.isIsseen()){
                         unread++;
                     }
+
                 }
                 if (unread == 0){
                     viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
                 }else {
                     viewPagerAdapter.addFragment(new ChatsFragment(),"("+unread+") Chats");
                 }
-                viewPagerAdapter.addFragment(new UsersFragment(),"Users");
+                //adding user count to  chat
+                viewPagerAdapter.addFragment(new UsersFragment()," Users");
                 viewPagerAdapter.addFragment(new ProfileFragment(),"Profile");
                 viewPager.setAdapter(viewPagerAdapter);
                 tabLayout.setupWithViewPager(viewPager);

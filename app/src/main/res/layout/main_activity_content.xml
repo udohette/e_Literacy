@@ -15,7 +15,7 @@
             android:id="@+id/marquee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="*TMA1 to Start 9th March 2020*Exam  Begins 1st July 2020*Noun Releases another Graduation List*Clearance start from 9th march 2020*Convocation to  take place by  March 2020 @ Abuja*Payment of fee extended till 31th March 2020*Always goto your Study center for Assistance* Always Chat Admin  for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336"
+            android:text="*TMA1 to Start 9th March 2020*Matriculation comes up on  the 21th March 2020*Exam  Begins 1st July 2020*Noun Releases another Graduation List*Clearance start from 9th march 2020*Convocation to  take place by  March 2020 @ Abuja*Payment of fee extended till 31th March 2020*Always goto your Study center for Assistance* Always Chat Admin  for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336"
             android:ellipsize="marquee"
             android:scrollHorizontally="true"
             android:singleLine="true"
@@ -99,7 +99,8 @@
                             style="@style/viewParent"
                             android:text="Forgot Password?"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="@dimen/newsMoreTextSize"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
                             android:layout_gravity="end"
                             android:layout_marginTop="10dp"/>
 
@@ -195,7 +196,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:gravity="center"
-            android:text="@string/_2019_techflex_e_Literacy"
+            android:text="@string/_2020_techflex_e_Literacy"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="13sp"

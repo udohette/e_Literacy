@@ -3,8 +3,10 @@ package com.example.techflex_e_literacy.mainActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,6 +19,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,54 +48,71 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+
 public class SignupActivity extends AppCompatActivity{
     EditText username_edittext, password_edittext, userEmail_edittext, department,state,study_center;
-    Button login_now_button, create_account_button;
     TextView link_login;
+    ImageView backToLogin;
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private ProgressBar progressBar;
+    private CircularProgressButton cirLoginButton;
+    int count  = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
+        changeStatusBarColor();
         progressBar = new ProgressBar(this);
 
         username_edittext = findViewById(R.id.username_edit_text);
         password_edittext = findViewById(R.id.password_edit_text);
        // login_now_button = findViewById(R.id.login_now_button);
         state = findViewById(R.id.state);
+        backToLogin = findViewById(R.id.bck_to_login);
         study_center = findViewById(R.id.study_center);
-        create_account_button = findViewById(R.id.create_account_button);
         userEmail_edittext = findViewById(R.id.user_email_edit_text);
         link_login = findViewById(R.id.link_login);
         department = findViewById(R.id.department);
-        progressBar = findViewById(R.id.progressbar);
+        //progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.GONE);
+        cirLoginButton = findViewById(R.id.create_account_button);
         auth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        TextView marquee = findViewById(R.id.marquee);
+        marquee.setSelected(true);
+
+       /* FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Thanks for using our Service", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
+        });*/
+        backToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            }
         });
         link_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
-
-        create_account_button.setOnClickListener(new View.OnClickListener() {
+        cirLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cirLoginButton.startAnimation();
                 final String userName = username_edittext.getText().toString().trim();
                 final String userEmail = userEmail_edittext.getText().toString().trim();
                 final String userPassword = password_edittext.getText().toString().trim();
@@ -101,6 +122,8 @@ public class SignupActivity extends AppCompatActivity{
                 if (userName.isEmpty()) {
                     username_edittext.setError(getString(R.string.input_error_name));
                     username_edittext.requestFocus();
+                    cirLoginButton.revertAnimation();
+                    cirLoginButton.stopAnimation();
                     //stopping  the function executing further
                     return;
                 }
@@ -109,28 +132,38 @@ public class SignupActivity extends AppCompatActivity{
                 if (userEmail.isEmpty()) {
                     userEmail_edittext.setError(getString(R.string.input_error_email));
                     userEmail_edittext.requestFocus();
+                    cirLoginButton.revertAnimation();
+                    cirLoginButton.stopAnimation();
                     //stopping  the function executing further
                     return;
                 }
                 if (!Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
                     userEmail_edittext.setError(getString(R.string.input_error_email_invalid));
                     userEmail_edittext.requestFocus();
+                    cirLoginButton.revertAnimation();
+                    cirLoginButton.stopAnimation();
                     return;
                 }
                 if (userPassword.isEmpty()) {
                     password_edittext.setError(getString(R.string.input_error_password));
                     password_edittext.requestFocus();
+                    cirLoginButton.revertAnimation();
+                    cirLoginButton.stopAnimation();
                     //stopping  the function executing further
                     return;
                 }
                 if (userPassword.length() < 8) {
                     password_edittext.setError(getString(R.string.input_error_password_length));
                     password_edittext.requestFocus();
+                    cirLoginButton.revertAnimation();
+                    cirLoginButton.stopAnimation();
                     return;
                 }
                 if (department1.isEmpty()) {
                     department.setError(getString(R.string.input_error_phone));
                     department.requestFocus();
+                    cirLoginButton.revertAnimation();
+                    cirLoginButton.stopAnimation();
                     return;
                 }
 
@@ -139,10 +172,17 @@ public class SignupActivity extends AppCompatActivity{
 
             }
         });
-
+    }
+    private void changeStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setStatusBarColor(getResources().getColor(R.color.register_bk_color));
+        }
     }
     private void registerUser(final String username, String email, String password, final String department, final String state, final String study_cen){
-        progressBar.setVisibility(View.VISIBLE);
+       // progressBar.setVisibility(View.VISIBLE);
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -165,7 +205,7 @@ public class SignupActivity extends AppCompatActivity{
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            progressBar.setVisibility(View.GONE);
+                            //progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -173,8 +213,15 @@ public class SignupActivity extends AppCompatActivity{
                                 finish();
                             }else {
                                 //Toast.makeText(LoginActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
-                                if (!isConnected(SignupActivity.this))showPopUp();
+                                if (!isConnected(SignupActivity.this)){
+                                    cirLoginButton.stopAnimation();
+                                    cirLoginButton.revertAnimation();
+                                    showPopUp();
+                                }
+
                                 else {
+                                    cirLoginButton.revertAnimation();
+                                    cirLoginButton.stopAnimation();
                                     Toast.makeText(SignupActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -187,6 +234,8 @@ public class SignupActivity extends AppCompatActivity{
                     if (!isConnected(SignupActivity.this))showPopUp();
                     else {
                         Toast.makeText(SignupActivity.this, "Login Error\ncheck details\ncheck internet connection", Toast.LENGTH_LONG).show();
+                        cirLoginButton.revertAnimation();
+                        cirLoginButton.stopAnimation();
                         progressBar.setVisibility(View.GONE);
                     }
                 }
@@ -202,6 +251,8 @@ public class SignupActivity extends AppCompatActivity{
                 .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
+                        cirLoginButton.revertAnimation();
+                        cirLoginButton.stopAnimation();
                         dialogInterface.dismiss();
                     }
                 })
