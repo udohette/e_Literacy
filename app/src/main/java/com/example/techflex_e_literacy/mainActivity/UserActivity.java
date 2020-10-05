@@ -25,6 +25,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.techflex_e_literacy.EduService;
 import com.example.techflex_e_literacy.chatApi.MessageActivity;
 import com.example.techflex_e_literacy.model.Courses;
 import com.example.techflex_e_literacy.quiz.Bill;
@@ -72,7 +73,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseUser fuser;
 
     TextView user_profile_name, take_practice_button, gp,gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            past_questions, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper, course_videos;
+            edu_activity, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper, course_videos;
     ImageView chat,logout;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
@@ -191,7 +192,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         it_placement_button = findViewById(R.id.it_placement);
         e_course = findViewById(R.id.e_course_button);
        // about_us = findViewById(R.id.about_us);
-        past_questions = findViewById(R.id.get_past_questions);
+        edu_activity = findViewById(R.id.edu_acitivity);
         summary = findViewById(R.id.summary);
         contact_us = findViewById(R.id.contact_us);
        // notify = findViewById(R.id.notify);
@@ -200,7 +201,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
 
         user_profile_button.setOnClickListener(this);
-        take_practice_button.setOnClickListener(this);
         portal_analysis.setOnClickListener(this);
         timee_table.setOnClickListener(this);
         chat.setOnClickListener(this);
@@ -213,14 +213,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
        // project_topic_button.setOnClickListener(this);
         e_course.setOnClickListener(this);
        // about_us.setOnClickListener(this);
-        past_questions.setOnClickListener(this);
-        it_placement_button.setOnClickListener(this);
+        edu_activity.setOnClickListener(this);
        // seminar_button.setOnClickListener(this);
-        summary.setOnClickListener(this);
         contact_us.setOnClickListener(this);
-        course_videos.setOnClickListener(this);
         //notify.setOnClickListener(this);
-
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
             finish();
@@ -360,11 +356,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view == take_practice_button){
-            Intent intent = new Intent(UserActivity.this, CBTTestPage.class);
-            startActivity(intent);
-
-        }
         if (view == gp){
             mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
                 @Override
@@ -390,7 +381,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/web/scale5.html"));
                     startActivity(intent);
 
                 }
@@ -420,7 +411,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/web/scale5.html"));
                     startActivity(intent);
 
 
@@ -433,7 +424,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale5.html"));
+                intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/web/scale5.html"));
                 startActivity(intent);
 
             }
@@ -462,7 +453,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/web/scale4.html"));
                     startActivity(intent);
 
                 }
@@ -491,7 +482,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/gpa_cal/techflex/scale4.html"));
+                    intent.setData(Uri.parse("https://qydxpmzouxyk4jkk11srnw-on.drv.tw/web/scale4.html"));
                     startActivity(intent);
 
                 }
@@ -582,35 +573,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);*/
         }
         if (view == portal_analysis){
-            Toast.makeText(this, "Coming Soon!", Toast.LENGTH_SHORT).show();
+            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20doing%20my%20portal%20analysis%20before%20graduation";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        if (view == edu_activity){
+            startActivity(new Intent(UserActivity.this, EduService.class));
         }
         if (view == about_us) {
             Intent intent = new Intent(UserActivity.this, ABout.class);
             startActivity(intent);
-        }
-        if (view == past_questions) {
-            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20Past%20Questions%20for%20the%20following%20courses";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        }
-        if (view == it_placement_button) {
-            String url = "https://wa.me/2348136559569?text=I'm%20interested%20in%20IT%20Placement%20and%20Process";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        }
-        if (view == seminar_button) {
-            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20Writing%20Seminar%20and%20Process";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        }
-        if (view == summary) {
-            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20Summary%20for%20the%20following%20courses";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
         }
         if (view == contact_us){
             Intent intent = new Intent(UserActivity.this, Contact.class);

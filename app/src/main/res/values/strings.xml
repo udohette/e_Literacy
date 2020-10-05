@@ -64,12 +64,14 @@ Dennis S.A | IT Support Executive
     <string name="viral_android">Viral Android</string>
 
     <!-- Undergraduate Program for SSchool of Arts and Social Sciences-->
-    <string name="read_past_questions">Get Past Questions</string>
+    <string name="edu_service">Edu Content</string>
+    <string name="educational_service">Educational Contents</string>
+    <string name="past_question">Past Questions</string>
 
     <!-- Undergraduate Program for Centre for Life-Long Learning and Workplace Training-->
     <string name="take_cbt_practice">Take CBT Practice</string>
 
-    <string name="e_courseware">e_CourseWare</string>
+    <string name="e_courseware">CourseWare</string>
     <string name="get_project_topics">Get Project Topics</string>
     <string name="it_placement_report">IT Placement</string>
     <string name="pop_pq_300l_above">POP PQ(300L Above)</string>
@@ -86,8 +88,8 @@ Dennis S.A | IT Support Executive
     <string name="send">Send</string>
     <string name="need_help_contact_us_now">Need Help? | Contact us Now!</string>
     <string name="options_logout_user_activity">options_logout_user_activity</string>
-    <string name="check_your_cgpa">Check Your CGPA SCALE 5</string>
-    <string name="check_your_cgpa4">Check Your CGPA SCALE 4</string>
+    <string name="check_your_cgpa">GPA SCALE 5</string>
+    <string name="check_your_cgpa4">GPA SCALE 4</string>
     <string name="enter_course_code_e_g_bus205"> e.g bus205</string>
     <string name="title_activity_about">About</string>
     <string name="large_text">
@@ -333,17 +335,6 @@ Dennis S.A | IT Support Executive
     <string name="mobileAPiD">ca-app-pub-3940256099942544~3347511713</string>
 
 
-
-
-
-
-
-
-
-
-
-
-
     <!-- Slide 1 Title and Description-->
     <string name="slide_1_title">Welcome to TechFlex E_Learn</string>
     <string name="slide_1_dsc">Your N0.1 e_Learning Platform to Explore the most educational  Content
@@ -376,7 +367,7 @@ Dennis S.A | IT Support Executive
     <string name="tma_score_keeper">TMA Score Keeper</string>
     <string name="course_videos">Course Videos</string>
     <string name="how_to_use_app">how to use App</string>
-    <string name="update_marquee">*TMA1 date extended till 15 April 2020*Exam Begins 1st July 2020* Course and Exam Registration extended to April 15th 2020*2020 Convocation Postponed due to  Corona Virus*Always go to your Study center for Assistance* Always Chat Admin for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336</string>
+    <string name="update_marquee">#MASK SAFE/WEAR MASK|Always go to your Study center for Assistance*Contact Admin for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336</string>
 
 
 </resources>

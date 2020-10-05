@@ -228,7 +228,7 @@
                         android:freezesText="true"
                         android:padding="4dp"
                         android:layout_below="@id/choice4"
-                        android:text="Pause Quiz"
+                        android:text="Pause"
                         android:textColor="#fff" />
                     <Button
                         android:layout_gravity="center_horizontal"
@@ -241,7 +241,7 @@
                         android:padding="4dp"
                         android:layout_marginStart="125dp"
                         android:layout_below="@id/choice4"
-                        android:text="Reset Timer"
+                        android:text="Reset"
                         android:textColor="#fff"
                         android:visibility="invisible"
                         tools:visibility="visible"/>
@@ -258,7 +258,7 @@
                         android:layout_marginStart="160dp"
                         android:layout_toEndOf="@id/pause"
                         android:layout_below="@id/choice4"
-                        android:text="Stop Quiz"
+                        android:text="Stop"
                         android:textColor="#fff" />
                 </RelativeLayout>
             </androidx.core.widget.NestedScrollView>

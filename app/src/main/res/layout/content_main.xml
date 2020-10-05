@@ -117,7 +117,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20dp">
 
                 <LinearLayout
@@ -127,31 +127,6 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardPreventCornerOverlap="true">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/home_gradient_maths"
-                            android:minHeight="100dp"
-                            android:padding="10dp">
-
-                            <ImageView
-                                style="@style/homeCardImage"
-                                android:maxHeight="90dp" />
-
-                            <TextView
-                                android:id="@+id/take_practice_button"
-                                style="@style/viewParent.headerText.HomeCardTitle"
-                                android:text="@string/take_cbt_practice" />
-
-                        </RelativeLayout>
-                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
@@ -164,7 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/home_gradient_chm"
-                            android:minHeight="100dp"
+                            android:minHeight="10dp"
                             android:padding="10dp"
                             gl:end_color="@color/gradientLightYellow2"
                             gl:orientation="LEFT_RIGHT"
@@ -183,64 +158,7 @@
                         </net.colindodd.gradientlayout.GradientRelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardPreventCornerOverlap="true">
 
-                        <net.colindodd.gradientlayout.GradientRelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/home_gradient_maths"
-                            android:minHeight="100dp"
-                            android:padding="10dp"
-                            gl:end_color="@color/gradientLightBlue"
-                            gl:orientation="LEFT_RIGHT"
-                            gl:start_color="@color/gradientViolet">
-
-                            <ImageView
-                                style="@style/homeCardImage"
-                                android:maxHeight="90dp" />
-
-                            <TextView
-                                android:id="@+id/it_placement"
-                                style="@style/viewParent.headerText.HomeCardTitle"
-                                android:text="@string/it_placement_report" />
-
-                        </net.colindodd.gradientlayout.GradientRelativeLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardPreventCornerOverlap="true">
-
-                        <net.colindodd.gradientlayout.GradientRelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/home_gradient_bio"
-                            android:minHeight="100dp"
-                            android:padding="10dp"
-                            gl:end_color="@color/gradientLightYellow2"
-                            gl:orientation="LEFT_RIGHT"
-                            gl:start_color="@color/gradientLightOrange2">
-
-                            <ImageView
-                                style="@style/homeCardImage"
-                                android:maxHeight="90dp" />
-
-                            <TextView
-                                android:id="@+id/summary"
-                                style="@style/viewParent.headerText.HomeCardTitle"
-                                android:text="@string/course_summary" />
-
-
-                        </net.colindodd.gradientlayout.GradientRelativeLayout>
-                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
@@ -271,6 +189,35 @@
 
                         </net.colindodd.gradientlayout.GradientRelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:cardCornerRadius="15dp"
+                        app:cardPreventCornerOverlap="true">
+
+                        <net.colindodd.gradientlayout.GradientRelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/home_gradient_bio"
+                            android:minHeight="100dp"
+                            android:padding="10dp"
+                            gl:end_color="@color/gradientOrange"
+                            gl:orientation="LEFT_RIGHT"
+                            gl:start_color="@color/gradientLightYellow">
+
+                            <ImageView
+                                style="@style/homeCardImage"
+                                android:maxHeight="90dp" />
+
+                            <TextView
+                                android:id="@+id/edu_acitivity"
+                                style="@style/viewParent.headerText.HomeCardTitle"
+                                android:text="@string/edu_service" />
+
+                        </net.colindodd.gradientlayout.GradientRelativeLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -313,34 +260,6 @@
                     android:orientation="vertical">
 
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardPreventCornerOverlap="true">
-
-                        <net.colindodd.gradientlayout.GradientRelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/home_gradient_bio"
-                            android:minHeight="100dp"
-                            android:padding="10dp"
-                            gl:end_color="@color/gradientOrange"
-                            gl:orientation="LEFT_RIGHT"
-                            gl:start_color="@color/gradientLightYellow">
-
-                            <ImageView
-                                style="@style/homeCardImage"
-                                android:maxHeight="90dp" />
-
-                            <TextView
-                                android:id="@+id/get_past_questions"
-                                style="@style/viewParent.headerText.HomeCardTitle"
-                                android:text="@string/read_past_questions" />
-
-                        </net.colindodd.gradientlayout.GradientRelativeLayout>
-                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
@@ -463,36 +382,8 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:cardCornerRadius="15dp"
-                        app:cardPreventCornerOverlap="true">
-
-                        <net.colindodd.gradientlayout.GradientRelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/home_gradient_maths"
-                            android:minHeight="100dp"
-                            android:padding="10dp"
-                            gl:end_color="@color/gradientOrange3"
-                            gl:orientation="LEFT_RIGHT"
-                            gl:start_color="@color/gradientLightOrange2">
-
-                            <ImageView
-                                style="@style/homeCardImage"
-                                android:maxHeight="90dp" />
-
-                            <TextView
-                                android:id="@+id/course_video"
-                                style="@style/viewParent.headerText.HomeCardTitle"
-                                android:text="@string/course_videos" />
 
 
-                        </net.colindodd.gradientlayout.GradientRelativeLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
 
 
                 </LinearLayout>

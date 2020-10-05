@@ -224,7 +224,7 @@ public class TrialActivity extends AppCompatActivity implements RewardedVideoAdL
             @Override
             public void onFinish() {
                 mTimeRunning = false;
-                pause.setText("Retake Quiz");
+                pause.setText("Retake");
                 pause.setVisibility(View.INVISIBLE);
                 reset.setVisibility(View.VISIBLE);
                 count_down.setText("Time Over");
@@ -244,7 +244,7 @@ public class TrialActivity extends AppCompatActivity implements RewardedVideoAdL
             }
         }.start();
         mTimeRunning = true;
-        pause.setText("Pause Quiz");
+        pause.setText("Pause");
         reset.setVisibility(View.INVISIBLE);
     }
     public void pauseTimer(){
@@ -257,7 +257,7 @@ public class TrialActivity extends AppCompatActivity implements RewardedVideoAdL
             mButtonChoice4.setEnabled(false);
             mCountDownTimer.cancel();
             mTimeRunning = false;
-            pause.setText("Resume Quiz");
+            pause.setText("Resume");
             reset.setVisibility(View.VISIBLE);
         }
         mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {

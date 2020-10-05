@@ -149,7 +149,7 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pause Quiz"
+                        android:text="Pause"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/rect_backroung_pink"
                         android:textColor="#fff"
@@ -159,7 +159,7 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reset Timer"
+                        android:text="Reset"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/rect_backroung_pink"
                         android:textColor="#fff"
@@ -187,7 +187,7 @@
                         android:layout_marginStart="50dp"
                         android:background="@drawable/rect_backroung_pink"
                         android:padding="2dp"
-                        android:text="Stop Quiz"
+                        android:text="Stop"
                         android:textColor="#fff" />
 
                 </RelativeLayout>

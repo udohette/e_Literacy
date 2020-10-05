@@ -49,8 +49,10 @@
         android:layout_marginStart="6dp"
         android:text="Skip"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:textSize="16sp"
-        android:background="@null"
+        android:backgroundTint="@color/red"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
     <Button
@@ -61,7 +63,8 @@
         android:text="Next"
         android:textSize="16sp"
         android:textColor="@color/white"
-        android:background="@null"
+        android:backgroundTint="@color/red"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/bnSkip"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

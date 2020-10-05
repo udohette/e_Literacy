@@ -193,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginStart="130dp"
+                        android:layout_marginStart="120dp"
                         android:layout_marginBottom="3dp"
                         android:background="@color/red"
                         android:freezesText="true"
@@ -206,13 +206,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginStart="160dp"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginBottom="3dp"
-                        android:layout_toEndOf="@id/pause"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@id/button_reset"
                         android:background="@color/red"
                         android:freezesText="true"
                         android:padding="8dp"
-                        android:text="Stop Quiz"
+                        android:text="Stop"
                         android:textColor="#fff" />
 
                 </RelativeLayout>

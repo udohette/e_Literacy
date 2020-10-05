@@ -233,7 +233,7 @@
                         android:freezesText="true"
                         android:padding="8dp"
                         android:layout_below="@id/choice4"
-                        android:text="Pause Quiz"
+                        android:text="Pause"
                         android:textColor="#fff" />
                     <Button
                         android:layout_gravity="center_horizontal"
@@ -244,9 +244,9 @@
                         android:background="@color/red"
                         android:freezesText="true"
                         android:padding="8dp"
-                        android:layout_marginStart="130dp"
+                        android:layout_marginStart="100dp"
                         android:layout_below="@id/choice4"
-                        android:text="Reset Timer"
+                        android:text="Reset"
                         android:textColor="#fff"
                         android:visibility="invisible"
                         tools:visibility="visible"/>
@@ -260,10 +260,11 @@
                         android:background="@color/red"
                         android:freezesText="true"
                         android:padding="8dp"
-                        android:layout_marginStart="160dp"
-                        android:layout_toEndOf="@id/pause"
+                        android:layout_marginStart="15dp"
+                       android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@id/button_reset"
                         android:layout_below="@id/choice4"
-                        android:text="Stop Quiz"
+                        android:text="Stop"
                         android:textColor="#fff" />
 
                 </RelativeLayout>
