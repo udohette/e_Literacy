@@ -359,14 +359,25 @@ Dennis S.A | IT Support Executive
     <string name="my_preference">com.example.techflex_e_literacy.MyPref</string>
     <string name="my_preference_key">com.example.techflex_e_literacy.MyPrefKey</string>
 
+    <string-array name="types">
+        <item>atm</item>
+        <item>school</item>
+        <item>church</item>
+        <item>hospital</item>
+        <item>food</item>
+        <item>bank</item>
+        <item>bakery</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="time_table">Time Table</string>
     <string name="portal_analysis">Portal Analysis</string>
     <string name="course_summary">Course Summary</string>
-    <string name="tma_score_keeper">TMA Score Keeper</string>
+    <string name="tma_score_keeper">TMA Score</string>
     <string name="course_videos">Course Videos</string>
     <string name="how_to_use_app">how to use App</string>
+    <string name="google_api">Google Places</string>
     <string name="update_marquee">#MASK SAFE/WEAR MASK|Always go to your Study center for Assistance*Contact Admin for Updates*Drop Comment and Feedback to techflexco2018@gmail.com|WhatsApp: 08025774336</string>
 
 

@@ -382,8 +382,36 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:cardCornerRadius="15dp"
+                        app:cardPreventCornerOverlap="true">
+
+                        <net.colindodd.gradientlayout.GradientRelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/home_gradient_maths"
+                            android:minHeight="100dp"
+                            android:padding="10dp"
+                            gl:end_color="@color/gradientOrange3"
+                            gl:orientation="LEFT_RIGHT"
+                            gl:start_color="@color/gradientLightOrange2">
+
+                            <ImageView
+                                style="@style/homeCardImage"
+                                android:maxHeight="90dp" />
+
+                            <TextView
+                                android:id="@+id/googlePlaces"
+                                style="@style/viewParent.headerText.HomeCardTitle"
+                                android:text="@string/google_api" />
 
 
+                        </net.colindodd.gradientlayout.GradientRelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
 
                 </LinearLayout>

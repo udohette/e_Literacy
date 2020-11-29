@@ -72,9 +72,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseReference mReference;
     FirebaseUser fuser;
 
-    TextView user_profile_name, take_practice_button, gp,gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
-            edu_activity, summary, contact_us,advert,timee_table,portal_analysis,tma_score_keeper, course_videos;
-    ImageView chat,logout;
+    TextView user_profile_name, take_practice_button, gp, gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
+            edu_activity, summary, contact_us, advert, timee_table, portal_analysis, tma_score_keeper, course_videos, google_places;
+    ImageView chat, logout;
     ImageView user_profile_button;
     private FirebaseAuth firebaseAuth;
 
@@ -196,6 +196,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         summary = findViewById(R.id.summary);
         contact_us = findViewById(R.id.contact_us);
        // notify = findViewById(R.id.notify);
+        google_places = findViewById(R.id.googlePlaces);
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -207,6 +208,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         gp.setOnClickListener(this);
         gp4.setOnClickListener(this);
         logout.setOnClickListener(this);
+        google_places.setOnClickListener(this);
         tma_score_keeper.setOnClickListener(this);
         //downlaod_pq.setOnClickListener(this);
         //view_pq.setOnClickListener(this);
@@ -593,16 +595,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(UserActivity.this, ChatAPI.class));
         }
         if (view == tma_score_keeper){
-            startActivity(new Intent(UserActivity.this,TMAScoreSheet.class));
+            startActivity(new Intent(UserActivity.this, TMAScoreSheet.class));
         }
-        if (view == course_videos){
+        if (view == course_videos) {
             Toast.makeText(this, "Coming Soon!", Toast.LENGTH_SHORT).show();
         }
-        if (view == logout){
+        if (view == logout) {
             FirebaseAuth.getInstance().signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+        if (view == google_places) {
+            startActivity(new Intent(UserActivity.this, GoogleAPI.class));
+        }
+
     }
 
     @Override

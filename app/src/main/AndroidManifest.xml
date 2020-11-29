@@ -36,13 +36,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EduService"
+        <activity android:name=".mainActivity.GoogleAPI"></activity>
+        <activity
+            android:name=".EduService"
             android:label="@string/educational_service">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".mainActivity.ProfileActivity"></activity>
+        <activity android:name=".mainActivity.ProfileActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -50,7 +52,7 @@
 
         <activity
             android:name=".mainActivity.TMAScoreSheet"
-            android:label="TMA Score Sheet"></activity>
+            android:label="TMA Score Sheet" />
         <activity
             android:name=".quiz.FBActivity2"
             android:label="enter course code">
