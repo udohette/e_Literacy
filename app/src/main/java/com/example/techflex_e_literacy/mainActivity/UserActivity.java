@@ -72,7 +72,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     DatabaseReference mReference;
     FirebaseUser fuser;
 
-    TextView user_profile_name, take_practice_button, gp, gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
+    TextView tma_solution, user_profile_name, take_practice_button, gp, gp4, project_topic_button, seminar_button, it_placement_button, e_course, about_us,
             edu_activity, summary, contact_us, advert, timee_table, portal_analysis, tma_score_keeper, course_videos, google_places;
     ImageView chat, logout;
     ImageView user_profile_button;
@@ -176,6 +176,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         user_profile_name = findViewById(R.id.user_profile_name);
        // map = findViewById(R.id.map);
+        tma_solution = findViewById(R.id.tma);
         user_profile_button = findViewById(R.id.profile_image);
         take_practice_button = findViewById(R.id.take_practice_button);
         chat = findViewById(R.id.chat);
@@ -196,7 +197,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         summary = findViewById(R.id.summary);
         contact_us = findViewById(R.id.contact_us);
        // notify = findViewById(R.id.notify);
-        google_places = findViewById(R.id.googlePlaces);
+       // google_places = findViewById(R.id.googlePlaces);
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -208,7 +209,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         gp.setOnClickListener(this);
         gp4.setOnClickListener(this);
         logout.setOnClickListener(this);
-        google_places.setOnClickListener(this);
+        tma_solution.setOnClickListener(this);
+       // google_places.setOnClickListener(this);
         tma_score_keeper.setOnClickListener(this);
         //downlaod_pq.setOnClickListener(this);
         //view_pq.setOnClickListener(this);
@@ -605,8 +607,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
-        if (view == google_places) {
-            startActivity(new Intent(UserActivity.this, GoogleAPI.class));
+
+        if (view == tma_solution) {
+            String url = "https://wa.me/2348025774336?text=I'm%20interested%20in%20doing%20my%20TMA%20And%20Get The%20Solutions";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
         }
 
     }
